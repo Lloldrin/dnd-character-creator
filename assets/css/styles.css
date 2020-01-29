@@ -1,0 +1,27 @@
+body {
+    padding: 0px;
+    margin: 0px;
+}
+
+.page_background {
+    background-color: rgb(63, 115, 184);
+    height: 100vh;
+}
+
+.character_creator {
+    margin: auto;
+}
+
+#player_race {
+    padding: 10px; 
+    margin: 10px; 
+}
+
+li { 
+    margin: 10px
+}
+
+h1 {
+    text-transform: uppercase;
+    margin: auto;
+}
