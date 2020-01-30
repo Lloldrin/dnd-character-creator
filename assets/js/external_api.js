@@ -3,7 +3,7 @@ const dnd_api = `http://www.dnd5eapi.co/api/`;
 
 /* ------------ Ingame Races ---------- */
 
-//Fetches  data to populate the race list 
+//Fetches data to populate the race list and runs the function to populate the list
 async function fetchRaceList() {
     let availableRaces = await fetch(dnd_api + `races/`);
     let playerRace = await availableRaces.json();
@@ -21,7 +21,7 @@ $(`body`).on(`click`, `.btn_race`, async function () {
 
 /* ------------ Ingame Classes ---------- */
 
-//Fetches  data to populate the class list 
+//Fetches data to populate the class list  and runs the function to populate the list
 async function fetchClassList() {
     let availableClasses = await fetch(dnd_api + `classes/`)
     let playerClass = await availableClasses.json()
