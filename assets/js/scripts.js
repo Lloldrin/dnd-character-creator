@@ -68,13 +68,21 @@ function currentRaceStats(currentRace) {
             $(`#base_stat_cha`).text(base_stats_cha);
         }
     });
+
+    $('#base_stat_bonus').empty();
+    try {
+        if (currentRace.ability_bonus_options.choose >= 1) {
+            $(`#base_stat_bonus`).text(currentRace.ability_bonus_options.choose);
+        }
+    } catch {
+        console.log("This Race does not have an ability bonus");
+    }
 }
 
 function currentRaceInformation(currentRace) {
-    $(`#race_info_container`).empty()
     Object.keys(currentRace).forEach(element => {
         //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
-        if(["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
+        if (["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
             return;
         }
         $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
@@ -87,5 +95,38 @@ function currentRaceInformation(currentRace) {
 // $(`#race_proficiencies`)}.text(`${currentRace.starting_proficiencies.`)
 
 function currentClassInformation(currentClass) {
-    console.log(Object.keys(currentClass));
+    Object.keys(currentClass).forEach(element => {
+        //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
+        if (["_id", "index", "url"].indexOf(element) >= 0) {
+            return;
+        }
+        $(`#class_info_container`).append(`<div class="class_info_container" id="class_${element}_container">
+            <p id="class_${element}">${currentClass[element]}</p>`);
+    });
+
+    //Populate the proficencyList
+    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficencies"><p>You start with these proficencies:</p></div>`);
+    currentClass.proficiencies.forEach(element => {
+        $(`#proficencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
+             <p id="class_${element.name}">${element.name}</p></div>`);
+    });
+
+    //Populate and create forms for proficencyChoices
+    currentClass.proficiency_choices.forEach((element, i) => {
+        $(`#class_info_container`).append(`<div class="class_skill_list" id="proficency_${i}"></div>`);
+        $(`#proficency_${i}`).append(`<div class="class_info_container" id="class_${element.name}_container">
+            <p>You can choose ${element.choose} from this list</p></div>`);
+
+        element.from.forEach(element => {
+            $(`#proficency_${i}`).append(`<div class="class_info_container">
+            <input type="checkbox" class="proficency_class_${i}"><span> ${element.name}</span></div>`);
+        });
+
+        $(`.proficency_class_${i}`).on('change', function(){
+            if ($(`.proficency_class_${i}:checked`).length > element.choose) {
+                this.checked = false; 
+            }
+        })
+
+    });
 }

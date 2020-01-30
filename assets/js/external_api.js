@@ -16,6 +16,7 @@ async function fetchRaceList() {
 $(`body`).on(`click`, `.btn_race`, async function () {
     let clickedRace = await fetch(dnd_api + `races/` + $(this).attr(`id`))
     let currentRace = await clickedRace.json();
+    $(`#race_info_container`).empty()
     baseStats();
     currentRaceStats(currentRace);
     currentRaceInformation(currentRace);
@@ -37,6 +38,7 @@ async function fetchClassList() {
 $(`body`).on(`click`, `.btn_class`, async function () { 
     let clickedClass = await fetch(dnd_api + `classes/` + $(this).attr(`id`))
     let currentClass = await clickedClass.json();
+    $(`#class_info_container`).empty()
     currentClassInformation(currentClass);
     console.log(currentClass);
 })
