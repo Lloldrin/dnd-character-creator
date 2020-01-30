@@ -42,11 +42,15 @@ h1 {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-#race_alignment_container, #race_age_container, #race_size_description_container, #race_speed_container {
+.race_info_container {
     background-color: #ffffff;
     border: 2px solid #000000;
     margin: 20px;
     padding: 10px;
-    min-height: 150px;
+    min-height: 50px;
     width: 400px;
+}
+
+p { 
+    margin: 0px;
 }

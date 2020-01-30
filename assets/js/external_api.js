@@ -37,6 +37,7 @@ async function fetchClassList() {
 $(`body`).on(`click`, `.btn_class`, async function () { 
     let clickedClass = await fetch(dnd_api + `classes/` + $(this).attr(`id`))
     let currentClass = await clickedClass.json();
+    currentClassInformation(currentClass);
     console.log(currentClass);
 })
 
