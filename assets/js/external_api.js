@@ -1,12 +1,13 @@
 //Api Url
 const dnd_api = `http://www.dnd5eapi.co/api/`;
 
+
 /* ------------ Ingame Races ---------- */
 
 //Fetches data to populate the race list and runs the function to populate the list
 async function fetchRaceList() {
-    let availableRaces = await fetch(dnd_api + `races/`);
-    let playerRace = await availableRaces.json();
+    let apiRaces = await fetch(dnd_api + `races/`);
+    let playerRace = await apiRaces.json();
     populateRaceList(playerRace.results);
     console.log(playerRace.results);
 }
@@ -15,16 +16,19 @@ async function fetchRaceList() {
 $(`body`).on(`click`, `.btn_race`, async function () {
     let clickedRace = await fetch(dnd_api + `races/` + $(this).attr(`id`))
     let currentRace = await clickedRace.json();
+    baseStats();
+    currentRaceStats(currentRace);
     currentRaceInformation(currentRace);
     console.log(currentRace);
 })
+
 
 /* ------------ Ingame Classes ---------- */
 
 //Fetches data to populate the class list  and runs the function to populate the list
 async function fetchClassList() {
-    let availableClasses = await fetch(dnd_api + `classes/`)
-    let playerClass = await availableClasses.json()
+    let apiClasses = await fetch(dnd_api + `classes/`)
+    let playerClass = await apiClasses.json()
     populateClassList(playerClass.results)
     console.log(playerClass.results)
 }
@@ -35,3 +39,14 @@ $(`body`).on(`click`, `.btn_class`, async function () {
     let currentClass = await clickedClass.json();
     console.log(currentClass);
 })
+
+
+/* ------------ Ingame Skills ---------- */
+
+//Fetches data to populate the skill list  and runs the function to populate the list
+async function fetchSkillList() {
+    let apiSkills = await fetch(dnd_api + `skills/`)
+    let skills = await apiSkills.json()
+    populateSkillList(skills.results)
+    console.log(skills.results)
+}

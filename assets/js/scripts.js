@@ -1,12 +1,4 @@
-let base_stats = [8, 8, 8, 8, 8, 8];
-
-$(`#base_stat_str`).text(base_stats[0]);
-$(`#base_stat_dex`).text(base_stats[1]);
-$(`#base_stat_con`).text(base_stats[2]);
-$(`#base_stat_int`).text(base_stats[3]);
-$(`#base_stat_wis`).text(base_stats[4]);
-$(`#base_stat_cha`).text(base_stats[5]);
-
+/* ---------- Dynamically Created Content ---------*/
 
 //Function to dynamically create the list of races and give each button a unique ID
 function populateRaceList(listRaces) {
@@ -17,38 +9,6 @@ function populateRaceList(listRaces) {
 
 fetchRaceList()
 
-//Function to use the data retrieved on click of btn_race (prototype just to make sure that the data can be sent to the DOM) 
-function currentRaceInformation(currentRace) {
-    /*$(`#race_alignment`).text(`${currentRace.alignment}`);
-     $(`#race_age`).text(`${currentRace.age}`);
-     $(`#race_size_description`).text(`${currentRace.size_description}`);
-     $(`#race_speed`).text(`${currentRace.speed}`);*/
-    currentRace.ability_bonuses.forEach(element => {
-        if (element.name === `STR`) {
-            var base_stat_str = element.bonus + base_stats[0];
-        } else if (element.name === `DEX`) {
-            var base_stat_dex = element.bonus + base_stats[1];
-        } else if (element.name === `CON`) {
-            var base_stat_con = element.bonus + base_stats[2];
-        } else if (element.name === `INT`) {
-            var base_stat_int = element.bonus + base_stats[3];
-        } else if (element.name === `WIS`) {
-            var base_stat_wis = element.bonus + base_stats[4];
-        } else if (element.name === `CHA`) {
-            var base_stat_cha = element.bonus + base_stats[5];
-        }
-        $(`#base_stat_str`).text(base_stat_str);
-        $(`#base_stat_dex`).text(base_stat_dex);
-        $(`#base_stat_con`).text(base_stat_con);
-        $(`#base_stat_int`).text(base_stat_int);
-        $(`#base_stat_wis`).text(base_stat_wis);
-        $(`#base_stat_cha`).text(base_stat_cha);
-    });
-
-}
-
-
-
 //Function to dynamically create the list of classes and give each button a unique ID
 function populateClassList(listClasses) {
     listClasses.forEach(element => {
@@ -57,3 +17,64 @@ function populateClassList(listClasses) {
 }
 
 fetchClassList()
+
+//Function to dynamically create the list of skills
+function populateSkillList(listSkills) {
+    listSkills.forEach(element => {
+        $(`#skill_list`).append(`<li>${element.name}</li>`)
+    });
+}
+
+fetchSkillList()
+
+
+
+/* ---------- Character Logic ---------- */
+
+let base_stats = [8, 8, 8, 8, 8, 8];
+
+function baseStats(element) {
+    $(`#base_stat_str`).text(base_stats[0]);
+    $(`#base_stat_dex`).text(base_stats[1]);
+    $(`#base_stat_con`).text(base_stats[2]);
+    $(`#base_stat_int`).text(base_stats[3]);
+    $(`#base_stat_wis`).text(base_stats[4]);
+    $(`#base_stat_cha`).text(base_stats[5]);
+};
+
+baseStats();
+
+//Function to use the data retrieved on click of btn_race (prototype just to make sure that the data can be sent to the DOM) 
+function currentRaceStats(currentRace) {
+    currentRace.ability_bonuses.forEach(element => {
+        if (element.name === `STR`) {
+            var base_stats_str = element.bonus + base_stats[0];
+            $(`#base_stat_str`).text(base_stats_str);
+        } else if (element.name === `DEX`) {
+            var base_stats_dex = element.bonus + base_stats[1];
+            $(`#base_stat_dex`).text(base_stats_dex);
+        } else if (element.name === `CON`) {
+            var base_stats_con = element.bonus  + base_stats[2];
+            $(`#base_stat_con`).text(base_stats_con);
+        } else if (element.name === `INT`) {
+            var base_stats_int = element.bonus + base_stats[3];
+            $(`#base_stat_int`).text(base_stats_int);
+        } else if (element.name === `WIS`) {
+            var base_stats_wis = element.bonus + base_stats[4];
+            $(`#base_stat_wis`).text(base_stats_wis);
+        } else if (element.name === `CHA`) {
+            var base_stats_cha = element.bonus + base_stats[5];
+            $(`#base_stat_cha`).text(base_stats_cha);
+        }
+    });
+}
+
+function currentRaceInformation(currentRace){
+     $(`#race_alignment`).text(`${currentRace.alignment}`);
+     $(`#race_age`).text(`${currentRace.age}`);
+     $(`#race_size_description`).text(`${currentRace.size_description}`);
+     $(`#race_speed`).text(`${currentRace.speed}`);
+}
+
+
+
