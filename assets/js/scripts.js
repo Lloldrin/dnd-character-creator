@@ -1,4 +1,4 @@
-/* ---------- Dynamically Created Content ---------*/
+/* ---------- Dynamically Created Content on Page Load ---------*/
 
 //Function to dynamically create the list of races and give each button a unique ID
 function populateRaceList(listRaces) {
@@ -27,55 +27,57 @@ function populateSkillList(listSkills) {
 
 fetchSkillList()
 
-
-
 /* ---------- Character Logic ---------- */
 
 
-let base_stats = [8, 8, 8, 8, 8, 8];
+let base_ability = [8, 8, 8, 8, 8, 8,];
+let character_ability = base_ability;
 
-function baseStats(element) {
-    $(`#base_stat_str`).text(base_stats[0]);
-    $(`#base_stat_dex`).text(base_stats[1]);
-    $(`#base_stat_con`).text(base_stats[2]);
-    $(`#base_stat_int`).text(base_stats[3]);
-    $(`#base_stat_wis`).text(base_stats[4]);
-    $(`#base_stat_cha`).text(base_stats[5]);
+function printbaseStats(element) {
+    $(`#base_stat_str`).text(base_ability[0]);
+    $(`#base_stat_dex`).text(base_ability[1]);
+    $(`#base_stat_con`).text(base_ability[2]);
+    $(`#base_stat_int`).text(base_ability[3]);
+    $(`#base_stat_wis`).text(base_ability[4]);
+    $(`#base_stat_cha`).text(base_ability[5]);
+    $('#base_stat_bonus').empty();
 };
-
-baseStats();
+function resetStats() {
+    base_ability = [8, 8, 8, 8, 8, 8,];
+    character_ability = base_ability;
+    printbaseStats()
+}
 
 //Function to use the data retrieved on click of btn_race (prototype just to make sure that the data can be sent to the DOM)
-function currentRaceStats(currentRace) {
+function currentRaceAbility(currentRace) {
     currentRace.ability_bonuses.forEach(element => {
         if (element.name === `STR`) {
-            var base_stats_str = element.bonus + base_stats[0];
-            $(`#base_stat_str`).text(base_stats_str);
+            character_ability[0] = element.bonus + base_ability[0];
+            $(`#base_stat_str`).text(character_ability[0]);
         } else if (element.name === `DEX`) {
-            var base_stats_dex = element.bonus + base_stats[1];
-            $(`#base_stat_dex`).text(base_stats_dex);
+            character_ability[1] = element.bonus + base_ability[1];
+            $(`#base_stat_dex`).text(character_ability[1]);
         } else if (element.name === `CON`) {
-            var base_stats_con = element.bonus + base_stats[2];
-            $(`#base_stat_con`).text(base_stats_con);
+            character_ability[2] = element.bonus + base_ability[2];
+            $(`#base_stat_con`).text(character_ability[2]);
         } else if (element.name === `INT`) {
-            var base_stats_int = element.bonus + base_stats[3];
-            $(`#base_stat_int`).text(base_stats_int);
+            character_ability[3] = element.bonus + base_ability[3];
+            $(`#base_stat_int`).text(character_ability[3]);
         } else if (element.name === `WIS`) {
-            var base_stats_wis = element.bonus + base_stats[4];
-            $(`#base_stat_wis`).text(base_stats_wis);
+            character_ability[4] = element.bonus + base_ability[4];
+            $(`#base_stat_wis`).text(character_ability[4]);
         } else if (element.name === `CHA`) {
-            var base_stats_cha = element.bonus + base_stats[5];
-            $(`#base_stat_cha`).text(base_stats_cha);
+            character_ability[5] = element.bonus + base_ability[5];
+            $(`#base_stat_cha`).text(character_ability[5]);
         }
     });
 
-    $('#base_stat_bonus').empty();
     try {
-        if (currentRace.ability_bonus_options.choose >= 1) {
+        if (currentRace.ability_bonus_options.choose > 0) {
             $(`#base_stat_bonus`).text(currentRace.ability_bonus_options.choose);
         }
     } catch {
-        console.log("This Race does not have an ability bonus");
+        $(`#base_stat_bonus`).text("0");
     }
 }
 
@@ -88,8 +90,6 @@ function currentRaceInformation(currentRace) {
         $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
             <p id="race_${element}">${currentRace[element]}</p>`);
     });
-
-
     console.log(Object.keys(currentRace));
 }
 // $(`#race_proficiencies`)}.text(`${currentRace.starting_proficiencies.`)
@@ -119,14 +119,26 @@ function currentClassInformation(currentClass) {
 
         element.from.forEach(element => {
             $(`#proficency_${i}`).append(`<div class="class_info_container">
-            <input type="checkbox" class="proficency_class_${i}"><span> ${element.name}</span></div>`);
+            <input type="checkbox" class="proficency_class_${i}" value="${element.name}"><span> ${element.name}</span></div>`);
         });
 
-        $(`.proficency_class_${i}`).on('change', function(){
+        $(`.proficency_class_${i}`).on('change', function () {
             if ($(`.proficency_class_${i}:checked`).length > element.choose) {
-                this.checked = false; 
+                this.checked = false;
+            } else {
+                if (this.checked === true) {
+                    if (chosenSkills[`proficency_class_${i}`] === undefined) {
+                        chosenSkills[`proficency_class_${i}`] = {}
+                    }
+                    chosenSkills[`proficency_class_${i}`][this.value] = " ";
+                } else {
+                    delete chosenSkills[`proficency_class_${i}`][this.value];
+                }
+                console.log(chosenSkills);
             }
         })
-
     });
 }
+
+let chosenSkills = {};
+

@@ -17,8 +17,8 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     let clickedRace = await fetch(dnd_api + `races/` + $(this).attr(`id`))
     let currentRace = await clickedRace.json();
     $(`#race_info_container`).empty()
-    baseStats();
-    currentRaceStats(currentRace);
+    resetStats();
+    currentRaceAbility(currentRace);
     currentRaceInformation(currentRace);
     console.log(currentRace);
 })
@@ -40,7 +40,9 @@ $(`body`).on(`click`, `.btn_class`, async function () {
     let currentClass = await clickedClass.json();
     $(`#class_info_container`).empty()
     currentClassInformation(currentClass);
+    chosenSkills = {};
     console.log(currentClass);
+    console.log(character_ability);
 })
 
 
