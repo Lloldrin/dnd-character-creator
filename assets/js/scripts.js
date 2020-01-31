@@ -27,58 +27,20 @@ function populateSkillList(listSkills) {
 
 fetchSkillList()
 
-/* ---------- Character Logic ---------- */
-
+/* ---------- Race Logic ---------- */
 
 let base_ability = [8, 8, 8, 8, 8, 8,];
 let character_ability = base_ability;
+let raceTraits = {};
 
-function printbaseStats(element) {
-    $(`#base_stat_str`).text(base_ability[0]);
-    $(`#base_stat_dex`).text(base_ability[1]);
-    $(`#base_stat_con`).text(base_ability[2]);
-    $(`#base_stat_int`).text(base_ability[3]);
-    $(`#base_stat_wis`).text(base_ability[4]);
-    $(`#base_stat_cha`).text(base_ability[5]);
-    $('#base_stat_bonus').empty();
-};
-function resetStats() {
-    base_ability = [8, 8, 8, 8, 8, 8,];
-    character_ability = base_ability;
-    printbaseStats()
-}
-
-//Function to use the data retrieved on click of btn_race (prototype just to make sure that the data can be sent to the DOM)
-function currentRaceAbility(currentRace) {
-    currentRace.ability_bonuses.forEach(element => {
-        if (element.name === `STR`) {
-            character_ability[0] = element.bonus + base_ability[0];
-            $(`#base_stat_str`).text(character_ability[0]);
-        } else if (element.name === `DEX`) {
-            character_ability[1] = element.bonus + base_ability[1];
-            $(`#base_stat_dex`).text(character_ability[1]);
-        } else if (element.name === `CON`) {
-            character_ability[2] = element.bonus + base_ability[2];
-            $(`#base_stat_con`).text(character_ability[2]);
-        } else if (element.name === `INT`) {
-            character_ability[3] = element.bonus + base_ability[3];
-            $(`#base_stat_int`).text(character_ability[3]);
-        } else if (element.name === `WIS`) {
-            character_ability[4] = element.bonus + base_ability[4];
-            $(`#base_stat_wis`).text(character_ability[4]);
-        } else if (element.name === `CHA`) {
-            character_ability[5] = element.bonus + base_ability[5];
-            $(`#base_stat_cha`).text(character_ability[5]);
-        }
-    });
-
-    try {
-        if (currentRace.ability_bonus_options.choose > 0) {
-            $(`#base_stat_bonus`).text(currentRace.ability_bonus_options.choose);
-        }
-    } catch {
-        $(`#base_stat_bonus`).text("0");
-    }
+function printBaseStats() {
+    $(`.ability_str`).text(base_ability[0]);
+    $(`.ability_dex`).text(base_ability[1]);
+    $(`.ability_con`).text(base_ability[2]);
+    $(`.ability_int`).text(base_ability[3]);
+    $(`.ability_wis`).text(base_ability[4]);
+    $(`.ability_cha`).text(base_ability[5]);
+    $('.ability_bonus').empty();
 }
 
 function currentRaceInformation(currentRace) {
@@ -90,14 +52,77 @@ function currentRaceInformation(currentRace) {
         $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
             <p id="race_${element}">${currentRace[element]}</p>`);
     });
-    console.log(Object.keys(currentRace));
+
+    currentRace.ability_bonuses.forEach(element => {
+        if (element.name === `STR`) {
+            character_ability[0] = element.bonus + base_ability[0];
+            $(`.ability_str`).text(character_ability[0]);
+        } else if (element.name === `DEX`) {
+            character_ability[1] = element.bonus + base_ability[1];
+            $(`.ability_dex`).text(character_ability[1]);
+        } else if (element.name === `CON`) {
+            character_ability[2] = element.bonus + base_ability[2];
+            $(`.ability_con`).text(character_ability[2]);
+        } else if (element.name === `INT`) {
+            character_ability[3] = element.bonus + base_ability[3];
+            $(`.ability_int`).text(character_ability[3]);
+        } else if (element.name === `WIS`) {
+            character_ability[4] = element.bonus + base_ability[4];
+            $(`.ability_wis`).text(character_ability[4]);
+        } else if (element.name === `CHA`) {
+            character_ability[5] = element.bonus + base_ability[5];
+            $(`.ability_cha`).text(character_ability[5]);
+        }
+    });
+
+    if (currentRace.ability_bonus_options === undefined) {
+        $(`.ability_bonus`).text("0");
+    } else {
+        $(`.ability_bonus`).text(currentRace.ability_bonus_options.choose);
+    }
+
+
+    if (currentRace.starting_proficiencies.length === 0) {
+    } else {
+        $(`#race_info_container`).append(`<div class="race_proficency_list" id="race_proficiencies"><p>You start with these proficiencies:</p></div>`);
+        console.log(currentRace.starting_proficiencies.length);
+        currentRace.starting_proficiencies.forEach(element => {
+            $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element.name}_proficency">
+             <p id="race_proficency_${element.name}">${element.name}</p></div>`);
+            if (raceProficiencies[`race_proficiencies_0`] === undefined) {
+                raceProficiencies[`race_proficiencies_0`] = {}
+            }
+            raceProficiencies[`race_proficiencies_0`][`${element.name}`] = " ";
+        });
+    }
+
+    $(`#race_info_container`).append(`<div class="race_trait_list" id="race_traits"><p>You start with these traits:</p></div>`);
+
+    currentRace.traits.forEach(element => {
+        $(`#race_info_container`).append(`<div class="race_trait_container" id="race_${element.name}_trait">
+             <p id="race_trait_${element.name}">${element.name}</p></div>`);
+        if (raceTraits[`race_traits_0`] === undefined) {
+            raceTraits[`race_traits_0`] = {}
+        }
+        raceTraits[`race_traits_0`][`${element.name}`] = " ";
+    });
+
 }
-// $(`#race_proficiencies`)}.text(`${currentRace.starting_proficiencies.`)
+
+function resetRace() {
+    base_ability, character_ability = [8, 8, 8, 8, 8, 8,];
+    printBaseStats()
+    raceProficiencies = {};
+    raceTraits = {};
+    $(`#race_info_container`).empty()
+}
+
+/* ---------- Class Logic ---------- */
 
 function currentClassInformation(currentClass) {
     Object.keys(currentClass).forEach(element => {
         //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
-        if (["_id", "index", "url"].indexOf(element) >= 0) {
+        if (["_id", "index", "subclasses", "proficiencies", "proficiency_choices", "saving_throws", "starting_equipment", "class_levels", "spellcasting", "url"].indexOf(element) >= 0) {
             return;
         }
         $(`#class_info_container`).append(`<div class="class_info_container" id="class_${element}_container">
@@ -105,10 +130,14 @@ function currentClassInformation(currentClass) {
     });
 
     //Populate the proficencyList
-    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficencies"><p>You start with these proficencies:</p></div>`);
+    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficiencies"><p>You start with these proficiencies:</p></div>`);
     currentClass.proficiencies.forEach(element => {
-        $(`#proficencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
+        $(`#proficiencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
              <p id="class_${element.name}">${element.name}</p></div>`);
+        if (classProficiencies[`proficency_class_0`] === undefined) {
+            classProficiencies[`proficency_class_0`] = {}
+        }
+        classProficiencies[`proficency_class_0`][`${element.name}`] = " ";
     });
 
     //Populate and create forms for proficencyChoices
@@ -127,18 +156,22 @@ function currentClassInformation(currentClass) {
                 this.checked = false;
             } else {
                 if (this.checked === true) {
-                    if (chosenSkills[`proficency_class_${i}`] === undefined) {
-                        chosenSkills[`proficency_class_${i}`] = {}
+                    if (classProficiencies[`proficency_class_${i + 1}`] === undefined) {
+                        classProficiencies[`proficency_class_${i + 1}`] = {}
                     }
-                    chosenSkills[`proficency_class_${i}`][this.value] = " ";
+                    classProficiencies[`proficency_class_${i + 1}`][this.value] = " ";
                 } else {
-                    delete chosenSkills[`proficency_class_${i}`][this.value];
+                    delete classProficiencies[`proficency_class_${i + 1}`][this.value];
                 }
-                console.log(chosenSkills);
+                console.log(classProficiencies);
             }
         })
     });
 }
 
-let chosenSkills = {};
+function resetClass() {
+    $(`#class_info_container`).empty();
+    classProficiencies = {};
+}
+
 
