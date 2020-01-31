@@ -31,7 +31,7 @@ fetchSkillList()
 
 let base_ability = [8, 8, 8, 8, 8, 8,];
 let character_ability = base_ability;
-let raceTraits = {};
+let chosenLanguages, raceTraits = {};
 
 function printBaseStats() {
     $(`.ability_str`).text(base_ability[0]);
@@ -44,14 +44,6 @@ function printBaseStats() {
 }
 
 function currentRaceInformation(currentRace) {
-    Object.keys(currentRace).forEach(element => {
-        //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
-        if (["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
-            return;
-        }
-        $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
-            <p id="race_${element}">${currentRace[element]}</p>`);
-    });
 
     currentRace.ability_bonuses.forEach(element => {
         if (element.name === `STR`) {
@@ -81,11 +73,43 @@ function currentRaceInformation(currentRace) {
         $(`.ability_bonus`).text(currentRace.ability_bonus_options.choose);
     }
 
+    Object.keys(currentRace).forEach(element => {
+        //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
+        if (["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
+            return;
+        }
+        $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
+            <p id="race_${element}">${currentRace[element]}</p></div>`);
+    });
 
-    if (currentRace.starting_proficiencies.length === 0) {
-    } else {
+    if (currentRace.language_options !== undefined) {
+
+        $('#race_info_container').append(`<div class="race_info_container" id="race_languages"><p>You can choose ${currentRace.language_options.choose} languages from this list</div>`)
+
+        currentRace.language_options.from.forEach(element => {
+            $('#race_languages').append(`<div class="race_info_container">
+            <input type="checkbox" class="race_language" value="${element.name}"><span> ${element.name}</span></div>`);
+        });
+
+        $('.race_language').on('change', function () {
+            if ($(`.race_language:checked`).length > currentRace.language_options.choose) {
+                this.checked = false;
+            } else {
+                if (this.checked === true) {
+                    if (chosenLanguages[`chosenLanguages`] === undefined) {
+                        chosenLanguages[`chosenLanguages`] = {}
+                    }
+                    chosenLanguages[`chosenLanguages`][this.value] = [this.value];
+                } else {
+                    delete chosenLanguages[`chosenLanguages`][this.value];
+                }
+                console.log(chosenLanguages);
+            }
+        })
+    }
+
+    if (currentRace.starting_proficiencies.length > 0) {
         $(`#race_info_container`).append(`<div class="race_proficency_list" id="race_proficiencies"><p>You start with these proficiencies:</p></div>`);
-        console.log(currentRace.starting_proficiencies.length);
         currentRace.starting_proficiencies.forEach(element => {
             $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element.name}_proficency">
              <p id="race_proficency_${element.name}">${element.name}</p></div>`);
@@ -96,17 +120,44 @@ function currentRaceInformation(currentRace) {
         });
     }
 
-    $(`#race_info_container`).append(`<div class="race_trait_list" id="race_traits"><p>You start with these traits:</p></div>`);
-
-    currentRace.traits.forEach(element => {
-        $(`#race_info_container`).append(`<div class="race_trait_container" id="race_${element.name}_trait">
+    if (currentRace.traits.length > 0) {
+        $(`#race_info_container`).append(`<div class="race_trait_list" id="race_traits"><p>You start with these traits:</p></div>`);
+        currentRace.traits.forEach(element => {
+            $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element.name}_trait">
              <p id="race_trait_${element.name}">${element.name}</p></div>`);
-        if (raceTraits[`race_traits_0`] === undefined) {
-            raceTraits[`race_traits_0`] = {}
-        }
-        raceTraits[`race_traits_0`][`${element.name}`] = " ";
-    });
+            if (raceTraits[`race_traits_0`] === undefined) {
+                raceTraits[`race_traits_0`] = {}
+            }
+            raceTraits[`race_traits_0`][`${element.name}`] = [`${element.name}`];
+        });
+    }
 
+    if (currentRace.trait_options !== undefined) {
+
+        $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options"><p>You can choose ${currentRace.trait_options.choose} traits from this list</div>`)
+
+        currentRace.trait_options.from.forEach(element => {
+            $('#race_trait_options').append(`<div class="race_info_container">
+            <input type="checkbox" class="race_trait_option" value="${element.name}"><span> ${element.name}</span></div>`);
+        });
+
+        $('.race_trait_option').on('change', function () {
+            if ($(`.race_trait_option:checked`).length > currentRace.trait_options.choose) {
+                this.checked = false;
+            } else {
+                if (this.checked === true) {
+                    if (raceTraits['race_traits_1'] === undefined) {
+                        raceTraits[`race_traits_1`] = {}
+                    }
+                    raceTraits[`race_traits_1`][this.value] = [this.value];
+                } else {
+                    delete raceTraits[`race_traits_1`][this.value];
+                }
+                console.log(raceTraits);
+            }
+        });
+
+}
 }
 
 function resetRace() {
@@ -159,7 +210,7 @@ function currentClassInformation(currentClass) {
                     if (classProficiencies[`proficency_class_${i + 1}`] === undefined) {
                         classProficiencies[`proficency_class_${i + 1}`] = {}
                     }
-                    classProficiencies[`proficency_class_${i + 1}`][this.value] = " ";
+                    classProficiencies[`proficency_class_${i + 1}`][this.value] = [this.value];
                 } else {
                     delete classProficiencies[`proficency_class_${i + 1}`][this.value];
                 }
@@ -173,5 +224,3 @@ function resetClass() {
     $(`#class_info_container`).empty();
     classProficiencies = {};
 }
-
-
