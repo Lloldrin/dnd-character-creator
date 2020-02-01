@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Headland+One&display=swap');
+
 body {
     padding: 0px;
     margin: 0px;
@@ -49,6 +51,27 @@ h1 {
     padding: 10px;
     min-height: 50px;
     width: 400px;
+}
+
+#race_info {
+    margin: auto;
+    margin-top: 25px;
+    font-family: 'Headland One', serif;
+    font-size: 0.8em;
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid black;
+}
+
+.race_info {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.race_list {
+    width: 55%;
+    border-bottom: 1px solid black;
+    margin: auto;
 }
 
 p { 

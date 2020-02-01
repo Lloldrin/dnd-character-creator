@@ -1,7 +1,6 @@
 //Api Url
 const dnd_api = `http://www.dnd5eapi.co/api/`;
 
-
 /* ------------ Ingame Races ---------- */
 
 //Fetches data to populate the race list and runs the function to populate the list
@@ -16,6 +15,7 @@ async function fetchRaceList() {
 $(`body`).on(`click`, `.btn_race`, async function () {
     let clickedRace = await fetch(dnd_api + `races/` + $(this).attr(`id`))
     let currentRace = await clickedRace.json();
+    console.log(characterProficiencies)
     resetRace();
     currentRaceInformation(currentRace);
     console.log(currentRace);

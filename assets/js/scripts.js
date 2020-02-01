@@ -1,3 +1,6 @@
+let characterProficiencies = {}
+
+
 /* ---------- Dynamically Created Content on Page Load ---------*/
 
 //Function to dynamically create the list of races and give each button a unique ID
@@ -31,7 +34,8 @@ fetchSkillList()
 
 let base_ability = [8, 8, 8, 8, 8, 8,];
 let character_ability = base_ability;
-let chosenLanguages, raceTraits = {};
+let characterLanguages = {};
+let raceTraits = {};
 
 function printBaseStats() {
     $(`.ability_str`).text(base_ability[0]);
@@ -73,57 +77,126 @@ function currentRaceInformation(currentRace) {
         $(`.ability_bonus`).text(currentRace.ability_bonus_options.choose);
     }
 
+    $('#race_info_container').append('<div id="race_info"></div>');
+
     Object.keys(currentRace).forEach(element => {
         //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
         if (["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
             return;
         }
-        $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element}_container">
+        $('#race_info').append(`<div class="race_info" id="race_${element}_container">
             <p id="race_${element}">${currentRace[element]}</p></div>`);
     });
 
+    currentRace.languages.forEach(element => {
+        characterLanguages[`character_languages_0`] = {}
+        characterLanguages[`character_languages_0`][element.name] = [element.name]
+    });
+
     if (currentRace.language_options !== undefined) {
+        if (currentRace.language_options.choose > 1) {
 
-        $('#race_info_container').append(`<div class="race_info_container" id="race_languages"><p>You can choose ${currentRace.language_options.choose} languages from this list</div>`)
+            $('#race_info_container').append(`<div class="race_info_container" id="race_languages"><p>You can choose ${currentRace.language_options.choose} languages from this list</div>`)
 
-        currentRace.language_options.from.forEach(element => {
-            $('#race_languages').append(`<div class="race_info_container">
+            currentRace.language_options.from.forEach(element => {
+                $('#race_languages').append(`<div class="race_list">
             <input type="checkbox" class="race_language" value="${element.name}"><span> ${element.name}</span></div>`);
-        });
+            });
 
-        $('.race_language').on('change', function () {
-            if ($(`.race_language:checked`).length > currentRace.language_options.choose) {
-                this.checked = false;
-            } else {
-                if (this.checked === true) {
-                    if (chosenLanguages[`chosenLanguages`] === undefined) {
-                        chosenLanguages[`chosenLanguages`] = {}
-                    }
-                    chosenLanguages[`chosenLanguages`][this.value] = [this.value];
+            $('.race_language').on('change', function () {
+                if ($(`.race_language:checked`).length > currentRace.language_options.choose) {
+                    this.checked = false;
                 } else {
-                    delete chosenLanguages[`chosenLanguages`][this.value];
+                    if (this.checked === true) {
+                        if (characterLanguages[`character_languages_1`] === undefined) {
+                            characterLanguages[`character_languages_1`] = {}
+                        }
+                        characterLanguages[`character_languages_1`][this.value] = [this.value];
+                    } else {
+                        delete characterLanguages[`character_languages_1`][this.value];
+                    }
+                    console.log(characterLanguages);
                 }
-                console.log(chosenLanguages);
-            }
-        })
+            })
+        } else {
+            $('#race_info_container').append(`<div class="race_info_container" id="race_languages">
+            <p>You can choose ${currentRace.language_options.choose} language from this list</p>
+            <div><select id="race_languages_list"></select></div>
+            </div>`)
+
+            currentRace.language_options.from.forEach(element => {
+                $('#race_languages_list').append(`<option value="${element.name}">${element.name}</option>)`)
+                console.log(element.name)
+            });
+
+            $('#race_languages_list').on('change', function () {
+                characterLanguages[`character_languages_1`] = {};
+                characterLanguages[`character_languages_1`][$('#race_languages_list').children("option:selected").val()] = [$('#race_languages_list').children("option:selected").val()]
+                console.log(characterLanguages)
+            });
+        }
     }
 
     if (currentRace.starting_proficiencies.length > 0) {
         $(`#race_info_container`).append(`<div class="race_proficency_list" id="race_proficiencies"><p>You start with these proficiencies:</p></div>`);
         currentRace.starting_proficiencies.forEach(element => {
-            $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element.name}_proficency">
+            $(`#race_info_container`).append(`<div class="race_list" id="race_${element.name}_proficency">
              <p id="race_proficency_${element.name}">${element.name}</p></div>`);
-            if (raceProficiencies[`race_proficiencies_0`] === undefined) {
-                raceProficiencies[`race_proficiencies_0`] = {}
+            if (characterProficiencies[`race_proficiencies_0`] === undefined) {
+                characterProficiencies[`race_proficiencies_0`] = {}
             }
-            raceProficiencies[`race_proficiencies_0`][`${element.name}`] = " ";
+            characterProficiencies[`race_proficiencies_0`][`${element.name}`] = element.name;
         });
+    }
+
+    if (currentRace.starting_proficiency_options !== undefined) {
+        if (currentRace.starting_proficiency_options.choose > 1) {
+
+            $('#race_info_container').append(`<div class="race_info_container" id="race_proficiencies_options"><p>You can choose ${currentRace.language_options.choose} proficencies from this list</div>`)
+
+            currentRace.starting_proficiency_options.from.forEach(element => {
+                $('#race_proficiencies_options').append(`<div class="race_list">
+            <input type="checkbox" class="race_proficiencies_options" value="${element.name}"><span> ${element.name}</span></div>`);
+            });
+
+            $('.race_proficiencies_options').on('change', function () {
+                if ($(`.race_proficiencies_options:checked`).length > currentRace.starting_proficiency_options.choose) {
+                    this.checked = false;
+                } else {
+                    if (this.checked === true) {
+                        if (characterProficiencies[`race_proficiencies_1`] === undefined) {
+                            characterProficiencies[`race_proficiencies_1`] = {}
+                        }
+                        characterProficiencies[`race_proficiencies_1`][this.value] = [this.value];
+                    } else {
+                        delete characterProficiencies[`race_proficiencies_1`][this.value];
+                    }
+                    console.log(characterProficiencies);
+                }
+            })
+        } else {
+            $('#race_info_container').append(`<div class="race_info_container" id="race_proficiencies_options">
+            <p>You can choose ${currentRace.starting_proficiency_options.choose} proficency from this list</p>
+            <div><select id="race_proficiencies_options_list"></select></div>
+            </div>`)
+
+            currentRace.starting_proficiency_options.from.forEach(element => {
+                $('#race_proficiencies_options_list').append(`<option value="${element.name}">${element.name}</option>)`)
+                console.log(element.name)
+            });
+
+            $('#race_proficiencies_options_list').on('change', function () {
+                characterProficiencies[`race_proficiencies_1`] = {};
+                characterProficiencies[`race_proficiencies_1`][$('#race_proficiencies_options_list').children("option:selected").val()] = $('#race_proficiencies_options_list').children("option:selected").val()
+                console.log(characterProficiencies)
+            });
+        }
     }
 
     if (currentRace.traits.length > 0) {
         $(`#race_info_container`).append(`<div class="race_trait_list" id="race_traits"><p>You start with these traits:</p></div>`);
         currentRace.traits.forEach(element => {
-            $(`#race_info_container`).append(`<div class="race_info_container" id="race_${element.name}_trait">
+            $(`#race_info_container`).append(`<div class="race_list" id="race_${element.name}_trait">
              <p id="race_trait_${element.name}">${element.name}</p></div>`);
             if (raceTraits[`race_traits_0`] === undefined) {
                 raceTraits[`race_traits_0`] = {}
@@ -134,36 +207,57 @@ function currentRaceInformation(currentRace) {
 
     if (currentRace.trait_options !== undefined) {
 
-        $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options"><p>You can choose ${currentRace.trait_options.choose} traits from this list</div>`)
+        if (`${currentRace.trait_options.choose}` > 1) {
+            $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options">
+            <div class="list_header">You can choose ${currentRace.trait_options.choose} traits from this list</div>
+            <div><select id="race_trait_list"></select></div>
+            </div>`)
 
-        currentRace.trait_options.from.forEach(element => {
-            $('#race_trait_options').append(`<div class="race_info_container">
-            <input type="checkbox" class="race_trait_option" value="${element.name}"><span> ${element.name}</span></div>`);
-        });
-
-        $('.race_trait_option').on('change', function () {
-            if ($(`.race_trait_option:checked`).length > currentRace.trait_options.choose) {
-                this.checked = false;
-            } else {
-                if (this.checked === true) {
-                    if (raceTraits['race_traits_1'] === undefined) {
-                        raceTraits[`race_traits_1`] = {}
-                    }
-                    raceTraits[`race_traits_1`][this.value] = [this.value];
+            currentRace.trait_options.from.forEach(element => {
+                $('#race_trait_options').append(`<div class="race_list">
+                <input type="checkbox" class="race_trait_option" value="${element.name}"><span> ${element.name}</span>
+                </div>`);
+            });
+            $('.race_trait_option').on('change', function () {
+                if ($(`.race_trait_option:checked`).length > currentRace.trait_options.choose) {
+                    this.checked = false;
                 } else {
-                    delete raceTraits[`race_traits_1`][this.value];
+                    if (this.checked === true) {
+                        if (raceTraits['race_traits_1'] === undefined) {
+                            raceTraits[`race_traits_1`] = {}
+                        }
+                        raceTraits[`race_traits_1`][this.value] = [this.value];
+                    } else {
+                        delete raceTraits[`race_traits_1`][this.value];
+                    }
+                    console.log(raceTraits);
                 }
-                console.log(raceTraits);
-            }
-        });
+            });
+        } else {
+            $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options">
+        <div class="list_header">You can choose ${currentRace.trait_options.choose} trait from this list</div>
+        <div><select id="race_trait_list"></select></div>
+        </div>`)
 
-}
+            currentRace.trait_options.from.forEach(element => {
+                $('#race_trait_list').append(`<option value="${element.name}">${element.name}</option>`)
+            });
+
+            $('#race_trait_list').on('change', function () {
+                raceTraits[`race_traits_1`] = {}
+                raceTraits[`race_traits_1`][$('#race_trait_list').children("option:selected").val()] = [$('#race_trait_list').children("option:selected").val()];
+
+                console.log(raceTraits);
+            });
+        }
+    }
 }
 
 function resetRace() {
     base_ability, character_ability = [8, 8, 8, 8, 8, 8,];
     printBaseStats()
-    raceProficiencies = {};
+    characterProficiencies['race_proficiencies_0'] = {};
+    characterLanguages = {};
     raceTraits = {};
     $(`#race_info_container`).empty()
 }
@@ -180,18 +274,16 @@ function currentClassInformation(currentClass) {
             <p id="class_${element}">${currentClass[element]}</p>`);
     });
 
-    //Populate the proficencyList
+    //Populate the proficency list and add values to characterProficencies Object
     $(`#class_info_container`).append(`<div class="class_skill_list" id="proficiencies"><p>You start with these proficiencies:</p></div>`);
     currentClass.proficiencies.forEach(element => {
         $(`#proficiencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
              <p id="class_${element.name}">${element.name}</p></div>`);
-        if (classProficiencies[`proficency_class_0`] === undefined) {
-            classProficiencies[`proficency_class_0`] = {}
-        }
-        classProficiencies[`proficency_class_0`][`${element.name}`] = " ";
+
+        characterProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
     });
 
-    //Populate and create forms for proficencyChoices
+    //Populate and create forms for proficency choices and add values to characterProficencies Object
     currentClass.proficiency_choices.forEach((element, i) => {
         $(`#class_info_container`).append(`<div class="class_skill_list" id="proficency_${i}"></div>`);
         $(`#proficency_${i}`).append(`<div class="class_info_container" id="class_${element.name}_container">
@@ -199,22 +291,23 @@ function currentClassInformation(currentClass) {
 
         element.from.forEach(element => {
             $(`#proficency_${i}`).append(`<div class="class_info_container">
-            <input type="checkbox" class="proficency_class_${i}" value="${element.name}"><span> ${element.name}</span></div>`);
+            <input type="checkbox" class="class_proficiencies_${i}" value="${element.name}"><span> ${element.name}</span></div>`);
         });
 
-        $(`.proficency_class_${i}`).on('change', function () {
-            if ($(`.proficency_class_${i}:checked`).length > element.choose) {
+        $(`.class_proficiencies_${i}`).on('change', function () {
+            if ($(`.class_proficiencies_${i}:checked`).length > element.choose) {
                 this.checked = false;
             } else {
                 if (this.checked === true) {
-                    if (classProficiencies[`proficency_class_${i + 1}`] === undefined) {
-                        classProficiencies[`proficency_class_${i + 1}`] = {}
+                    if (characterProficiencies[`class_proficiencies_${i + 1}`] === undefined) {
+                        characterProficiencies[`class_proficiencies_${i + 1}`] = {}
                     }
-                    classProficiencies[`proficency_class_${i + 1}`][this.value] = [this.value];
                 } else {
-                    delete classProficiencies[`proficency_class_${i + 1}`][this.value];
+                    delete characterProficiencies[`class_proficiencies_${i + 1}`][this.value];
                 }
-                console.log(classProficiencies);
+                    characterProficiencies[`class_proficiencies_${i + 1}`][this.value] = this.value;
+
+                console.log(characterProficiencies);
             }
         })
     });
@@ -222,5 +315,5 @@ function currentClassInformation(currentClass) {
 
 function resetClass() {
     $(`#class_info_container`).empty();
-    classProficiencies = {};
+    characterProficiencies = {};
 }
