@@ -15,13 +15,12 @@ async function fetchRaceList() {
 $(`body`).on(`click`, `.btn_race`, async function () {
     let clickedRace = await fetch(dnd_api + $(this).attr(`id`))
     let currentRace = await clickedRace.json();
-    console.log(characterProficiencies)
+    activeRace(this);
     resetRace();
     currentRaceInformation(currentRace);
     currentAbilities(currentRace)
     console.log(currentRace);
 })
-
 
 /* ------------ Ingame Classes ---------- */
 
@@ -37,13 +36,14 @@ async function fetchClassList() {
 $(`body`).on(`click`, `.btn_class`, async function () {
     let clickedClass = await fetch(dnd_api + $(this).attr(`id`))
     let currentClass = await clickedClass.json();
-    resetClass();
+    activeClass(this);
     let spellCasting;
     if (currentClass.spellcasting !== undefined) {
         spellCasting = await spellCasterClass(currentClass.spellcasting.url)
     }
+    resetClass();
     currentClassInformation(currentClass, spellCasting);
-    
+
     console.log(currentClass);
 })
 
