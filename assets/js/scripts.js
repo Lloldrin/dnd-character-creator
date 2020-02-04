@@ -3,7 +3,7 @@
 //Function to dynamically create the list of races and give each button a unique ID
 function populateRaceList(listRaces) {
     listRaces.forEach(element => {
-        $(`#race_list`).append(`<li><button type="button" class="btn btn_race btn-primary" id="${element.url}">${element.name}</button></li>`)
+        $(`#race_list`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
     })
 }
 
@@ -12,7 +12,7 @@ fetchRaceList()
 //Function to dynamically create the list of classes and give each button a unique ID
 function populateClassList(listClasses) {
     listClasses.forEach(element => {
-        $(`#class_list`).append(`<li><button type="button" class="btn btn_class btn-primary" id="${element.url}">${element.name}</button></li>`)
+        $(`#class_list`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
     });
 }
 
@@ -45,8 +45,6 @@ function printBaseStats() {
     $(`.ability_cha`).text(base_ability[5]);
     $('.ability_bonus').empty();
 }
-
-printBaseStats()
 
 function currentRaceInformation(currentRace) {
 
@@ -279,6 +277,7 @@ function currentRaceInformation(currentRace) {
 function resetRace() {
     base_ability, character_ability = [8, 8, 8, 8, 8, 8,];
     printBaseStats()
+
     characterProficiencies['race_proficiencies_0'] = {};
     characterProficiencies['race_proficiencies_1'] = {};
     characterLanguages['race_languages_0'] = {};
@@ -310,24 +309,28 @@ function currentClassInformation(currentClass, spellCasting) {
     $('#class_info_left').append(`<div class="class_info">
     <h4>${currentClass.name}</h4></div>`);
 
-    $('#class_info_left').append(`<div class="class_info">
+    $('#class_info_left').append(`<div class="class_info" id="class_info_hd_save"></div>`);
+
+    $('#class_info_hd_save').append(`<div class="class_info_inline">
     <h6>Hit Dice:</h6>
     <h6>d${currentClass.hit_die}</h6></div>`);
 
-    $('#class_info_left').append(`<div class="class_info" id="class_saving_throws">
+    $('#class_info_hd_save').append(`<div id="borderline"></div`);
+
+    $('#class_info_hd_save').append(`<div class="class_info_inline" id="class_saving_throws">
     <h6>Saving Throws:</h6>`);
     currentClass.saving_throws.forEach(element => {
-        if (characterSaves[`race_languages_0`] === undefined) {
-            characterSaves[`race_languages_0`] = {}
+        if (characterSaves[`class_saves_0`] === undefined) {
+            characterSaves[`class_saves_0`] = {};
         }
-        characterSaves[`race_languages_0`][element.name] = element.name;
-        $('#class_saving_throws').append(`<div class="class_list">${element.name}<div>`)
+        characterSaves[`class_saves_0`][element.name] = element.name;
+        $('#class_saving_throws').append(`<div class="class_save_list"><h6>${element.name}</h6><div>`)
     });
 
     //Populate the proficency list and add values to characterProficencies Object
-    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficiencies"><h6>Proficencies</h6></div>`);
+    $(`#class_info_left`).append(`<div class="class_info" id="proficiencies"><h6>Proficencies</h6></div>`);
     currentClass.proficiencies.forEach(element => {
-        $(`#proficiencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
+        $(`#proficiencies`).append(`<div class="class_list" id="class_${element.name}_container">
              <p id="class_${element.name}">${element.name}</p></div>`);
         if (characterProficiencies[`class_proficiencies_0`] === undefined) {
             characterProficiencies[`class_proficiencies_0`] = {}
@@ -342,12 +345,12 @@ function currentClassInformation(currentClass, spellCasting) {
     //Populate and create forms for proficency choices and add values to characterProficencies Object
     currentClass.proficiency_choices.forEach((element, i) => {
         if (element.choose > 1) {
-            $(`#class_info_container`).append(`<div class="class_skill_list" id="proficency_${i}"></div>`);
+            $(`#class_info_left`).append(`<div class="class_info" id="proficency_${i}"></div>`);
             $(`#proficency_${i}`).append(`<div class="class_info_container" id="class_${element.name}_container">
             <p>You can choose ${element.choose} from this list</p></div>`);
 
             element.from.forEach(element => {
-                $(`#proficency_${i}`).append(`<div class="class_info_container">
+                $(`#proficency_${i}`).append(`<div class="class_list">
             <input type="checkbox" class="class_proficiencies_${i}" value="${element.name}"><span> ${element.name}</span></div>`);
             });
 
@@ -368,7 +371,7 @@ function currentClassInformation(currentClass, spellCasting) {
                 }
             })
         } else {
-            $('#class_info_container').append(`<div class="class_info_container" id="class_prof_options${i}">
+            $('#class_info_left').append(`<div class="class_info_container" id="class_prof_options${i}">
         <div class="list_header">You can choose ${element.choose} proficency from this list</div>
         <div><select id="class_prof_list${i}"></select></div>
         </div>`)
@@ -385,6 +388,19 @@ function currentClassInformation(currentClass, spellCasting) {
             });
         }
     });
+
+    if (spellCasting !== undefined) {
+        $('#class_info_right').append(`<div class="class_info" id="class_spellcasting">
+    <h5>${currentClass.name} Spellcasting:</h5>`);
+
+    spellCasting.info.forEach(element => {
+        if (characterTraits[`class_traits_spellcasting`] === undefined) {
+            characterTraits[`class_traits_spellcasting`] = {};
+        }
+        characterTraits[`class_traits_spellcasting`][element.name] = element.name;
+        $('#class_spellcasting').append(`<div><h6> ${element.name}</h6><p>${element.desc}</p></div>`)
+    });
+    }
 }
 
 function resetClass() {
@@ -395,3 +411,33 @@ function resetClass() {
     characterProficiencies['class_proficiencies_2'] = {};
     characterProficiencies['class_proficiencies_3'] = {};
 }
+
+/* ---------- Navigation Logic ---------- */
+
+let currentPage = 0; 
+
+function turnPage (i){
+    if (currentPage + i === -1 || currentPage + i === 3){
+        return;
+    }
+    $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
+    currentPage = currentPage + i
+    $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
+}
+
+// function turnPageUp (i){
+//     $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
+//     currentPage = currentPage + i
+//     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
+// }
+
+$('#btn_prev').on('click', function(){
+    pageDown = -1;
+    turnPage(pageDown);
+});
+
+$('#btn_next').on('click', function(){
+    pageUp = 1;
+    turnPage(pageUp);
+});
+    

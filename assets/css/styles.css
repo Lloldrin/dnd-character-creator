@@ -6,7 +6,7 @@ body {
 }
 
 .page_background {
-    background: rgb(240, 240, 240);
+    background: rgb(172, 169, 185);
     height: 100%;
 }
 
@@ -79,7 +79,7 @@ h1 {
     border: 1px solid black;
 }
 
-.race_info, .class_info{
+.race_info, .class_info {
     margin-top: 10px;
     margin-bottom: 10px;
     padding-bottom: 5px;
@@ -87,7 +87,7 @@ h1 {
     background-color: #fdfdea;
 }
 
-.race_list {
+.race_list, .class_list {
     border: none;
     margin: 5px;
     text-decoration: underline;
@@ -97,10 +97,6 @@ p {
     margin: 0px;
 }
 
-.class_skill_list {
-    margin: 25px;
-}
-
 .btn_navigation {
     margin: auto;
 }
@@ -108,4 +104,41 @@ p {
 .page_display {
     min-height: 100vh;
     width: 100vw;
+}
+
+#class_info_hd_save {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#borderline {
+    
+}
+
+.class_save_list {
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+#race_list, #class_list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn_race, .btn_class {
+    width: 120px;
+    background-color: #fdfdea;
+    border: none;
+    border-bottom: 2px solid red;
+    border-radius: 0px;
+    color: black;
+    font-family: 'Headland One', serif;
+}
+
+.hidden_page {
+    display: none;
+}
+
+.current_page {
+    display: flex;
 }
