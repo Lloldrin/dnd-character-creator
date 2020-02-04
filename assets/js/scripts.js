@@ -3,7 +3,7 @@
 //Function to dynamically create the list of races and give each button a unique ID
 function populateRaceList(listRaces) {
     listRaces.forEach(element => {
-        $(`#race_list`).append(`<li><button type="button" class="btn btn_race btn-primary" id="${element.index}">${element.name}</button></li>`)
+        $(`#race_list`).append(`<li><button type="button" class="btn btn_race btn-primary" id="${element.url}">${element.name}</button></li>`)
     })
 }
 
@@ -12,7 +12,7 @@ fetchRaceList()
 //Function to dynamically create the list of classes and give each button a unique ID
 function populateClassList(listClasses) {
     listClasses.forEach(element => {
-        $(`#class_list`).append(`<li><button type="button" class="btn btn_class btn-primary" id="${element.index}">${element.name}</button></li>`)
+        $(`#class_list`).append(`<li><button type="button" class="btn btn_class btn-primary" id="${element.url}">${element.name}</button></li>`)
     });
 }
 
@@ -34,6 +34,7 @@ let character_ability = base_ability;
 let characterLanguages = {};
 let characterTraits = {};
 let characterProficiencies = {};
+let characterSaves = {};
 
 function printBaseStats() {
     $(`.ability_str`).text(base_ability[0]);
@@ -44,6 +45,8 @@ function printBaseStats() {
     $(`.ability_cha`).text(base_ability[5]);
     $('.ability_bonus').empty();
 }
+
+printBaseStats()
 
 function currentRaceInformation(currentRace) {
 
@@ -75,31 +78,55 @@ function currentRaceInformation(currentRace) {
         $(`.ability_bonus`).text(currentRace.ability_bonus_options.choose);
     }
 
-    $('#race_info_container').append('<div id="race_info"></div>');
+    $('#race_info_container_left').append('<div class="general_info_styling" id="race_info_left"></div>');
+    $('#race_info_container_right').append('<div class="general_info_styling" id="race_info_right"></div>');
 
-    Object.keys(currentRace).forEach(element => {
-        //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
-        if (["_id", "index", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
-            return;
-        }
-        $('#race_info').append(`<div class="race_info" id="race_${element}_container">
-            <p id="race_${element}">${currentRace[element]}</p></div>`);
-    });
+    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.name}_container>
+    <h4>${currentRace.name}</h4></div>`);
 
+    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.alignment}_container>
+    <h6>Alignment</h6>
+    <p>${currentRace.alignment}</p></div>`);
+
+    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.age}_container>
+    <h6>Age</h6>
+    <p>${currentRace.age}</p></div>`);
+
+    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.size_description}_container>
+    <h6>Size</h6>
+    <p>${currentRace.size_description}</p></div>`);
+
+    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.language_desc}_container>
+    <h6>Languages</h6>
+    <p>${currentRace.language_desc}</p></div>`);
+
+
+    // Object.keys(currentRace).forEach(element => {
+    //     //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
+    //     if (["_id", "index", "name", "ability_bonuses", "ability_bonus_options", "starting_proficiencies", "starting_proficiency_options", "size", "languages", "language_options", "traits", "trait_options", "subraces", "url"].indexOf(element) >= 0) {
+    //         return;
+    //     }
+    //     $('#race_info_left').append(`<div class="race_info" id="race_${element}_container">
+    //         <p id="race_${element}">${currentRace[element]}</p></div>`);
+    // });
+
+    $('#race_info_right').append(`<div class="race_info" id="race_languages"><h6>Languages:</h6><div>`)
     currentRace.languages.forEach(element => {
         if (characterLanguages[`race_languages_0`] === undefined) {
             characterLanguages[`race_languages_0`] = {}
         }
         characterLanguages[`race_languages_0`][element.name] = element.name;
+        $('#race_languages').append(`<div class="race_list">${element.name}<div>`)
     });
 
     if (currentRace.language_options !== undefined) {
         if (currentRace.language_options.choose > 1) {
 
-            $('#race_info_container').append(`<div class="race_info_container" id="race_languages"><p>You can choose ${currentRace.language_options.choose} languages from this list</div>`)
+            $('#race_languages').append(`<div class="race_info_container_right" id="race_languages">
+            <p>You can choose ${currentRace.language_options.choose} languages from this list</div>`)
 
             currentRace.language_options.from.forEach(element => {
-                $('#race_languages').append(`<div class="race_list">
+                $('#race_languages').append(`<div class="race_info race_list">
             <input type="checkbox" class="race_language" value="${element.name}"><span> ${element.name}</span></div>`);
             });
 
@@ -119,7 +146,7 @@ function currentRaceInformation(currentRace) {
                 }
             })
         } else {
-            $('#race_info_container').append(`<div class="race_info_container" id="race_languages">
+            $('#race_languages').append(`<div class="race_info race_list" id="race_languages">
             <p>You can choose ${currentRace.language_options.choose} language from this list</p>
             <div><select id="race_languages_list"></select></div>
             </div>`)
@@ -138,9 +165,9 @@ function currentRaceInformation(currentRace) {
     }
 
     if (currentRace.starting_proficiencies.length > 0) {
-        $(`#race_info_container`).append(`<div class="race_proficency_list" id="race_proficiencies"><p>You start with these proficiencies:</p></div>`);
+        $(`#race_info_right`).append(`<div class="race_info" id="race_proficiencies"><h6>Race Proficencies:</h6></div>`);
         currentRace.starting_proficiencies.forEach(element => {
-            $(`#race_info_container`).append(`<div class="race_list" id="race_${element.name}_proficency">
+            $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">
              <p id="race_proficency_${element.name}">${element.name}</p></div>`);
             characterProficiencies[`race_proficiencies_0`][element.name] = element.name;
         });
@@ -149,10 +176,10 @@ function currentRaceInformation(currentRace) {
     if (currentRace.starting_proficiency_options !== undefined) {
         if (currentRace.starting_proficiency_options.choose > 1) {
 
-            $('#race_info_container').append(`<div class="race_info_container" id="race_proficiencies_options"><p>You can choose ${currentRace.language_options.choose} proficencies from this list</div>`)
+            $('#race_proficiencies').append(`<div class="race_list" id="race_proficiencies_options"><p>Choose ${currentRace.language_options.choose} proficencies from this list</div>`)
 
             currentRace.starting_proficiency_options.from.forEach(element => {
-                $('#race_proficiencies_options').append(`<div class="race_list">
+                $('#race_proficiencies_options').append(`<div class="race_info race_list">
             <input type="checkbox" class="race_proficiencies_options" value="${element.name}"><span> ${element.name}</span></div>`);
             });
 
@@ -172,8 +199,8 @@ function currentRaceInformation(currentRace) {
                 }
             })
         } else {
-            $('#race_info_container').append(`<div class="race_info_container" id="race_proficiencies_options">
-            <p>You can choose ${currentRace.starting_proficiency_options.choose} proficency from this list</p>
+            $('#race_proficiencies').append(`<div class="race_list" id="race_proficiencies_options">
+            <p>Choose ${currentRace.starting_proficiency_options.choose} proficency from this list</p>
             <div><select id="race_proficiencies_options_list"></select></div>
             </div>`)
 
@@ -191,10 +218,9 @@ function currentRaceInformation(currentRace) {
     }
 
     if (currentRace.traits.length > 0) {
-        $(`#race_info_container`).append(`<div class="race_trait_list" id="race_traits"><p>You start with these traits:</p></div>`);
+        $(`#race_info_right`).append(`<div class="race_info" id="race_traits"><h6>Race Traits:</h6></div>`);
         currentRace.traits.forEach(element => {
-            $(`#race_info_container`).append(`<div class="race_list" id="race_${element.name}_trait">
-             <p id="race_trait_${element.name}">${element.name}</p></div>`);
+            $(`#race_traits`).append(`<div class="race_list" id="race_${element.name}_trait">${element.name}</div>`);
             if (characterTraits[`race_traits_0`] === undefined) {
                 characterTraits[`race_traits_0`] = {}
             }
@@ -205,7 +231,7 @@ function currentRaceInformation(currentRace) {
     if (currentRace.trait_options !== undefined) {
 
         if (`${currentRace.trait_options.choose}` > 1) {
-            $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options">
+            $('#race_traits').append(`<div class="race_list" id="race_trait_options">
             <div class="list_header">You can choose ${currentRace.trait_options.choose} traits from this list</div>
             <div><select id="race_trait_list"></select></div>
             </div>`)
@@ -231,8 +257,8 @@ function currentRaceInformation(currentRace) {
                 }
             });
         } else {
-            $('#race_info_container').append(`<div class="race_info_container" id="race_trait_options">
-        <div class="list_header">You can choose ${currentRace.trait_options.choose} trait from this list</div>
+            $('#race_traits').append(`<div class="list" id="race_trait_options">
+        <div class="list_header">Choose ${currentRace.trait_options.choose} trait from this list</div>
         <div><select id="race_trait_list"></select></div>
         </div>`)
 
@@ -259,23 +285,47 @@ function resetRace() {
     characterLanguages['race_languages_1'] = {};
     characterTraits['race_traits_0'] = {};
     characterTraits['race_traits_1']
-    $(`#race_info_container`).empty()
+    $(`#race_info_container_left`).empty()
+    $(`#race_info_container_right`).empty()
+
 }
 
 /* ---------- Class Logic ---------- */
 
-function currentClassInformation(currentClass) {
+function currentClassInformation(currentClass, spellCasting) {
+
+    $('#class_info_container_left').append('<div class="general_info_styling" id="class_info_left"></div>');
+    $('#class_info_container_right').append('<div class="general_info_styling" id="class_info_right"></div>');
+
+
     Object.keys(currentClass).forEach(element => {
-        //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
-        if (["_id", "index", "subclasses", "proficiencies", "proficiency_choices", "saving_throws", "starting_equipment", "class_levels", "spellcasting", "url"].indexOf(element) >= 0) {
-            return;
+        // //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
+        // if (["_id", "index", "subclasses", "proficiencies", "proficiency_choices", "saving_throws", "starting_equipment", "class_levels", "spellcasting", "url"].indexOf(element) >= 0) {
+        //     return;
+        // }
+        // $(`#class_info_container`).append(`<div class="class_info_container" id="class_${element}_container">
+        //     <p id="class_${element}">${currentClass[element]}</p>`);
+    });
+
+    $('#class_info_left').append(`<div class="class_info">
+    <h4>${currentClass.name}</h4></div>`);
+
+    $('#class_info_left').append(`<div class="class_info">
+    <h6>Hit Dice:</h6>
+    <h6>d${currentClass.hit_die}</h6></div>`);
+
+    $('#class_info_left').append(`<div class="class_info" id="class_saving_throws">
+    <h6>Saving Throws:</h6>`);
+    currentClass.saving_throws.forEach(element => {
+        if (characterSaves[`race_languages_0`] === undefined) {
+            characterSaves[`race_languages_0`] = {}
         }
-        $(`#class_info_container`).append(`<div class="class_info_container" id="class_${element}_container">
-            <p id="class_${element}">${currentClass[element]}</p>`);
+        characterSaves[`race_languages_0`][element.name] = element.name;
+        $('#class_saving_throws').append(`<div class="class_list">${element.name}<div>`)
     });
 
     //Populate the proficency list and add values to characterProficencies Object
-    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficiencies"><p>You start with these proficiencies:</p></div>`);
+    $(`#class_info_container`).append(`<div class="class_skill_list" id="proficiencies"><h6>Proficencies</h6></div>`);
     currentClass.proficiencies.forEach(element => {
         $(`#proficiencies`).append(`<div class="class_info_container" id="class_${element.name}_container">
              <p id="class_${element.name}">${element.name}</p></div>`);
@@ -286,6 +336,8 @@ function currentClassInformation(currentClass) {
         }
         characterProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
     });
+    
+    console.log(spellCasting)
 
     //Populate and create forms for proficency choices and add values to characterProficencies Object
     currentClass.proficiency_choices.forEach((element, i) => {
@@ -336,7 +388,8 @@ function currentClassInformation(currentClass) {
 }
 
 function resetClass() {
-    $(`#class_info_container`).empty();
+    $(`#class_info_container_left`).empty();
+    $(`#class_info_container_right`).empty();
     characterProficiencies['class_proficiencies_0'] = {};
     characterProficiencies['class_proficiencies_1'] = {};
     characterProficiencies['class_proficiencies_2'] = {};

@@ -13,6 +13,47 @@
 
 <body>
     <div class="container.fluid page_background">
+
+        <div class="row page_display race_display">
+            <div class="col-1">
+                <button class="btn btn_navigation" id="btn_prev">Prev</button>
+            </div>
+            <div class="container col-10">
+                <h1>D&D 5e Character Creator 0.2</h1>
+                <div class="row">
+
+                    <div class="col-2">
+                        <ul id="race_list">
+                        </ul>
+                    </div>
+
+                    <div class="col-6">
+                        <div id="race_info_container_left"></div>
+                    </div>
+
+                    <div class="col-4">
+                        <div id="race_info_container_right">
+
+                            <div class="base_abilities_container">
+                                <div class="base_abilities ability_str"></div>
+                                <div class="base_abilities ability_dex"></div>
+                                <div class="base_abilities ability_con"></div>
+                                <div class="base_abilities ability_int"></div>
+                                <div class="base_abilities ability_wis"></div>
+                                <div class="base_abilities ability_cha"></div>
+                                <div class="base_abilities ability_bonus"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-1">
+                <button class=" btn btn_navigation" id="btn_next">Next</button>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-1">
                 <button class="btn btn_navigation" id="btn_prev">Prev</button>
@@ -21,39 +62,17 @@
                 <div class="row">
                     <h1>D&D 5e Character Creator 0.2</h1>
                 </div>
-                <div class="container race_container">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul id="race_list">
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="base_stat ability_str"></div>
-                                    <div class="base_stat ability_dex"></div>
-                                    <div class="base_stat ability_con"></div>
-                                    <div class="base_stat ability_int"></div>
-                                    <div class="base_stat ability_wis"></div>
-                                    <div class="base_stat ability_cha"></div>
-                                    <div class="base_stat ability_bonus"></div>
-                                </div>
-                            </div>
-                            <div id="race_info_container">
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="container class_container">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-2">
                             <ul id="class_list">
-                            </ul>
-                            <ul id="skill_list">
                             </ul>
                         </div>
                         <div class="col-6">
-                            <div id="class_info_container"></div>
+                            <div id="class_info_container_left"></div>
+                        </div>
+                        <div class="col-4">
+                            <div id="class_info_container_right"></div>
                         </div>
                     </div>
                 </div>
@@ -62,7 +81,9 @@
                 <button class=" btn btn_navigation" id="btn_next">Next</button>
             </div>
         </div>
+
     </div>
+
 
 
     <!-- Scripts -->
