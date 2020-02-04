@@ -30,7 +30,7 @@ fetchSkillList()
 /* ---------- Race Logic ---------- */
 
 let base_ability = [8, 8, 8, 8, 8, 8,];
-let character_ability = base_ability;
+let characterAbility = base_ability;
 let characterLanguages = {};
 let characterTraits = {};
 let characterProficiencies = {};
@@ -46,29 +46,9 @@ function printBaseStats() {
     $('.ability_bonus').empty();
 }
 
-function currentRaceInformation(currentRace) {
+printBaseStats()
 
-    currentRace.ability_bonuses.forEach(element => {
-        if (element.name === `STR`) {
-            character_ability[0] = element.bonus + base_ability[0];
-            $(`.ability_str`).text(character_ability[0]);
-        } else if (element.name === `DEX`) {
-            character_ability[1] = element.bonus + base_ability[1];
-            $(`.ability_dex`).text(character_ability[1]);
-        } else if (element.name === `CON`) {
-            character_ability[2] = element.bonus + base_ability[2];
-            $(`.ability_con`).text(character_ability[2]);
-        } else if (element.name === `INT`) {
-            character_ability[3] = element.bonus + base_ability[3];
-            $(`.ability_int`).text(character_ability[3]);
-        } else if (element.name === `WIS`) {
-            character_ability[4] = element.bonus + base_ability[4];
-            $(`.ability_wis`).text(character_ability[4]);
-        } else if (element.name === `CHA`) {
-            character_ability[5] = element.bonus + base_ability[5];
-            $(`.ability_cha`).text(character_ability[5]);
-        }
-    });
+function currentRaceInformation(currentRace) {
 
     if (currentRace.ability_bonus_options === undefined) {
         $(`.ability_bonus`).text("0");
@@ -275,7 +255,7 @@ function currentRaceInformation(currentRace) {
 }
 
 function resetRace() {
-    base_ability, character_ability = [8, 8, 8, 8, 8, 8,];
+    base_ability, characterAbility = [8, 8, 8, 8, 8, 8,];
     printBaseStats()
 
     characterProficiencies['race_proficiencies_0'] = {};
@@ -283,10 +263,9 @@ function resetRace() {
     characterLanguages['race_languages_0'] = {};
     characterLanguages['race_languages_1'] = {};
     characterTraits['race_traits_0'] = {};
-    characterTraits['race_traits_1']
-    $(`#race_info_container_left`).empty()
-    $(`#race_info_container_right`).empty()
-
+    characterTraits['race_traits_1'] = {};
+    $(`#race_info_container_left`).empty();
+    $(`#race_info_container_right`).empty();
 }
 
 /* ---------- Class Logic ---------- */
@@ -294,8 +273,6 @@ function resetRace() {
 function currentClassInformation(currentClass, spellCasting) {
 
     $('#class_info_container_left').append('<div class="general_info_styling" id="class_info_left"></div>');
-    $('#class_info_container_right').append('<div class="general_info_styling" id="class_info_right"></div>');
-
 
     Object.keys(currentClass).forEach(element => {
         // //This looks through the array, and if the current element key is part of the array it runs "return". This is to only get the correct div's created.
@@ -339,15 +316,17 @@ function currentClassInformation(currentClass, spellCasting) {
         }
         characterProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
     });
-    
+
     console.log(spellCasting)
 
     //Populate and create forms for proficency choices and add values to characterProficencies Object
+    $(`#class_info_left`).append(`<div class="class_info" id="class_proficiencies">
+    <h6>Optional Proficencies</h6></div>`);
     currentClass.proficiency_choices.forEach((element, i) => {
         if (element.choose > 1) {
-            $(`#class_info_left`).append(`<div class="class_info" id="proficency_${i}"></div>`);
-            $(`#proficency_${i}`).append(`<div class="class_info_container" id="class_${element.name}_container">
-            <p>You can choose ${element.choose} from this list</p></div>`);
+            $(`#class_proficiencies`).append(`<div id="proficency_${i}"></div>`);
+            $(`#proficency_${i}`).append(`<div class="class_prof_container" id="class_${element.name}_container">
+            <p>Choose ${element.choose} proficiencies from this list</p></div>`);
 
             element.from.forEach(element => {
                 $(`#proficency_${i}`).append(`<div class="class_list">
@@ -371,8 +350,8 @@ function currentClassInformation(currentClass, spellCasting) {
                 }
             })
         } else {
-            $('#class_info_left').append(`<div class="class_info_container" id="class_prof_options${i}">
-        <div class="list_header">You can choose ${element.choose} proficency from this list</div>
+            $('#class_proficiencies').append(`<div class="class_prof_container" id="class_prof_options${i}">
+        <div class="list_header">Choose ${element.choose} proficency from this list</div>
         <div><select id="class_prof_list${i}"></select></div>
         </div>`)
 
@@ -388,18 +367,21 @@ function currentClassInformation(currentClass, spellCasting) {
             });
         }
     });
+    console.log(currentClass.spellcasting);
+    if (currentClass.spellcasting !== undefined) {
 
-    if (spellCasting !== undefined) {
+        $('#class_info_container_right').append('<div class="general_info_styling" id="class_info_right"></div>');
+        
         $('#class_info_right').append(`<div class="class_info" id="class_spellcasting">
     <h5>${currentClass.name} Spellcasting:</h5>`);
 
-    spellCasting.info.forEach(element => {
-        if (characterTraits[`class_traits_spellcasting`] === undefined) {
-            characterTraits[`class_traits_spellcasting`] = {};
-        }
-        characterTraits[`class_traits_spellcasting`][element.name] = element.name;
-        $('#class_spellcasting').append(`<div><h6> ${element.name}</h6><p>${element.desc}</p></div>`)
-    });
+        spellCasting.info.forEach(element => {
+            if (characterTraits[`class_traits_spellcasting`] === undefined) {
+                characterTraits[`class_traits_spellcasting`] = {};
+            }
+            characterTraits[`class_traits_spellcasting`][element.name] = element.name;
+            $('#class_info_right').append(`<div class="class_info"><h6> ${element.name}</h6><p>${element.desc}</p></div>`)
+        });
     }
 }
 
@@ -414,10 +396,10 @@ function resetClass() {
 
 /* ---------- Navigation Logic ---------- */
 
-let currentPage = 0; 
+let currentPage = 0;
 
-function turnPage (i){
-    if (currentPage + i === -1 || currentPage + i === 3){
+function turnPage(i) {
+    if (currentPage + i === -1 || currentPage + i === 5) {
         return;
     }
     $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
@@ -425,19 +407,39 @@ function turnPage (i){
     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
 }
 
-// function turnPageUp (i){
-//     $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
-//     currentPage = currentPage + i
-//     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
-// }
-
-$('#btn_prev').on('click', function(){
+$('#btn_prev').on('click', function () {
     pageDown = -1;
     turnPage(pageDown);
 });
 
-$('#btn_next').on('click', function(){
+$('#btn_next').on('click', function () {
     pageUp = 1;
     turnPage(pageUp);
 });
-    
+
+
+/* ---------- Ability Page ---------- */
+
+function currentAbilities(currentRace, i) {
+    currentRace.ability_bonuses.forEach(element => {
+        if (element.name === `STR`) {
+            characterAbility[0] = element.bonus + base_ability[0];
+            $(`.ability_str`).text(characterAbility[0]);
+        } else if (element.name === `DEX`) {
+            characterAbility[1] = element.bonus + base_ability[1];
+            $(`.ability_dex`).text(characterAbility[1]);
+        } else if (element.name === `CON`) {
+            characterAbility[2] = element.bonus + base_ability[2];
+            $(`.ability_con`).text(characterAbility[2]);
+        } else if (element.name === `INT`) {
+            characterAbility[3] = element.bonus + base_ability[3];
+            $(`.ability_int`).text(characterAbility[3]);
+        } else if (element.name === `WIS`) {
+            characterAbility[4] = element.bonus + base_ability[4];
+            $(`.ability_wis`).text(characterAbility[4]);
+        } else if (element.name === `CHA`) {
+            characterAbility[5] = element.bonus + base_ability[5];
+            $(`.ability_cha`).text(characterAbility[5]);
+        }
+    });
+}

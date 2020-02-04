@@ -18,6 +18,7 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     console.log(characterProficiencies)
     resetRace();
     currentRaceInformation(currentRace);
+    currentAbilities(currentRace)
     console.log(currentRace);
 })
 
@@ -44,7 +45,6 @@ $(`body`).on(`click`, `.btn_class`, async function () {
     currentClassInformation(currentClass, spellCasting);
     
     console.log(currentClass);
-    console.log(character_ability);
 })
 
 async function spellCasterClass(url) {
