@@ -20,6 +20,7 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     currentRaceInformation(currentRace);
     currentAbilities(currentRace);
     printAbilities();
+    console.log(characterAbility);
     console.log(currentRace);
 })
 
