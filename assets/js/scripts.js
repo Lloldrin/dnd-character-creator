@@ -34,6 +34,16 @@ let characterTraits = {};
 let characterProficiencies = {};
 let characterSaves = {};
 
+$(`body`).on(`click`, `.btn_race`, async function () {
+    let currentRace = await selectRace($(this).attr(`id`));
+    resetRace();
+    currentRaceInformation(currentRace);
+    currentAbilities(currentRace);
+    printAbilities();
+});
+
+selectRace('/api/races/dragonborn')
+
 function activeRace(clickedRace) {
     $('.current_race').removeClass("current_race");
     $(clickedRace).addClass('current_race');
@@ -270,9 +280,18 @@ function resetRaceStats() {
 
 /* ---------- Class Logic ---------- */
 
+$(`body`).on(`click`, `.btn_class`, function () {
+    selectClass($(this).attr(`id`));
+    activeClass(this);    
+    resetClass();
+});
+
+selectClass('/api/classes/barbarian')
+
 function activeClass(clickedClass) {
     $('.current_class').removeClass("current_class");
     $(clickedClass).addClass('current_class');
+}
 
 function currentClassInformation(currentClass, spellCasting) {
 
@@ -309,10 +328,10 @@ function currentClassInformation(currentClass, spellCasting) {
     });
 
     //Populate the proficency list and add values to characterProficencies Object
-    $(`#class_info_left`).append(`<div class="class_info" id="proficiencies"><h6>Proficencies</h6></div>`);
+    $(`#class_info_left`).append(`<div><h6>Proficencies</h6></div><div class="class_info class_prof_container" id="proficiencies"></div>`);
     currentClass.proficiencies.forEach(element => {
-        $(`#proficiencies`).append(`<div class="class_list" id="class_${element.name}_container">
-             <p id="class_${element.name}">${element.name}</p></div>`);
+        $(`#proficiencies`).append(`<div class="class_list class_prof">
+             <span id="class_${element.name}">${element.name}</span></div>`);
         if (characterProficiencies[`class_proficiencies_0`] === undefined) {
             characterProficiencies[`class_proficiencies_0`] = {}
         } else {
@@ -388,6 +407,7 @@ function currentClassInformation(currentClass, spellCasting) {
     }
 }
 
+
 function resetClass() {
     $(`#class_info_container_left`).empty();
     $(`#class_info_container_right`).empty();
@@ -427,7 +447,7 @@ let nameAbility = ['str', 'dex', 'con', 'int', 'wis', 'cha']
 let baseAbility = [8, 8, 8, 8, 8, 8,];
 let raceAbility = [0, 0, 0, 0, 0, 0,];
 let boughtAbility = [0, 0, 0, 0, 0, 0];
-let characterAbility = [0, 0, 0, 0, 0, 0];
+let characterAbility = [8, 8, 8, 8, 8, 8];
 let availableAbility = 27;
 let bonusAbility = 0;
 
@@ -554,3 +574,13 @@ $('body').on('click', '.ability_buy_race', function () {
         }
     });
 });
+
+$('.ability_header').on('click', function() {
+    fetchAbilityDescription(this.textContent.toLowerCase());
+});
+
+fetchAbilityDescription('str');
+
+function abilityDescriptor(element) {
+$('#abilities_desc_container').empty().append(`<div class="abilities_header"><h4>${element.full_name}</h4></div><div id="ability_description">${element.desc}</div>`)
+};
