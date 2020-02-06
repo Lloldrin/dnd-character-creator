@@ -18,7 +18,8 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     activeRace(this);
     resetRace();
     currentRaceInformation(currentRace);
-    currentAbilities(currentRace)
+    currentAbilities(currentRace);
+    printAbilities();
     console.log(currentRace);
 })
 

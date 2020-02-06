@@ -29,44 +29,25 @@ fetchSkillList()
 
 /* ---------- Race Logic ---------- */
 
-let base_ability = [8, 8, 8, 8, 8, 8,];
-let characterAbility = base_ability;
+let baseAbility = [8, 8, 8, 8, 8, 8,];
+let raceAbility = [0, 0, 0, 0, 0, 0,];
+let characterAbility;
 let characterLanguages = {};
 let characterTraits = {};
 let characterProficiencies = {};
 let characterSaves = {};
 
-function printBaseStats() {
-    $('#abilities_container').empty().append(`
-    <div class="base_ability">
-    <div>STR</div>
-    <div id="ability_str">${base_ability[0]}</div>
-    </div>
-    <div class="base_ability">
-    <div>DEX</div>
-    <div id="ability_dex">${base_ability[1]}</div>
-    </div>
-    <div class="base_ability">
-    <div>CON</div>
-    <div id="ability_con">${base_ability[2]}</div>
-    </div>
-    <div class="base_ability">
-    <div>INT</div>
-    <div id="ability_int">${base_ability[3]}</div>
-    </div>
-    <div class="base_ability">
-    <div>WIS</div>
-    <div id="ability_wis">${base_ability[4]}</div>
-    </div>
-    <div class="base_ability">
-    <div>CHA</div>
-    <div id="ability_cha">${base_ability[5]}</div>
-    </div>
-    <div class="base_ability">
-    <div id="ability_bonus"></div></div>`)
+function resetRaceStats() {
+    $(`#race_str`).empty().append(0);
+    $(`#race_dex`).empty().append(0);
+    $(`#race_con`).empty().append(0);
+    $(`#race_int`).empty().append(0);
+    $(`#race_wis`).empty().append(0);
+    $(`#race_cha`).empty().append(0);
+    $('#race_bonus').empty();
 }
 
-printBaseStats()
+resetRaceStats()
 
 function activeRace(clickedRace) {
     $('.current_race').removeClass("current_race");
@@ -76,9 +57,9 @@ function activeRace(clickedRace) {
 function currentRaceInformation(currentRace) {
 
     if (currentRace.ability_bonus_options === undefined) {
-        $(`.ability_bonus`).text("0");
+        $(`.ability_bonus`).empty().append("0");
     } else {
-        $(`.ability_bonus`).text(currentRace.ability_bonus_options.choose);
+        $(`.ability_bonus`).empty().append(currentRace.ability_bonus_options.choose);
     }
 
     $('#race_info_container_left').append('<div class="general_info_styling" id="race_info_left"></div>');
@@ -280,9 +261,8 @@ function currentRaceInformation(currentRace) {
 }
 
 function resetRace() {
-    base_ability, characterAbility = [8, 8, 8, 8, 8, 8,];
-    printBaseStats()
-
+    baseAbility = [8, 8, 8, 8, 8, 8,];
+    resetRaceStats()
     characterProficiencies['race_proficiencies_0'] = {};
     characterProficiencies['race_proficiencies_1'] = {};
     characterLanguages['race_languages_0'] = {};
@@ -449,26 +429,242 @@ $('#btn_next').on('click', function () {
 
 /* ---------- Ability Page ---------- */
 
-function currentAbilities(currentRace, i) {
+function currentAbilities(currentRace) {
     currentRace.ability_bonuses.forEach(element => {
         if (element.name === `STR`) {
-            characterAbility[0] = element.bonus + base_ability[0];
-            $(`#ability_str`).empty().append(characterAbility[0]);
+            raceAbility[0] = element.bonus;
+            $(`#race_str`).empty().append(raceAbility[0]);
         } else if (element.name === `DEX`) {
-            characterAbility[1] = element.bonus + base_ability[1];
-            $(`#ability_dex`).empty().append(characterAbility[1]);
+            raceAbility[1] = element.bonus;
+            $(`#race_dex`).empty().append(raceAbility[1]);
         } else if (element.name === `CON`) {
-            characterAbility[2] = element.bonus + base_ability[2];
-            $(`#ability_con`).empty().append(characterAbility[2]);
+            raceAbility[2] = element.bonus;
+            $(`#race_con`).empty().append(raceAbility[2]);
         } else if (element.name === `INT`) {
-            characterAbility[3] = element.bonus + base_ability[3];
-            $(`#ability_int`).empty().append(characterAbility[3]);
+            raceAbility[3] = element.bonus;
+            $(`#race_int`).empty().append(raceAbility[3]);
         } else if (element.name === `WIS`) {
-            characterAbility[4] = element.bonus + base_ability[4];
-            $(`#ability_wis`).empty().append(characterAbility[4]);
+            raceAbility[4] = element.bonus;
+            $(`#race_wis`).empty().append(raceAbility[4]);
         } else if (element.name === `CHA`) {
-            characterAbility[5] = element.bonus + base_ability[5];
-            $(`#ability_cha`).empty().append(characterAbility[5]);
+            raceAbility[5] = element.bonus;
+            $(`#race_cha`).empty().append(raceAbility[5]);
         }
     });
 }
+
+function printAbilities () {
+    $('#char_str').text(boughtAbility[0] + baseAbility[0] + raceAbility[0]);
+    $('#char_dex').text(boughtAbility[1] + baseAbility[1] + raceAbility[1]);
+    $('#char_con').text(boughtAbility[2] + baseAbility[2] + raceAbility[2]);
+    $('#char_int').text(boughtAbility[3] + baseAbility[3] + raceAbility[3]);
+    $('#char_wis').text(boughtAbility[4] + baseAbility[4] + raceAbility[4]);
+    $('#char_cha').text(boughtAbility[5] + baseAbility[5] + raceAbility[5]);
+    $('#ability_points').text(availableAbility);
+}
+
+let availableAbility = 27;
+let boughtAbility = [0, 0, 0, 0, 0, 0];
+
+$('.ability_buy').on('click', function () {
+
+    if (this.id === 'str_up') {
+        if (boughtAbility[0] <= 4 && availableAbility > 0) {
+            boughtAbility[0] += 1;
+            availableAbility -= 1;
+            characterAbility[0] = boughtAbility[0] + baseAbility[0] + raceAbility[0];
+            $('#current_bought_str').text(boughtAbility[0]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[0] < 7 && availableAbility > 1) {
+            boughtAbility[0] += 1;
+            availableAbility -= 2;
+            characterAbility[] = boughtAbility[0] + baseAbility[0] + raceAbility[0];
+            $('#current_bought_str').text(boughtAbility[0]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'str_down') {
+        if (boughtAbility[0] <= 5 && boughtAbility[0] != 0) {
+            boughtAbility[0] -= 1;
+            availableAbility += 1;
+            characterAbility[0] = boughtAbility[0] + baseAbility[0] + raceAbility[0];
+            $('#current_bought_str').text(boughtAbility[0]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[0] <= 7 && boughtAbility[0] != 0) {
+            boughtAbility[0] -= 1;
+            availableAbility += 2;
+            characterAbility[0] = boughtAbility[0] + baseAbility[0] + raceAbility[0];
+            $('#current_bought_str').text(boughtAbility[0]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'dex_up') {
+        if (boughtAbility[1] <= 4 && availableAbility > 0) {
+            boughtAbility[1] += 1;
+            availableAbility -= 1;
+            characterAbility[] = ;
+            $('#current_bought_dex').text(boughtAbility[1]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[1] < 7 && availableAbility > 1) {
+            boughtAbility[1] += 1;
+            availableAbility -= 2;
+            characterAbility[] =
+            $('#current_bought_dex').text(boughtAbility[1]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'dex_down') {
+        if (boughtAbility[1] <= 5 && boughtAbility[1] != 0) {
+            boughtAbility[1] -= 1;
+            availableAbility += 1;
+            characterAbility[] = ;
+            $('#current_bought_dex').text(boughtAbility[1]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[1] <= 7 && boughtAbility[1] != 0) {
+            boughtAbility[1] -= 1;
+            availableAbility += 2;
+            characterAbility[] = ;
+            $('#current_bought_dex').text(boughtAbility[1]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'con_up') {
+        if (boughtAbility[2] <= 4 && availableAbility > 2) {
+            boughtAbility[2] += 1;
+            availableAbility -= 1;
+            characterAbility[] = ;
+            $('#current_bought_con').text(boughtAbility[2]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[2] < 7 && availableAbility > 1) {
+            boughtAbility[2] += 1;
+            availableAbility -= 2;
+            characterAbility[] =
+            $('#current_bought_con').text(boughtAbility[2]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'con_down') {
+        if (boughtAbility[2] <= 5 && boughtAbility[2] != 0) {
+            boughtAbility[2] -= 1;
+            availableAbility += 1;
+            characterAbility[] = ;
+            $('#current_bought_con').text(boughtAbility[2]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[2] <= 7 && boughtAbility[2] != 0) {
+            boughtAbility[2] -= 1;
+            availableAbility += 2;
+            characterAbility[] = ;
+            $('#current_bought_con').text(boughtAbility[2]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'int_up') {
+        if (boughtAbility[3] <= 4 && availableAbility > 0) {
+            boughtAbility[3] += 1;
+            availableAbility -= 1;
+            characterAbility[] = ;
+            $('#current_bought_int').text(boughtAbility[3]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[3] < 7 && availableAbility > 1) {
+            boughtAbility[3] += 1;
+            availableAbility -= 2;
+            characterAbility[] =
+            $('#current_bought_int').text(boughtAbility[3]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'int_down') {
+        if (boughtAbility[3] <= 5 && boughtAbility[3] != 0) {
+            boughtAbility[3] -= 1;
+            availableAbility += 1;
+            characterAbility[] = ;
+            $('#current_bought_int').text(boughtAbility[3]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[3] <= 7 && boughtAbility[3] != 0) {
+            boughtAbility[3] -= 1;
+            availableAbility += 2;
+            characterAbility[] = ;
+            $('#current_bought_int').text(boughtAbility[3]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'wis_up') {
+        if (boughtAbility[4] <= 4 && availableAbility > 0) {
+            boughtAbility[4] += 1;
+            availableAbility -= 1;
+            characterAbility[] = ;
+            $('#current_bought_wis').text(boughtAbility[4]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[4] < 7 && availableAbility > 1) {
+            boughtAbility[4] += 1;
+            availableAbility -= 2;
+            characterAbility[] =
+            $('#current_bought_wis').text(boughtAbility[4]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'wis_down') {
+        if (boughtAbility[4] <= 5 && boughtAbility[4] != 0) {
+            boughtAbility[4] -= 1;
+            availableAbility += 1;
+            characterAbility[] = ;
+            $('#current_bought_wis').text(boughtAbility[4]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[4] <= 7 && boughtAbility[4] != 0) {
+            boughtAbility[4] -= 1;
+            availableAbility += 2;
+            characterAbility[] = ;
+            $('#current_bought_wis').text(boughtAbility[4]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'cha_up') {
+        if (boughtAbility[5] <= 4 && availableAbility > 0) {
+            boughtAbility[5] += 1;
+            availableAbility -= 1;
+            characterAbility[] = ;
+            $('#current_bought_cha').text(boughtAbility[5]);
+            printAbilities();
+            console.log(availableAbility);
+        } else if (boughtAbility[5] < 7 && availableAbility > 1) {
+            boughtAbility[5] += 1;
+            availableAbility -= 2;
+            characterAbility[] =
+            $('#current_bought_cha').text(boughtAbility[5]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } else if (this.id === 'cha_down') {
+        if (boughtAbility[5] <= 5 && boughtAbility[5] != 0) {
+            boughtAbility[5] -= 1;
+            availableAbility += 1;
+            characterAbility[] = ;
+            $('#current_bought_cha').text(boughtAbility[5]);
+            printAbilities();
+
+            console.log(availableAbility);
+        } else if (boughtAbility[5] <= 7 && boughtAbility[5] != 0) {
+            boughtAbility[5] -= 1;
+            availableAbility += 2;
+            characterAbility[] = ;
+            $('#current_bought_cha').text(boughtAbility[5]);
+            printAbilities();
+            console.log(availableAbility);
+        }
+    } 
+});
