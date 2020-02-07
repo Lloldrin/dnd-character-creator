@@ -35,11 +35,7 @@ let characterProficiencies = {};
 let characterSaves = {};
 
 $(`body`).on(`click`, `.btn_race`, async function () {
-    let currentRace = await selectRace($(this).attr(`id`));
-    resetRace();
-    currentRaceInformation(currentRace);
-    currentAbilities(currentRace);
-    printAbilities();
+    selectRace($(this).attr(`id`));
 });
 
 selectRace('/api/races/dragonborn')
@@ -282,8 +278,7 @@ function resetRaceStats() {
 
 $(`body`).on(`click`, `.btn_class`, function () {
     selectClass($(this).attr(`id`));
-    activeClass(this);    
-    resetClass();
+    activeClass(this);
 });
 
 selectClass('/api/classes/barbarian')
@@ -575,12 +570,12 @@ $('body').on('click', '.ability_buy_race', function () {
     });
 });
 
-$('.ability_header').on('click', function() {
+$('.ability_header').on('click', function () {
     fetchAbilityDescription(this.textContent.toLowerCase());
 });
 
 fetchAbilityDescription('str');
 
 function abilityDescriptor(element) {
-$('#abilities_desc_container').empty().append(`<div class="abilities_header"><h4>${element.full_name}</h4></div><div id="ability_description">${element.desc}</div>`)
+    $('#abilities_desc_container').empty().append(`<div class="abilities_header"><h4>${element.full_name}</h4></div><div id="ability_description">${element.desc}</div>`)
 };

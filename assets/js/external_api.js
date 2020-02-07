@@ -1,5 +1,5 @@
 //Api Url
-const dnd_api = `http://www.dnd5eapi.co`;
+const dnd_api = `https://www.dnd5eapi.co`;
 
 /* ------------ Ingame Races ---------- */
 
@@ -16,10 +16,10 @@ async function fetchRaceList() {
 async function selectRace(url) {
     let clickedRace = await fetch(dnd_api + url);
     let currentRace = await clickedRace.json();
-    console.log(characterAbility);
-    console.log(currentRace);
-    return currentRace;
-    
+    resetRace();
+    currentRaceInformation(currentRace);
+    currentAbilities(currentRace);
+    printAbilities();
 }
 
 /* ------------ Ingame Classes ---------- */
@@ -40,6 +40,7 @@ async function selectClass(url) {
     if (currentClass.spellcasting !== undefined) {
         spellCasting = await spellCasterClass(currentClass.spellcasting.url);
     }
+    resetClass();
     currentClassInformation(currentClass, spellCasting);
     console.log(currentClass);
 };
