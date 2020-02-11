@@ -12,14 +12,15 @@ async function fetchRaceList() {
 }
 
 //Listens for the user to make a race selection and displays the correct data
-
+let currentRace
 async function selectRace(url) {
     let clickedRace = await fetch(dnd_api + url);
-    let currentRace = await clickedRace.json();
+    currentRace = await clickedRace.json();
     resetRace();
     currentRaceInformation(currentRace);
     currentAbilities(currentRace);
     printAbilities();
+    currentCharacter();
 }
 
 /* ------------ Ingame Classes ---------- */
@@ -33,9 +34,10 @@ async function fetchClassList() {
 }
 
 //Listens for the user to make a (game)class  selection and displays the correct data
+let currentClass
 async function selectClass(url) {
     let clickedClass = await fetch(dnd_api + url);
-    let currentClass = await clickedClass.json();
+    currentClass = await clickedClass.json();
     let spellCasting;
     if (currentClass.spellcasting !== undefined) {
         spellCasting = await spellCasterClass(currentClass.spellcasting.url);
@@ -43,6 +45,7 @@ async function selectClass(url) {
     resetClass();
     currentClassInformation(currentClass, spellCasting);
     console.log(currentClass);
+    currentCharacter();
 };
 
 async function spellCasterClass(url) {
@@ -58,7 +61,6 @@ async function fetchSkillList() {
     let apiSkills = await fetch(dnd_api + `/api/skills/`)
     let skills = await apiSkills.json()
     populateSkillList(skills.results)
-    console.log(skills.results)
 }
 
 /* --------- Ingame Abilities --------- */

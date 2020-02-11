@@ -6,7 +6,6 @@ function populateRaceList(listRaces) {
         $(`#race_list`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
     })
 }
-
 fetchRaceList()
 
 //Function to dynamically create the list of classes and give each button a unique ID
@@ -15,36 +14,60 @@ function populateClassList(listClasses) {
         $(`#class_list`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
     });
 }
-
 fetchClassList()
 
-//Function to dynamically create the list of skills
-function populateSkillList(listSkills) {
-    listSkills.forEach(element => {
-        $(`#skill_list`).append(`<li>${element.name}</li>`)
-    });
-}
+// //Function to dynamically create the list of skills
+// function populateSkillList(listSkills) {
+//     listSkills.forEach(element => {
+//         $(`#skill_list`).append(`<li>${element.name}</li>`)
+//     });
+// }
+// fetchSkillList()
 
-fetchSkillList()
+// This is all the information the character will contain and summarize in the end. I load it with some initial values (corresponding to the default race/class). But it's not necessary. Just for aesthetics. 
+let characterSummary = {
+    name: 'Lloldrin',
+    race: 'Dragonborn',
+    characterClass: 'Barbarian',
+    speed: 30,
+    hitPoints: 12,
+    hitDice: 12,
+    armorClass: 10,
+    initative: -1,
+    proficency: 2,
+    passivePerception: 1,
+    passiveInsight: 1,
+    saves: {},
+    languages: {},
+    traits: {},
+    proficienciesInstruments: [],
+    proficienciesSkills: [],
+    proficienciesWeapons: [],
+    proficienciesArmor: [],
+    proficienciesTools: [],
+    saves: {},
+}
+console.log(characterSummary);
 
 /* ---------- Race Logic ---------- */
 
-let characterLanguages = {};
-let characterTraits = {};
-let characterProficiencies = {};
-let characterSaves = {};
+let unsortedProficiencies = {};
 
+//Llistens for the user to click a race on the raceList and loads the choice. It also updates characterSummary with the chosen race's information
 $(`body`).on(`click`, `.btn_race`, async function () {
     selectRace($(this).attr(`id`));
 });
 
+//Loads a default race
 selectRace('/api/races/dragonborn')
 
+//Sets the current race to show and the previous choice to hidden
 function activeRace(clickedRace) {
     $('.current_race').removeClass("current_race");
     $(clickedRace).addClass('current_race');
 }
 
+//Contains the information for the current race and updates the DOM with it. 
 function currentRaceInformation(currentRace) {
 
     if (currentRace.ability_bonus_options === undefined) {
@@ -58,6 +81,7 @@ function currentRaceInformation(currentRace) {
 
     $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.name}_container>
     <h4>${currentRace.name}</h4></div>`);
+    characterRace = currentRace.name;
 
     $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.alignment}_container>
     <h6>Alignment</h6>
@@ -87,10 +111,10 @@ function currentRaceInformation(currentRace) {
 
     $('#race_info_right').append(`<div class="race_info" id="race_languages"><h6>Languages:</h6><div>`)
     currentRace.languages.forEach(element => {
-        if (characterLanguages[`race_languages_0`] === undefined) {
+        if (characterSummary.languages[`race_languages_0`] === undefined) {
             characterLanguages[`race_languages_0`] = {}
         }
-        characterLanguages[`race_languages_0`][element.name] = element.name;
+        characterSummary.languages[`race_languages_0`][element.name] = element.name;
         $('#race_languages').append(`<div class="race_list">${element.name}<div>`)
     });
 
@@ -144,7 +168,7 @@ function currentRaceInformation(currentRace) {
         currentRace.starting_proficiencies.forEach(element => {
             $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">
              <p id="race_proficency_${element.name}">${element.name}</p></div>`);
-            characterProficiencies[`race_proficiencies_0`][element.name] = element.name;
+            unsortedProficiencies[`race_proficiencies_0`][element.name] = element.name;
         });
     }
 
@@ -163,14 +187,14 @@ function currentRaceInformation(currentRace) {
                     this.checked = false;
                 } else {
                     if (this.checked === true) {
-                        if (characterProficiencies[`race_proficiencies_1`] === undefined) {
-                            characterProficiencies[`race_proficiencies_1`] = {}
+                        if (unsortedProficiencies[`race_proficiencies_1`] === undefined) {
+                            unsortedProficiencies[`race_proficiencies_1`] = {}
                         }
-                        characterProficiencies[`race_proficiencies_1`][this.value] = [this.value];
+                        unsortedProficiencies[`race_proficiencies_1`][this.value] = [this.value];
                     } else {
-                        delete characterProficiencies[`race_proficiencies_1`][this.value];
+                        delete unsortedProficiencies[`race_proficiencies_1`][this.value];
                     }
-                    console.log(characterProficiencies);
+                    console.log(unsortedProficiencies);
                 }
             })
         } else {
@@ -185,9 +209,9 @@ function currentRaceInformation(currentRace) {
             });
 
             $('#race_proficiencies_options_list').on('change', function () {
-                characterProficiencies[`race_proficiencies_1`] = {};
-                characterProficiencies[`race_proficiencies_1`][$('#race_proficiencies_options_list').children("option:selected").val()] = $('#race_proficiencies_options_list').children("option:selected").val()
-                console.log(characterProficiencies)
+                unsortedProficiencies[`race_proficiencies_1`] = {};
+                unsortedProficiencies[`race_proficiencies_1`][$('#race_proficiencies_options_list').children("option:selected").val()] = $('#race_proficiencies_options_list').children("option:selected").val()
+                console.log(unsortedProficiencies)
             });
         }
     }
@@ -196,10 +220,10 @@ function currentRaceInformation(currentRace) {
         $(`#race_info_right`).append(`<div class="race_info" id="race_traits"><h6>Race Traits:</h6></div>`);
         currentRace.traits.forEach(element => {
             $(`#race_traits`).append(`<div class="race_list" id="race_${element.name}_trait">${element.name}</div>`);
-            if (characterTraits[`race_traits_0`] === undefined) {
-                characterTraits[`race_traits_0`] = {}
+            if (characterSummary.traits[`race_traits_0`] === undefined) {
+                characterSummary.traits[`race_traits_0`] = {}
             }
-            characterTraits[`race_traits_0`][`${element.name}`] = [`${element.name}`];
+            characterSummary.traits[`race_traits_0`][`${element.name}`] = [`${element.name}`];
         });
     }
 
@@ -221,14 +245,14 @@ function currentRaceInformation(currentRace) {
                     this.checked = false;
                 } else {
                     if (this.checked === true) {
-                        if (characterTraits['race_traits_1'] === undefined) {
-                            characterTraits[`race_traits_1`] = {}
+                        if (characterSummary.traits['race_traits_1'] === undefined) {
+                            characterSummary.traits[`race_traits_1`] = {}
                         }
-                        characterTraits[`race_traits_1`][this.value] = [this.value];
+                        characterSummary.traits[`race_traits_1`][this.value] = [this.value];
                     } else {
-                        delete characterTraits[`race_traits_1`][this.value];
+                        delete characterSummary.traits[`race_traits_1`][this.value];
                     }
-                    console.log(characterTraits);
+                    console.log(characterSummary.traits);
                 }
             });
         } else {
@@ -242,10 +266,10 @@ function currentRaceInformation(currentRace) {
             });
 
             $('#race_trait_list').on('change', function () {
-                characterTraits[`race_traits_1`] = {}
-                characterTraits[`race_traits_1`][$('#race_trait_list').children("option:selected").val()] = [$('#race_trait_list').children("option:selected").val()];
+                characterSummary.traits[`race_traits_1`] = {}
+                characterSummary.traits[`race_traits_1`][$('#race_trait_list').children("option:selected").val()] = [$('#race_trait_list').children("option:selected").val()];
 
-                console.log(characterTraits);
+                console.log(characterSummary.traits);
             });
         }
     }
@@ -253,12 +277,12 @@ function currentRaceInformation(currentRace) {
 
 function resetRace() {
     resetRaceStats()
-    characterProficiencies['race_proficiencies_0'] = {};
-    characterProficiencies['race_proficiencies_1'] = {};
-    characterLanguages['race_languages_0'] = {};
-    characterLanguages['race_languages_1'] = {};
-    characterTraits['race_traits_0'] = {};
-    characterTraits['race_traits_1'] = {};
+    unsortedProficiencies['race_proficiencies_0'] = {};
+    unsortedProficiencies['race_proficiencies_1'] = {};
+    characterSummary.languages['race_languages_0'] = {};
+    characterSummary.languages['race_languages_1'] = {};
+    characterSummary.traits['race_traits_0'] = {};
+    characterSummary.traits['race_traits_1'] = {};
     $(`#race_info_container_left`).empty();
     $(`#race_info_container_right`).empty();
 }
@@ -276,11 +300,14 @@ function resetRaceStats() {
 
 /* ---------- Class Logic ---------- */
 
+// This listens for the user to click a class on the classList and loads the choice. It also updates characterSummary with the chosen class's information
+
 $(`body`).on(`click`, `.btn_class`, function () {
     selectClass($(this).attr(`id`));
     activeClass(this);
 });
 
+//This loads a default class
 selectClass('/api/classes/barbarian')
 
 function activeClass(clickedClass) {
@@ -303,6 +330,7 @@ function currentClassInformation(currentClass, spellCasting) {
 
     $('#class_info_left').append(`<div class="class_info">
     <h4>${currentClass.name}</h4></div>`);
+    characterClass = currentClass.name;
 
     $('#class_info_left').append(`<div class="class_info" id="class_info_hd_save"></div>`);
 
@@ -315,10 +343,10 @@ function currentClassInformation(currentClass, spellCasting) {
     $('#class_info_hd_save').append(`<div class="class_info_inline" id="class_saving_throws">
     <h6>Saving Throws:</h6>`);
     currentClass.saving_throws.forEach(element => {
-        if (characterSaves[`class_saves_0`] === undefined) {
-            characterSaves[`class_saves_0`] = {};
+        if (characterSummary.saves[`class_saves_0`] === undefined) {
+            characterSummary.saves[`class_saves_0`] = {};
         }
-        characterSaves[`class_saves_0`][element.name] = element.name;
+        characterSummary.saves[`class_saves_0`][element.name] = element.name;
         $('#class_saving_throws').append(`<div class="class_save_list"><h6>${element.name}</h6><div>`)
     });
 
@@ -327,12 +355,12 @@ function currentClassInformation(currentClass, spellCasting) {
     currentClass.proficiencies.forEach(element => {
         $(`#proficiencies`).append(`<div class="class_list class_prof">
              <span id="class_${element.name}">${element.name}</span></div>`);
-        if (characterProficiencies[`class_proficiencies_0`] === undefined) {
-            characterProficiencies[`class_proficiencies_0`] = {}
+        if (unsortedProficiencies[`class_proficiencies_0`] === undefined) {
+            unsortedProficiencies[`class_proficiencies_0`] = {}
         } else {
-            characterProficiencies[`class_proficiencies_0`] = {};
+            unsortedProficiencies[`class_proficiencies_0`] = {};
         }
-        characterProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
+        unsortedProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
     });
 
     console.log(spellCasting)
@@ -355,15 +383,15 @@ function currentClassInformation(currentClass, spellCasting) {
                     this.checked = false;
                 } else {
                     if (this.checked === true) {
-                        if (characterProficiencies[`class_proficiencies_${i + 1}`] === undefined) {
-                            characterProficiencies[`class_proficiencies_${i + 1}`] = {}
+                        if (unsortedProficiencies[`class_proficiencies_${i + 1}`] === undefined) {
+                            unsortedProficiencies[`class_proficiencies_${i + 1}`] = {}
                         }
-                        characterProficiencies[`class_proficiencies_${i + 1}`][this.value] = this.value;
+                        unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value] = this.value;
                     } else {
-                        delete characterProficiencies[`class_proficiencies_${i + 1}`][this.value];
+                        delete unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value];
                     }
 
-                    console.log(characterProficiencies);
+                    console.log(unsortedProficiencies);
                 }
             })
         } else {
@@ -377,10 +405,10 @@ function currentClassInformation(currentClass, spellCasting) {
             });
 
             $(`#class_prof_list${i}`).on('change', function () {
-                characterProficiencies[`class_proficiencies_${i + 1}`] = {}
-                characterProficiencies[`class_proficiencies_${i + 1}`][$(`#class_prof_list${i}`).children("option:selected").val()] = $(`#class_prof_list${i}`).children("option:selected").val();
+                unsortedProficiencies[`class_proficiencies_${i + 1}`] = {}
+                unsortedProficiencies[`class_proficiencies_${i + 1}`][$(`#class_prof_list${i}`).children("option:selected").val()] = $(`#class_prof_list${i}`).children("option:selected").val();
 
-                console.log(characterProficiencies);
+                console.log(unsortedProficiencies);
             });
         }
     });
@@ -393,10 +421,10 @@ function currentClassInformation(currentClass, spellCasting) {
     <h5>${currentClass.name} Spellcasting:</h5>`);
 
         spellCasting.info.forEach(element => {
-            if (characterTraits[`class_traits_spellcasting`] === undefined) {
-                characterTraits[`class_traits_spellcasting`] = {};
+            if (characterSummary.traits[`class_traits_spellcasting`] === undefined) {
+                characterSummary.traits[`class_traits_spellcasting`] = {};
             }
-            characterTraits[`class_traits_spellcasting`][element.name] = element.name;
+            characterSummary.traits[`class_traits_spellcasting`][element.name] = element.name;
             $('#class_info_right').append(`<div class="class_info"><h6> ${element.name}</h6><p>${element.desc}</p></div>`)
         });
     }
@@ -406,10 +434,10 @@ function currentClassInformation(currentClass, spellCasting) {
 function resetClass() {
     $(`#class_info_container_left`).empty();
     $(`#class_info_container_right`).empty();
-    characterProficiencies['class_proficiencies_0'] = {};
-    characterProficiencies['class_proficiencies_1'] = {};
-    characterProficiencies['class_proficiencies_2'] = {};
-    characterProficiencies['class_proficiencies_3'] = {};
+    unsortedProficiencies['class_proficiencies_0'] = {};
+    unsortedProficiencies['class_proficiencies_1'] = {};
+    unsortedProficiencies['class_proficiencies_2'] = {};
+    unsortedProficiencies['class_proficiencies_3'] = {};
 }
 
 /* ---------- Navigation Logic ---------- */
@@ -497,6 +525,7 @@ function printAbilities() {
         $(`#current_bought_race_${element}`).text(raceAbility[i]);
         $('#ability_points').text(availableAbility);
         $('#race_bonus_points').text(bonusAbility);
+        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">(${Math.floor((characterAbility[i]-10)/2)})</div>`);
     });
 };
 
@@ -579,3 +608,150 @@ fetchAbilityDescription('str');
 function abilityDescriptor(element) {
     $('#abilities_desc_container').empty().append(`<div class="abilities_header"><h4>${element.full_name}</h4></div><div id="ability_description">${element.desc}</div>`)
 };
+
+
+
+/* ---------- Character Summary ---------- */
+let characterName = 'Lloldrin';
+
+let sortedProficiencies = [
+    [
+        "Alchemist's supplies",
+        "Brewer's supplies",
+        "Calligrapher's supplies",
+        "Carpenter's tools",
+        "Cartographer's tools",
+        "Cobbler's tools",
+        "Cook's utensils",
+        "Glassblower's tools",
+        "Jeweler's tools",
+        "Leatherworker's tools",
+        "Mason's tools",
+        "Painter's supplies",
+        "Potter's tools",
+        "Smith's tools",
+        "Tinker's tools",
+        "Weaver's tools",
+        "Woodcarver's tools",
+        "Disguise kit",
+        "Forgery kit"
+    ],
+
+    [
+        "Simple Weapons",
+        "Martial Weapons",
+        "Longswords",
+        "Shortswords",
+        "Rapiers",
+        "Crossbows, hand",
+        "Clubs",
+        "Daggers",
+        "Javelins",
+        "Maces",
+        "Quarterstaffs",
+        "Sickles",
+        "Spears",
+        "Darts",
+        "Slings",
+        "Scimitars",
+        "Battleaxes",
+        "Handaxes",
+        "Light hammers",
+        "Warhammers,"
+    ],
+
+    [
+        "Light armor",
+        "Medium armor",
+        "Heavy armor",
+        "All armor",
+        "Shields"
+    ],
+
+    [
+        "Acrobatics",
+        "Animal Handling",
+        "Arcana",
+        "Athletics",
+        "Deception",
+        "History",
+        "Insight",
+        "Intimidation",
+        "Investigation",
+        "Medicine",
+        "Nature",
+        "Perception",
+        "Performance",
+        "Persuasion",
+        "Religion",
+        "Sleight of Hand",
+        "Stealth",
+        "Survival"
+    ],
+
+    [
+        "Bagpipes",
+        "Drum",
+        "Dulcimer",
+        "Flute",
+        "Lute",
+        "Lyre",
+        "Horn",
+        "Pan flute",
+        "Shawm",
+        "Viol"
+    ],
+
+]
+
+// let proficiencyTools
+
+// let proficiencyWeapons
+
+// let proficiencyArmor
+
+// let proficiencySkill
+
+// let proficiencyInstrument
+// console.log(unsortedProficiencies)
+// function sortProficiencies() {
+//     Object.keys(unsortedProficiencies).forEach(element => {
+//         Object.keys(element).forEach(unsortedProficiency => {
+//             sortedProficiencies.forEach((element1, i) => {
+//                 sortedProficiencies[i].forEach(sortedProficiency => {
+//                     console.log(sortedProficiency)
+//                     console.log(unsortedProficiency)
+//                     console.log(i)
+//                     if (sortedProficiency === unsortedProficiency) {
+//                         if (i === 0) {
+//                             proficienciesTools.push(sortedProficiency);
+//                         } else if (i === 1) {
+//                             proficienciesWeapons.push(sortedProficiency);
+//                         } else if (i === 2) {
+//                             proficienciesArmor.push(sortedProficiency);
+//                         } else if (i === 3) {
+//                             proficienciesSkills.push(sortedProficiency);
+//                         } else if (i === 4) {
+//                             proficienciesInstruments.push(sortedProficiency);
+//                         }
+//                     }
+//                 });
+//             });
+//         });
+//     });
+// }
+
+async function currentCharacter() {
+    $('#character_name').empty().append(`<div><h5>${characterSummary.name} the ${characterSummary.race} ${characterSummary.characterClass}</h5></div>`);
+
+    $('#hit_points').empty().append(`<div class="summary_styling"><span class="summary_header">Hit Points:</span><br><span class="summary_value">${characterSummary.hitPoints}</span></div`);
+    $('#hit_dice').empty().append(`<div class="summary_styling">Hit Dice:<br><span class="summary_value">d${characterSummary.hitDice}</span></div>`);
+
+    $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
+    $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
+    $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
+    console.log(characterSummary);
+};
+
+currentCharacter();
+
