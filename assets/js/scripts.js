@@ -49,6 +49,14 @@ let characterSummary = {
 }
 console.log(characterSummary);
 
+/* ---------- Character Name --------- */
+
+$('#submit_name').on('click', function(){
+    characterSummary.name = $('#name_field').val(); 
+    currentCharacter();
+    pageUp = 1;
+    turnPage(pageUp);
+})
 /* ---------- Race Logic ---------- */
 
 let unsortedProficiencies = {};
@@ -81,7 +89,7 @@ function currentRaceInformation(currentRace) {
 
     $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.name}_container>
     <h4>${currentRace.name}</h4></div>`);
-    characterRace = currentRace.name;
+    characterSummary.race = currentRace.name;
 
     $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.alignment}_container>
     <h6>Alignment</h6>
@@ -330,7 +338,7 @@ function currentClassInformation(currentClass, spellCasting) {
 
     $('#class_info_left').append(`<div class="class_info">
     <h4>${currentClass.name}</h4></div>`);
-    characterClass = currentClass.name;
+    characterSummary.characterClass = currentClass.name;
 
     $('#class_info_left').append(`<div class="class_info" id="class_info_hd_save"></div>`);
 
@@ -704,15 +712,11 @@ let sortedProficiencies = [
 
 ]
 
-// let proficiencyTools
-
-// let proficiencyWeapons
-
-// let proficiencyArmor
-
-// let proficiencySkill
-
-// let proficiencyInstrument
+let proficiencyTools
+let proficiencyWeapons
+let proficiencyArmor
+let proficiencySkill
+let proficiencyInstrument
 // console.log(unsortedProficiencies)
 // function sortProficiencies() {
 //     Object.keys(unsortedProficiencies).forEach(element => {
