@@ -64,6 +64,7 @@ let unsortedProficiencies = {};
 //Llistens for the user to click a race on the raceList and loads the choice. It also updates characterSummary with the chosen race's information
 $(`body`).on(`click`, `.btn_race`, async function () {
     selectRace($(this).attr(`id`));
+    activeRace($(this));
 });
 
 //Loads a default race
