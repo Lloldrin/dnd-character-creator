@@ -24,6 +24,8 @@ fetchClassList()
 // }
 // fetchSkillList()
 
+let unsortedProficiencies = {};
+
 // This is all the information the character will contain and summarize in the end. I load it with some initial values (corresponding to the default race/class). But it's not necessary. Just for aesthetics. 
 let characterSummary = {
     name: 'Lloldrin',
@@ -51,24 +53,23 @@ console.log(characterSummary);
 
 /* ---------- Character Name --------- */
 
-$('#submit_name').on('click', function(){
-    characterSummary.name = $('#name_field').val(); 
+$('#submit_name').on('click', function () {
+    characterSummary.name = $('#name_field').val();
     currentCharacter();
     pageUp = 1;
     turnPage(pageUp);
 })
 /* ---------- Race Logic ---------- */
 
-let unsortedProficiencies = {};
+
+//Loads a default race
+selectRace('/api/races/dragonborn')
 
 //Llistens for the user to click a race on the raceList and loads the choice. It also updates characterSummary with the chosen race's information
 $(`body`).on(`click`, `.btn_race`, async function () {
     selectRace($(this).attr(`id`));
     activeRace($(this));
 });
-
-//Loads a default race
-selectRace('/api/races/dragonborn')
 
 //Sets the current race to show and the previous choice to hidden
 function activeRace(clickedRace) {
@@ -78,12 +79,6 @@ function activeRace(clickedRace) {
 
 //Contains the information for the current race and updates the DOM with it. 
 function currentRaceInformation(currentRace) {
-
-    if (currentRace.ability_bonus_options === undefined) {
-        $(`.ability_bonus`).empty().append("0");
-    } else {
-        $(`.ability_bonus`).empty().append(currentRace.ability_bonus_options.choose);
-    }
 
     $('#race_info_container_left').append('<div class="general_info_styling" id="race_info_left"></div>');
     $('#race_info_container_right').append('<div class="general_info_styling" id="race_info_right"></div>');
@@ -282,6 +277,12 @@ function currentRaceInformation(currentRace) {
             });
         }
     }
+
+    if (currentRace.ability_bonus_options === undefined) {
+        $(`.ability_bonus`).empty().append("0");
+    } else {
+        $(`.ability_bonus`).empty().append(currentRace.ability_bonus_options.choose);
+    }
 }
 
 function resetRace() {
@@ -304,7 +305,9 @@ function resetRaceStats() {
     $(`#race_wis`).empty().append(0);
     $(`#race_cha`).empty().append(0);
     $('#race_bonus').empty();
+    $('#race_bonus_points').empty().append(0);
     raceAbility = [0, 0, 0, 0, 0, 0,];
+    bonusAbility = 0;
 }
 
 /* ---------- Class Logic ---------- */
@@ -505,7 +508,7 @@ function currentAbilities(currentRace) {
             $(`#race_cha`).empty().append(raceAbility[5]);
         }
     });
-
+    
     bonusAbilities(currentRace.ability_bonus_options);
 
     for (let i = 0; i < raceAbility.length; i++) {
@@ -516,7 +519,7 @@ function currentAbilities(currentRace) {
 function bonusAbilities(bonus) {
     if (bonus !== undefined) {
         bonusAbility = bonus.choose;
-        $('#race_bonus_points').text(bonusAbility)
+        $('#race_bonus_points').empty().text(bonusAbility)
         nameAbility.forEach((element, i) => {
             if (raceAbility[i] > 0) {
                 return
@@ -529,12 +532,12 @@ function bonusAbilities(bonus) {
 
 function printAbilities() {
     nameAbility.forEach((element, i) => {
-        $(`#char_${element}`).text(characterAbility[i]);
-        $(`#current_bought_${element}`).text(boughtAbility[i]);
-        $(`#current_bought_race_${element}`).text(raceAbility[i]);
-        $('#ability_points').text(availableAbility);
-        $('#race_bonus_points').text(bonusAbility);
-        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">(${Math.floor((characterAbility[i]-10)/2)})</div>`);
+        $(`#char_${element}`).empty().append(characterAbility[i]);
+        $(`#current_bought_${element}`).empty().append(boughtAbility[i]);
+        $(`#current_bought_race_${element}`).empty().append(raceAbility[i]);
+        $('#ability_points').empty().append(availableAbility);
+        $('#race_bonus_points').empty().append(bonusAbility);
+        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">(${Math.floor((characterAbility[i] - 10) / 2)})</div>`);
     });
 };
 
