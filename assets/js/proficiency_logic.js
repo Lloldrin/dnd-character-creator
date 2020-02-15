@@ -95,24 +95,24 @@ function characterSkills() {
         //Strength Skills
         [
             {
-                Name: 'Athletics',
-                Value: modifierAbility[0] + proficiencySkill[3]
+                name: 'Athletics',
+                value: modifierAbility[0] + proficiencySkill[3]
             },
         ],
 
         //Dexterity Skills
         [
             {
-                Name: 'Acrobatics',
-                Value: modifierAbility[1] + proficiencySkill[0]
+                name: 'Acrobatics',
+                value: modifierAbility[1] + proficiencySkill[0]
             },
             {
-                Name: 'Sleight Of Hand',
-                Value: modifierAbility[1] + proficiencySkill[15]
+                name: 'Sleight Of Hand',
+                value: modifierAbility[1] + proficiencySkill[15]
             },
             {
-                Name: 'Stealth',
-                Value: modifierAbility[1] + proficiencySkill[16]
+                name: 'Stealth',
+                value: modifierAbility[1] + proficiencySkill[16]
             },
         ],
 
@@ -123,68 +123,68 @@ function characterSkills() {
         //Intelligence Skills
         [
             {
-                Name: 'Arcana',
-                Value: modifierAbility[3] + proficiencySkill[2],
+                name: 'Arcana',
+                value: modifierAbility[3] + proficiencySkill[2],
             },
             {
-                Name: 'History',
-                Value: modifierAbility[3] + proficiencySkill[5],
+                name: 'History',
+                value: modifierAbility[3] + proficiencySkill[5],
             },
             {
-                Name: 'Investigation',
-                Value: modifierAbility[3] + proficiencySkill[8],
+                name: 'Investigation',
+                value: modifierAbility[3] + proficiencySkill[8],
             },
             {
-                Name: 'Nature',
-                Value: modifierAbility[3] + proficiencySkill[10],
+                name: 'Nature',
+                value: modifierAbility[3] + proficiencySkill[10],
             },
             {
-                Name: 'Religion',
-                Value: modifierAbility[3] + proficiencySkill[14],
+                name: 'Religion',
+                value: modifierAbility[3] + proficiencySkill[14],
             },
         ],
 
         //Wisdom Skills
         [
-        {
-            Name: 'Animal Handling',
-            Value: modifierAbility[4] + proficiencySkill[1],
-        },
-        {
-            Name: 'Insight',
-            Value: modifierAbility[4] + proficiencySkill[6],
-        },
-        {
-            Name: 'Medicine',
-            Value: modifierAbility[4] + proficiencySkill[9],
-        },
-        {
-            Name: 'Perception',
-            Value: modifierAbility[4] + proficiencySkill[11],
-        },
-        {
-            Name: 'Survival',
-            Value: modifierAbility[4] + proficiencySkill[17],
-        }
+            {
+                name: 'Animal Handling',
+                value: modifierAbility[4] + proficiencySkill[1],
+            },
+            {
+                name: 'Insight',
+                value: modifierAbility[4] + proficiencySkill[6],
+            },
+            {
+                name: 'Medicine',
+                value: modifierAbility[4] + proficiencySkill[9],
+            },
+            {
+                name: 'Perception',
+                value: modifierAbility[4] + proficiencySkill[11],
+            },
+            {
+                name: 'Survival',
+                value: modifierAbility[4] + proficiencySkill[17],
+            }
         ],
 
         //Charisma Skills
         [
             {
-                Name: 'Deception',
-                Value: modifierAbility[5] + proficiencySkill[4],
+                name: 'Deception',
+                value: modifierAbility[5] + proficiencySkill[4],
             },
             {
-                Name: 'Intimidation',
-                Value: modifierAbility[5] + proficiencySkill[7],
+                name: 'Intimidation',
+                value: modifierAbility[5] + proficiencySkill[7],
             },
             {
-                Name: 'Performance',
-                Value: modifierAbility[5] + proficiencySkill[12],
+                name: 'Performance',
+                value: modifierAbility[5] + proficiencySkill[12],
             },
             {
-                Name: 'Persuasion',
-                Value: modifierAbility[5] + proficiencySkill[13],
+                name: 'Persuasion',
+                value: modifierAbility[5] + proficiencySkill[13],
             },
         ],
     ]

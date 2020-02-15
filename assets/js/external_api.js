@@ -19,8 +19,6 @@ async function selectRace(url) {
     resetRace();
     currentRaceInformation(currentRace);
     currentAbilities(currentRace);
-    printAbilities();
-    currentCharacter();
 }
 
 /* ------------ Ingame Classes ---------- */
@@ -44,7 +42,7 @@ async function selectClass(url) {
     }
     resetClass();
     currentClassInformation(currentClass, spellCasting);
-    currentCharacter();
+    printCurrentCharacter();
 };
 
 async function spellCasterClass(url) {

@@ -24,6 +24,7 @@ function currentClassInformation(currentClass, spellCasting) {
     classProficiencies(currentClass);
     classOptionalProficiencies(currentClass);
     classSpellcasting(currentClass, spellCasting);
+    summaryHitDice(currentClass)
 }
 
 function className(currentClass) {

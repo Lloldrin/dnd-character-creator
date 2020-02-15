@@ -22,7 +22,7 @@ function turnPage(i) {
     currentPage = currentPage + i
     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
     characterSkills();
-    currentCharacter();
+    printCurrentCharacter();
     printAbilities();
 }
 
@@ -256,7 +256,49 @@ function abilityDescriptor(element) {
 //     });
 // }
 
-async function currentCharacter() {
+
+function summaryHitDice(currentClass) {
+    characterSummary.hitDice = currentClass.hit_die;
+};
+
+function summaryHitPoints(){
+    characterSummary.hitPoints = characterSummary.hitDice + modifierAbility[2];
+};
+
+function summaryArmorClass(){
+    characterSummary.armorClass = 10 + modifierAbility[1];
+};
+
+function summaryInitiative(){
+    characterSummary.initative = modifierAbility[1];
+}
+
+function summarySpeed(currentRace) {
+    characterSummary.speed = currentRace.speed;
+}
+
+function summarySkills() {
+    $('#character_proficiencies').empty()
+    fullNameAbility.forEach((element, i) => {
+        if (characterSummary.proficienciesSkills[i].length > 0) {
+            $('#character_proficiencies').append(`<div class="summary_skill_header" id="character_skill_summary_${nameAbility[i]}"><h6>${element} Skills</h6></div>`)
+            characterSummary.proficienciesSkills[i].forEach(skill => {
+                $(`#character_skill_summary_${nameAbility[i]}`).append(`<div class="summary_skill_list" id="character_skill_${skill.name}"><div class="summary_skill_list_prof" id="prof_${skill.name}"></div><div class="summary_skill_list_name">${skill.name}</div><div class="summary_skill_list_value">${skill.value}</div></div>`)
+            })
+        } else {
+            return
+        };
+    });
+};
+
+function summarizeCharacter(){
+    summaryHitPoints()
+    summaryArmorClass()
+    summaryInitiative()
+}
+
+async function printCurrentCharacter() {
+    summarizeCharacter()
     $('#character_name').empty().append(`<div><h5>${characterSummary.name} the ${characterSummary.race} ${characterSummary.characterClass}</h5></div>`);
 
     $('#hit_points').empty().append(`<div class="summary_styling"><span class="summary_header">Hit Points:</span><br><span class="summary_value">${characterSummary.hitPoints}</span></div`);
@@ -265,22 +307,5 @@ async function currentCharacter() {
     $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
     $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
     $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
-    characterSkillSummary()
+    summarySkills()
 };
-
-function characterSkillSummary() {
-        characterSummary.proficienciesSkills.forEach((element, i) => {
-            $('#character_proficiencies').append(`<div class="skill_header" id="character_skill_summary_${nameAbility[i]}">${fullNameAbility[i]}</div>`)
-            console.log(element);
-            element.forEach(skill => {
-                $(`character_skill_summary_${nameAbility[i]}`).append(`<div class="skill_header" id="character_skill_${skill.Name}">${skill.Value}</div>`)
-                // console.log(skill);
-            });
-            
-        });
-
-
-}
-
-
-

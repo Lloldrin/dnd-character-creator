@@ -299,7 +299,32 @@ p {
     text-align: center;
 }
 
-.summary_header {
+.summary_skill_header {
+    margin: 10px;
+    border-bottom: 2px solid red;
+}
+
+.summary_skill_list {
+    margin: 5px;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.summary_skill_list_prof {
+    width: 10px;
+    height: 10px;
+    border: 1px solid black;
+    border-radius: 50%;
+    align-self: center;
+}
+
+.summary_skill_list_name {
+    min-width: 65%;
+}
+
+.summary_skill_list_value{
+    min-width: 15%
 }
 
 .summary_value {

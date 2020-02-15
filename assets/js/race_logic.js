@@ -32,6 +32,7 @@ function currentRaceInformation(currentRace) {
     raceTraits(currentRace);
     raceTraitOptions(currentRace);
     raceAbilityBonus(currentRace);
+    summarySpeed(currentRace)
 }
 
 function raceName(currentRace) {
