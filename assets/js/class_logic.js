@@ -4,6 +4,13 @@ $(`body`).on(`click`, `.btn_class`, function () {
     activeClass(this);
 });
 
+//Function to dynamically create the list of classes and give each button a unique ID
+function populateClassList(listClasses) {
+    listClasses.forEach(element => {
+        $(`#class_list`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
+    });
+}
+
 function activeClass(clickedClass) {
     $('.current_class').removeClass("current_class");
     $(clickedClass).addClass('current_class');
@@ -26,11 +33,13 @@ function className(currentClass) {
 }
 
 function classHDSave(currentClass) {
+    characterSummary.hitDice = currentClass.hit_die;
+    characterSummary.hitPoints = currentClass.hit_die + modifierAbility[2];
+
     $('#class_info_left').append(`<div class="class_info" id="class_info_hd_save"></div>`);
     $('#class_info_hd_save').append(`<div class="class_info_inline">
     <h6>Hit Dice:</h6>
     <h6>d${currentClass.hit_die}</h6></div>`);
-    characterSummary.hitPoints = currentClass.hit_die + 
 
     $('#class_info_hd_save').append(`<div class="class_info_inline" id="class_saving_throws">
     <h6>Saving Throws:</h6>`);
@@ -85,7 +94,6 @@ function classOptionalProficiencies(currentClass) {
                     else {
                         delete unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value];
                     }
-                    console.log(unsortedProficiencies);
                 }
             });
         }
@@ -100,7 +108,6 @@ function classOptionalProficiencies(currentClass) {
             $(`#class_prof_list${i}`).on('change', function () {
                 unsortedProficiencies[`class_proficiencies_${i + 1}`] = {};
                 unsortedProficiencies[`class_proficiencies_${i + 1}`][$(`#class_prof_list${i}`).children("option:selected").val()] = $(`#class_prof_list${i}`).children("option:selected").val();
-                console.log(unsortedProficiencies);
             });
         }
     });

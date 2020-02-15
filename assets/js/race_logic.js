@@ -3,13 +3,20 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     activeRace($(this));
 });
 
+//Function to dynamically create the list of races and give each button a unique ID
+function populateRaceList(listRaces) {
+    listRaces.forEach(element => {
+        $(`#race_list`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
+    })
+}
+
 //Sets the current race to show and the previous choice to hidden
 function activeRace(clickedRace) {
     $('.current_race').removeClass("current_race");
     $(clickedRace).addClass('current_race');
 }
 
-//Contains the information for the current race and updates the DOM with it. 
+//Runs the functions to update the current race in characterSummary and the DOM. 
 function currentRaceInformation(currentRace) {
     $('#race_info_container_left').append('<div class="general_info_styling" id="race_info_left"></div>');
     $('#race_info_container_right').append('<div class="general_info_styling" id="race_info_right"></div>');
@@ -91,7 +98,6 @@ function raceLanguageOptions(currentRace) {
                     else {
                         delete characterLanguages[`race_languages_1`][this.value];
                     }
-                    console.log(characterLanguages);
                 }
             });
         }
@@ -102,12 +108,10 @@ function raceLanguageOptions(currentRace) {
             </div>`);
             currentRace.language_options.from.forEach(element => {
                 $('#race_languages_list').append(`<option value="${element.name}">${element.name}</option>)`);
-                console.log(element.name);
             });
             $('#race_languages_list').on('change', function () {
                 characterSummary.languages[`race_languages_1`] = {};
                 characterSummary.languages[`race_languages_1`][$('#race_languages_list').children("option:selected").val()] = $('#race_languages_list').children("option:selected").val();
-                console.log(characterSummary.languages);
             });
         }
     }
@@ -146,7 +150,6 @@ function raceProficienciesOptions(currentRace) {
                     else {
                         delete unsortedProficiencies[`race_proficiencies_1`][this.value];
                     }
-                    console.log(unsortedProficiencies);
                 }
             });
         }
@@ -157,12 +160,10 @@ function raceProficienciesOptions(currentRace) {
             </div>`);
             currentRace.starting_proficiency_options.from.forEach(element => {
                 $('#race_proficiencies_options_list').append(`<option value="${element.name}">${element.name}</option>)`);
-                console.log(element.name);
             });
             $('#race_proficiencies_options_list').on('change', function () {
                 unsortedProficiencies[`race_proficiencies_1`] = {};
                 unsortedProficiencies[`race_proficiencies_1`][$('#race_proficiencies_options_list').children("option:selected").val()] = $('#race_proficiencies_options_list').children("option:selected").val();
-                console.log(unsortedProficiencies);
             });
         }
     }
@@ -207,7 +208,6 @@ function raceTraitOptions(currentRace) {
                     else {
                         delete characterSummary.traits[`race_traits_1`][this.value];
                     }
-                    console.log(characterSummary.traits);
                 }
             });
         }
@@ -222,7 +222,6 @@ function raceTraitOptions(currentRace) {
             $('#race_trait_list').on('change', function () {
                 characterSummary.traits[`race_traits_1`] = {};
                 characterSummary.traits[`race_traits_1`][$('#race_trait_list').children("option:selected").val()] = [$('#race_trait_list').children("option:selected").val()];
-                console.log(characterSummary.traits);
             });
         }
     }

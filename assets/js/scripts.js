@@ -1,28 +1,12 @@
 /* ---------- Dynamically Created Content on Page Load ---------*/
 
-//Function to dynamically create the list of races and give each button a unique ID
-function populateRaceList(listRaces) {
-    listRaces.forEach(element => {
-        $(`#race_list`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
-    })
-}
 fetchRaceList()
-
-//Function to dynamically create the list of classes and give each button a unique ID
-function populateClassList(listClasses) {
-    listClasses.forEach(element => {
-        $(`#class_list`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
-    });
-}
 fetchClassList()
 
-// //Function to dynamically create the list of skills
-// function populateSkillList(listSkills) {
-//     listSkills.forEach(element => {
-//         $(`#skill_list`).append(`<li>${element.name}</li>`)
-//     });
-// }
-// fetchSkillList()
+//Loads a default race, class & ability description
+selectRace('/api/races/dragonborn');
+selectClass('/api/classes/barbarian');
+fetchAbilityDescription('str');
 
 let unsortedProficiencies = {};
 
@@ -37,6 +21,9 @@ function turnPage(i) {
     $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
     currentPage = currentPage + i
     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
+    characterSkills();
+    currentCharacter();
+    printAbilities();
 }
 
 $('#btn_prev').on('click', function () {
@@ -76,23 +63,20 @@ let characterSummary = {
 
 $('#submit_name').on('click', function () {
     characterSummary.name = $('#name_field').val();
-    currentCharacter();
     pageUp = 1;
     turnPage(pageUp);
 });
 
-//Loads a default race, class & ability description
-selectRace('/api/races/dragonborn');
-selectClass('/api/classes/barbarian');
-fetchAbilityDescription('str');
+
 
 
 /* ---------- Ability Page ---------- */
 
-let nameAbility = ['str', 'dex', 'con', 'int', 'wis', 'cha']
+let nameAbility = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
+let fullNameAbility = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
 let baseAbility = [8, 8, 8, 8, 8, 8,];
 let raceAbility = [0, 0, 0, 0, 0, 0,];
-let modifierAbility = [];
+let modifierAbility = [-1, -1, -1, -1, -1, -1];
 let boughtAbility = [0, 0, 0, 0, 0, 0];
 let characterAbility = [8, 8, 8, 8, 8, 8];
 let availableAbility = 27;
@@ -155,7 +139,7 @@ function printAbilities() {
 
 function setAbility(i) {
     characterAbility[i] = boughtAbility[i] + baseAbility[i] + raceAbility[i];
-    modifierAbility[i] = Math.floor((characterAbility[i]-10)/2)
+    modifierAbility[i] = Math.floor((characterAbility[i] - 10) / 2)
 };
 
 function upBoughtAbility(i) {
@@ -236,94 +220,7 @@ function abilityDescriptor(element) {
 
 /* ---------- Character Summary ---------- */
 
-let sortedProficiencies = [
-    [
-        "Alchemist's supplies",
-        "Brewer's supplies",
-        "Calligrapher's supplies",
-        "Carpenter's tools",
-        "Cartographer's tools",
-        "Cobbler's tools",
-        "Cook's utensils",
-        "Glassblower's tools",
-        "Jeweler's tools",
-        "Leatherworker's tools",
-        "Mason's tools",
-        "Painter's supplies",
-        "Potter's tools",
-        "Smith's tools",
-        "Tinker's tools",
-        "Weaver's tools",
-        "Woodcarver's tools",
-        "Disguise kit",
-        "Forgery kit"
-    ],
 
-    [
-        "Simple Weapons",
-        "Martial Weapons",
-        "Longswords",
-        "Shortswords",
-        "Rapiers",
-        "Crossbows, hand",
-        "Clubs",
-        "Daggers",
-        "Javelins",
-        "Maces",
-        "Quarterstaffs",
-        "Sickles",
-        "Spears",
-        "Darts",
-        "Slings",
-        "Scimitars",
-        "Battleaxes",
-        "Handaxes",
-        "Light hammers",
-        "Warhammers,"
-    ],
-
-    [
-        "Light armor",
-        "Medium armor",
-        "Heavy armor",
-        "All armor",
-        "Shields"
-    ],
-
-    [
-        "Acrobatics",
-        "Animal Handling",
-        "Arcana",
-        "Athletics",
-        "Deception",
-        "History",
-        "Insight",
-        "Intimidation",
-        "Investigation",
-        "Medicine",
-        "Nature",
-        "Perception",
-        "Performance",
-        "Persuasion",
-        "Religion",
-        "Sleight of Hand",
-        "Stealth",
-        "Survival"
-    ],
-
-    [
-        "Bagpipes",
-        "Drum",
-        "Dulcimer",
-        "Flute",
-        "Lute",
-        "Lyre",
-        "Horn",
-        "Pan flute",
-        "Shawm",
-        "Viol"
-    ],
-]
 
 // let proficiencyTools
 // let proficiencyWeapons
@@ -368,8 +265,22 @@ async function currentCharacter() {
     $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
     $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
     $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
-    console.log(characterSummary);
+    characterSkillSummary()
 };
 
-currentCharacter();
+function characterSkillSummary() {
+        characterSummary.proficienciesSkills.forEach((element, i) => {
+            $('#character_proficiencies').append(`<div class="skill_header" id="character_skill_summary_${nameAbility[i]}">${fullNameAbility[i]}</div>`)
+            console.log(element);
+            element.forEach(skill => {
+                $(`character_skill_summary_${nameAbility[i]}`).append(`<div class="skill_header" id="character_skill_${skill.Name}">${skill.Value}</div>`)
+                // console.log(skill);
+            });
+            
+        });
+
+
+}
+
+
 
