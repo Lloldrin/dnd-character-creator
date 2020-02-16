@@ -24,6 +24,7 @@ function turnPage(i) {
     characterSkills();
     printCurrentCharacter();
     printAbilities();
+    summarySkills()
 }
 
 $('#btn_prev').on('click', function () {
@@ -84,33 +85,39 @@ let bonusAbility = 0;
 
 function populateAbilityPage() {
     $('#abilities_container').append(`
-    <div class="abilities_header">
-        <h4>Abilities</h4>
-    </div>
-    <div class="row base_abilities_container">
-        <div class="col ability_styling ability_header"></div>
-        <div class="col ability_styling">Base</div>
-        <div class="col ability_styling"></div>
-        <div class="col-3 ability_styling">Bought</div>
-        <div class="col ability_styling"></div>
-        <div class="col-3 ability_styling">Race</div>
-        <div class="col ability_styling"></div>
-        <div class="col ability_styling">Total</div>
-    </div>`)
+        <div class="abilities_header">
+            <h4>Abilities</h4>
+        </div>
+
+        <div class="row base_abilities_container">
+            <div class="col-2 ability_styling ability_top "></div>
+            <div class="col ability_styling ability_top">Base</div>
+            <div class="col ability_styling ability_top"></div>
+            <div class="col-2 ability_styling ability_top">Bought</div>
+            <div class="col ability_styling ability_top"></div>
+            <div class="col-2 ability_styling ability_top">Race</div>
+            <div class="col ability_styling ability_top"></div>
+            <div class="col ability_styling ability_top">Total</div>
+            <div class="d-none d-md-block col col-md-2 ability_styling ability_top">Modifier</div>
+        </div>`)
 
     nameAbility.forEach(element => {
         $('#abilities_container').append(`
-    <div class="row base_abilities_container">
-        <div class="col ability_styling ability_header">${element}</div>
-        <div class="col ability_styling" id="base_${element}">8</div>
-        <div class="col ability_styling">+</div>
-        <div class="col-3 ability_styling" id="bought_${element}"><button class="ability_buy" id="bought_${element}_down">-</button> <span id="current_bought_${element}">0</span> <button class="ability_buy" id="bought_${element}_up">+</button></div>
-        <div class="col ability_styling">+</div>
-        <div class="col-3 ability_styling" id="race_${element}">0</div>
-        <div class="col ability_styling">=</div>
-        <div class="col ability_styling" id="char_${element}">8</div>
-        </div>
-        `)
+        <div class="row base_abilities_container">
+            <div class="col-2 ability_styling ability_header">${element.toUpperCase()}</div>
+            <div class="col ability_styling" id="base_${element}">8</div>
+            <div class="col ability_styling">+</div>
+            <div class="col-2 ability_styling" id="bought_${element}">
+            <button class="ability_buy" id="bought_${element}_down">-</button>
+            <span id="current_bought_${element}">0</span>
+            <button class="ability_buy" id="bought_${element}_up">+</button>
+            </div>
+            <div class="col ability_styling">+</div>
+            <div class="col-2 ability_styling" id="race_${element}">0</div>
+            <div class="col ability_styling">=</div>
+            <div class="col ability_styling" id="char_${element}">8</div>
+            <div class="d-none d-md-block col col-md-2 ability_styling" id="ability_modifier_${element}"></div>
+        </div>`)
     });
 
     $('#abilities_container').append(`
@@ -161,7 +168,10 @@ function bonusAbilities(bonus) {
             if (raceAbility[i] > 0) {
                 return
             } else {
-                $(`#race_${element}`).empty().append(`<button class="ability_buy_race" id="race_${element}_down">-</button> <span id="current_bought_race_${element}">0</span> <button class="ability_buy_race" id="race_${element}_up">+</button></div>`)
+                $(`#race_${element}`).empty().append(`
+                <button class="ability_buy_race" id="race_${element}_down">-</button>
+                <span id="current_bought_race_${element}">0</span>
+                <button class="ability_buy_race" id="race_${element}_up">+</button>`)
             }
         });
     }
@@ -175,6 +185,7 @@ function printAbilities() {
         $('#ability_points').empty().append(availableAbility);
         $('#race_bonus_points').empty().append(bonusAbility);
         $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">(${modifierAbility[i]})</div>`);
+        $(`#ability_modifier_${element}`).empty().text(modifierAbility[i]);
     });
 };
 
@@ -319,16 +330,21 @@ function summarySpeed(currentRace) {
 }
 
 function summarySkills() {
-    $('#character_proficiencies').empty()
+    $('#character_proficiencies').empty().append(`<div class="summary_skill_header"><h5>Skills</h5></div>`)
     fullNameAbility.forEach((element, i) => {
         if (characterSummary.proficienciesSkills[i].length > 0) {
-            $('#character_proficiencies').append(`<div class="summary_skill_header" id="character_skill_summary_${nameAbility[i]}"><h6>${element} Skills</h6></div>`)
+            $('#character_proficiencies').append(`<div class="summary_skill_header" id="character_skill_summary_${nameAbility[i]}">
+            <h6>${element} Skills</h6>
+            </div>`)
             characterSummary.proficienciesSkills[i].forEach(skill => {
-                $(`#character_skill_summary_${nameAbility[i]}`).append(`<div class="summary_skill_list" id="character_skill_${skill.name}"><div class="summary_skill_list_prof" id="prof_${skill.name}"></div><div class="summary_skill_list_name">${skill.name}</div><div class="summary_skill_list_value">${skill.value}</div></div>`)
+                $(`#character_skill_summary_${nameAbility[i]}`).append(`
+                <div class="row summary_skill_list" id="character_skill_${skill.name}">
+                <div class="summary_skill_list_prof" id="prof_${skill.name}"></div>
+                <div class="col-8 summary_skill_list_name">${skill.name}</div>
+                <div class="col-2 summary_skill_list_value">${skill.value}</div>
+                </div>`)
             })
-        } else {
-            return
-        };
+        }
     });
 };
 
@@ -348,7 +364,6 @@ async function printCurrentCharacter() {
     $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
     $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
     $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
-    summarySkills()
 };
 
 populateAbilityPage();
