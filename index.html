@@ -12,235 +12,188 @@
 </head>
 
 <body>
-    <div class="container.fluid page_background">
-        <div class="row">
-            <div class="col-12">
+    <div class="container">
 
-                <div class="row">
-                    <div class="col-12 title_text">
-                        <h1>D&D 5e Character Creator 0.3</h1>
-                        <button class="btn btn_navigation" id="btn_prev">Prev</button>
-                        <button class=" btn btn_navigation" id="btn_next">Next</button>
+        <h1>D&D 5e Character Creator 0.3</h1>
+        <button class="btn btn_navigation" id="btn_prev">Prev</button>
+        <button class=" btn btn_navigation" id="btn_next">Next</button>
+
+        <div class="row">
+            <div class="col-12" id="nav_page_0">
+                <div class="container" id="intro_page">
+                    <div class="row">
+                        <div class="col-12" id="name_field_container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <input type="text" id="name_field" name="character_name"
+                                        placeholder="Character Name">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button id="submit_name">Submit</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
+            <div class="col-12 hidden_page" id="nav_page_1">
+                <div class="row">
+                    <div class="col-12 col-md-2" id="race_list"></div>
+                    <div class="col-12 col-md-6" id="race_info_container_left"></div>
+                    <div class="col-12 col-md-4" id="race_info_container_right"></div>
+                </div>
+            </div>
+
+            <div class="col-12 hidden_page" id="nav_page_2">
+                <div class="row">
+                    <div class="col-12 col-md-2" id="class_list"></div>
+                    <div class="col-12 col-md-6" id="class_info_container_left"></div>
+                    <div class="col-12 col-md-4" id="class_info_container_right"></div>
+                </div>
+            </div>
+
+            <div class="col-12 hidden_page" id="nav_page_3">
                 <div class="row">
 
-                    <div class="col-12" id="nav_page_0">
-                        <div class="container" id="intro_page">
-                            <div class="row">
-                                <div class="col-12" id="name_field_container">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <input type="text" id="name_field" name="character_name"
-                                                value="Character Name">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                        <button id="submit_name">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-12 col-md-8" id="ability_page_left">
+                        <div id="abilities_container">
+                            
+
+                            <!-- <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">STR</div>
+                                <div class="abilities_styling" id="base_str">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_str"><button class="ability_buy"
+                                        id="bought_str_down">-</button><span id="current_bought_str">0</span><button
+                                        class="ability_buy" id="bought_str_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_str">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_str">8</div>
                             </div>
+
+                            <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">DEX</div>
+                                <div class="abilities_styling" id="base_dex">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_dex"><button class="ability_buy"
+                                        id="bought_dex_down">-</button><span id="current_bought_dex">0</span><button
+                                        class="ability_buy" id="bought_dex_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_dex">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_dex">8</div>
+                            </div>
+
+                            <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">CON</div>
+                                <div class="abilities_styling" id="base_con">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_con"><button class="ability_buy"
+                                        id="bought_con_down">-</button><span id="current_bought_con">0</span><button
+                                        class="ability_buy" id="bought_con_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_con">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_con">8</div>
+                            </div>
+
+                            <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">INT</div>
+                                <div class="abilities_styling" id="base_int">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_int"><button class="ability_buy"
+                                        id="bought_int_down">-</button><span id="current_bought_int">0</span><button
+                                        class="ability_buy" id="bought_int_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_int">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_int">8</div>
+                            </div>
+
+                            <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">WIS</div>
+                                <div class="abilities_styling" id="base_wis">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_wis"><button class="ability_buy"
+                                        id="bought_wis_down">-</button><span id="current_bought_wis">0</span><button
+                                        class="ability_buy" id="bought_wis_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_wis">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_wis">8</div>
+                            </div>
+
+                            <div class="row base_abilities_container">
+                                <div class="abilities_styling ability_header">CHA</div>
+                                <div class="abilities_styling" id="base_cha">8</div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_buy" id="bought_cha"><button class="ability_buy"
+                                        id="bought_cha_down">-</button><span id="current_bought_cha">0</span><button
+                                        class="ability_buy" id="bought_cha_up">+</button></div>
+                                <div class="abilities_styling_sign">+</div>
+                                <div class="abilities_styling_race" id="race_cha">0</div>
+                                <div class="abilities_styling_sign">=</div>
+                                <div class="abilities_styling" id="char_cha">8</div>
+                            </div> -->
+
                         </div>
                     </div>
 
-                    <div class="col-12 hidden_page" id="nav_page_1">
-                        <div class="container" id="race_page">
-                            <div class="row">
-                                <div class="col-12 col-md-2" id="race_list"></div>
-                                <div class="col-12 col-md-6" id="race_info_container_left"></div>
-                                <div class="col-12 col-md-4" id="race_info_container_right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 hidden_page" id="nav_page_2">
-                        <div class="container" id="class_page">
-                            <div class="row">
-                                <div class="col-12 col-md-2" id="class_list"></div>
-                                <div class="col-12 col-md-6" id="class_info_container_left"></div>
-                                <div class="col-12 col-md-4" id="class_info_container_right"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 hidden_page" id="nav_page_3">
-                        <div class="container" id="ability_page">
-                            <div class="row">
-
-                                <div class="col-12 col-md-8" id="ability_page_left">
-                                    <div id="abilities_container">
-                                        <div class="abilities_header">
-                                            <h4>Abilities</h4>
-                                        </div>
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header"></div>
-                                            <div class="abilities_styling">Base</div>
-                                            <div class="abilities_styling_sign"></div>
-                                            <div class="abilities_styling_buy">Bought</div>
-                                            <div class="abilities_styling_sign"></div>
-                                            <div class="abilities_styling_race">Race</div>
-                                            <div class="abilities_styling_sign"></div>
-                                            <div class="abilities_styling">Total</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">STR</div>
-                                            <div class="abilities_styling" id="base_str">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_str"><button
-                                                    class="ability_buy" id="bought_str_down">-</button><span
-                                                    id="current_bought_str">0</span><button class="ability_buy"
-                                                    id="bought_str_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_str">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_str">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">DEX</div>
-                                            <div class="abilities_styling" id="base_dex">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_dex"><button
-                                                    class="ability_buy" id="bought_dex_down">-</button><span
-                                                    id="current_bought_dex">0</span><button class="ability_buy"
-                                                    id="bought_dex_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_dex">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_dex">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">CON</div>
-                                            <div class="abilities_styling" id="base_con">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_con"><button
-                                                    class="ability_buy" id="bought_con_down">-</button><span
-                                                    id="current_bought_con">0</span><button class="ability_buy"
-                                                    id="bought_con_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_con">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_con">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">INT</div>
-                                            <div class="abilities_styling" id="base_int">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_int"><button
-                                                    class="ability_buy" id="bought_int_down">-</button><span
-                                                    id="current_bought_int">0</span><button class="ability_buy"
-                                                    id="bought_int_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_int">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_int">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">WIS</div>
-                                            <div class="abilities_styling" id="base_wis">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_wis"><button
-                                                    class="ability_buy" id="bought_wis_down">-</button><span
-                                                    id="current_bought_wis">0</span><button class="ability_buy"
-                                                    id="bought_wis_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_wis">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_wis">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container">
-                                            <div class="abilities_styling ability_header">CHA</div>
-                                            <div class="abilities_styling" id="base_cha">8</div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_buy" id="bought_cha"><button
-                                                    class="ability_buy" id="bought_cha_down">-</button><span
-                                                    id="current_bought_cha">0</span><button class="ability_buy"
-                                                    id="bought_cha_up">+</button></div>
-                                            <div class="abilities_styling_sign">+</div>
-                                            <div class="abilities_styling_race" id="race_cha">0</div>
-                                            <div class="abilities_styling_sign">=</div>
-                                            <div class="abilities_styling" id="char_cha">8</div>
-                                        </div>
-
-                                        <div class="base_abilities_container_footer">
-                                            <div class="abilities_styling_footer_text">Ability Points:</div>
-                                            <div class="abilities_styling_footer_value" id="ability_points">27</div>
-                                            <div class="abilities_styling_footer_text">Racial Points:</div>
-                                            <div class="abilities_styling_footer_value" id="race_bonus_points">0</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-4" id="ability_page_right">
-                                    <div class="general_info_styling" id="abilities_desc_container">
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 hidden_page" id="nav_page_4">
-                        <div class="container" id="summary_page">
-                            <div class="row">
-
-                                <div class="col-12 col-md-6" id="summary_info_container_left">
-
-                                    <div class="general_info_styling">
-
-                                        <div class="row character_summary" id="character_name">
-                                        </div>
-
-                                        <div class="row character_ability_container">
-                                            <div class="character_ability" id="character_str"></div>
-                                            <div class="character_ability" id="character_dex"></div>
-                                            <div class="character_ability" id="character_con"></div>
-                                            <div class="character_ability" id="character_int"></div>
-                                            <div class="character_ability" id="character_wis"></div>
-                                            <div class="character_ability" id="character_cha"></div>
-                                        </div>
-
-                                        <div class="row character_summary" id="character_stats">
-                                            <div id="hit_points"></div>
-                                            <div id="hit_dice"></div>
-                                        </div>
-
-                                        <div class="row character_summary">
-                                            <div id="armor_class"></div>
-                                            <div id="initiative"></div>
-                                            <div id="speed"></div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-3" id="summary_info_container_middle">
-                                    <div class="general_info_styling" id="character_proficiencies"></div>
-                                </div>
-
-                                <div class="col-12 col-md-3" id="summary_info_container_right">
-                                    <div class="general_info_styling"></div>
-                                </div>
-                            </div>
+                    <div class="col-12 col-md-4" id="ability_page_right">
+                        <div class="general_info_styling" id="abilities_desc_container">
                         </div>
                     </div>
 
                 </div>
             </div>
+
+            <div class="col-12 hidden_page" id="nav_page_4">
+                <div class="row">
+                    <div class="col-12 col-md-6" id="summary_info_container_left">
+
+                        <div class="general_info_styling">
+
+                            <div class="row character_summary" id="character_name">
+                            </div>
+
+                            <div class="row character_ability_container">
+                                <div class="character_ability" id="character_str"></div>
+                                <div class="character_ability" id="character_dex"></div>
+                                <div class="character_ability" id="character_con"></div>
+                                <div class="character_ability" id="character_int"></div>
+                                <div class="character_ability" id="character_wis"></div>
+                                <div class="character_ability" id="character_cha"></div>
+                            </div>
+
+                            <div class="row character_summary" id="character_stats">
+                                <div id="hit_points"></div>
+                                <div id="hit_dice"></div>
+                            </div>
+
+                            <div class="row character_summary">
+                                <div id="armor_class"></div>
+                                <div id="initiative"></div>
+                                <div id="speed"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-3" id="summary_info_container_middle">
+                        <div class="general_info_styling" id="character_proficiencies"></div>
+                    </div>
+
+                    <div class="col-12 col-md-3" id="summary_info_container_right">
+                        <div class="general_info_styling"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-
 
     </div>
-    </div>
-
 
 
     <!-- Scripts -->

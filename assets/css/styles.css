@@ -1,14 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Headland+One&display=swap');
 body {
-    padding: 0px;
-    margin: 0px;
+    background: rgb(252, 252, 252);
 }
 
 /* --------- Backgrounds and Colors -------- */
 
-.page_background {
-    background: rgb(252, 252, 252);
-}
+.page_background {}
 
 .class_spellcasting {
     margin: 10px;
@@ -56,10 +53,6 @@ h1 {
 
 .abilities_styling, .abilities_styling_buy, .abilities_styling_sign, .abilities_styling_race {
     width: 12.5%;
-    text-align: center;
-    font-size: 1rem;
-    margin: 10px 0px;
-    align-self: center;
 }
 
 .abilities_styling_buy, .abilities_styling_race {
@@ -116,6 +109,14 @@ h1 {
     align-self: center;
 }
 
+.ability_styling {
+    padding: 0px;
+    text-align: center;
+    font-size: 1rem;
+    margin: 10px 0px;
+    align-self: center;
+}
+
 .race_info_container {
     background-color: #fdfdea;
     margin: 20px;
@@ -126,18 +127,26 @@ h1 {
     font-size: 0.7em;
 }
 
-.general_info_styling, #abilities_container {
+/* .container_styling {
     background-color: #fdfdea;
-    margin: 20px;
-    padding: 10px;
-    min-height: 50px;
-    width: 100%;
+
     font-family: 'Headland One', serif;
     font-size: 0.7em;
-    overflow: hidden;
+
+    box-shadow: 1px 1px 5px 4px #ccc;
     -moz-box-shadow: 1px 1px 3px 4px #ccc;
     -webkit-box-shadow: 1px 1px 3px 4px #ccc;
+} */
+
+.general_info_styling, #abilities_container {
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fdfdea;
+    font-family: 'Headland One', serif;
+    font-size: 0.7em;
     box-shadow: 1px 1px 5px 4px #ccc;
+    -moz-box-shadow: 1px 1px 3px 4px #ccc;
+    -webkit-box-shadow: 1px 1px 3px 4px #ccc;
 }
 
 #race_info {
@@ -209,10 +218,10 @@ p {
     background-color: red;
 }
 
-#race_list, #class_list {
+/* #race_list, #class_list {
     margin-top: 20px;
     margin-bottom: 20px;
-}
+} */
 
 .btn_race, .btn_class {
     width: 120px;
@@ -300,12 +309,13 @@ p {
 }
 
 .summary_skill_header {
-    margin: 10px;
+    margin: 5px;
     border-bottom: 2px solid red;
+    padding-bottom: 5px;
 }
 
 .summary_skill_list {
-    margin: 5px;
+    margin: 2px;
     font-size: 0.8rem;
     display: flex;
     justify-content: space-evenly;
@@ -323,7 +333,7 @@ p {
     min-width: 65%;
 }
 
-.summary_skill_list_value{
+.summary_skill_list_value {
     min-width: 15%
 }
 
