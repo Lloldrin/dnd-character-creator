@@ -60,9 +60,9 @@ function classHDSave(currentClass) {
 
 //Populate the proficency list and add values to characterProficencies Object
 function classProficiencies(currentClass) {
-    $(`#class_info_left`).append(`<div><h6>Proficencies</h6></div><div class="class_info class_prof_container" id="proficiencies"></div>`);
+    $(`#class_info_left`).append(`<div class="info_style"><h6>Proficencies</h6><div class="class_info class_prof_container" id="proficiencies"></div></div>`);
     currentClass.proficiencies.forEach(element => {
-        $(`#proficiencies`).append(`<div class="class_list prof_style">
+        $(`#proficiencies`).append(`<div class="class_prof prof_style">
              <span id="class_${element.name}">${element.name}</span></div>`);
         if (unsortedProficiencies[`class_proficiencies_0`] === undefined) {
             unsortedProficiencies[`class_proficiencies_0`] = {};
@@ -81,11 +81,12 @@ function classOptionalProficiencies(currentClass) {
     currentClass.proficiency_choices.forEach((element, i) => {
         if (element.choose > 1) {
             $('#class_proficiencies').append(`<div class="class_prof_container" id="class_prof_list${i}">
-            <p>Choose ${element.choose} proficiencies from this list</p></div>`);
+            Choose ${element.choose} proficiencies from this list</div><div class="class_multi_list" id="class_multi_list${i}"</div>`);
             element.from.forEach(element => {
-                $(`#class_prof_list${i}`).append(`<div class="class_list">
-            <input type="checkbox" class="class_proficiencies_${i} checkbox_styling" value="${element.name}"><span> ${element.name}</span></div>`);
+                $(`#class_multi_list${i}`).append(`<div class="class_multi_list_item">
+            <input type="checkbox" class="class_proficiencies_${i} checkbox_styling" value="${element.name}"><span> ${element.name.replace('Skill: ', '')}</span></div>`);
             });
+            
             $(`.class_proficiencies_${i}`).on('change', function () {
                 if ($(`.class_proficiencies_${i}:checked`).length > element.choose) {
                     this.checked = false;
@@ -96,9 +97,11 @@ function classOptionalProficiencies(currentClass) {
                             unsortedProficiencies[`class_proficiencies_${i + 1}`] = {};
                         }
                         unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value] = this.value;
+                        addProficiency(this.value)
                     }
                     else {
                         delete unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value];
+                        removeProficiency(this.value)
                     }
                 }
             });

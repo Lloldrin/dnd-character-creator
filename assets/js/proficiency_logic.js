@@ -87,11 +87,50 @@ let sortedProficiencies = [
     ],
 ]
 
-let proficiencySkill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let skills = [
+    "Skill: Acrobatics",
+    "Skill: Animal Handling",
+    "Skill: Arcana",
+    "Skill: Athletics",
+    "Skill: Deception",
+    "Skill: History",
+    "Skill: Insight",
+    "Skill: Intimidation",
+    "Skill: Investigation",
+    "Skill: Medicine",
+    "Skill: Nature",
+    "Skill: Perception",
+    "Skill: Performance",
+    "Skill: Persuasion",
+    "Skill: Religion",
+    "Skill: Sleight of Hand",
+    "Skill: Stealth",
+    "Skill: Survival"]
+
+function addProficiency(skill) {
+    skills.forEach((element, i) => {
+        if (skill === element) {
+            proficiencySkill[i] = 2;
+        }
+    });
+}
+
+function removeProficiency(skill) {
+    skills.forEach((element, i) => {
+        if (skill === element) {
+            proficiencySkill[i] = 0;
+        }
+    });
+}
+
+
+
+
+let proficiencySkill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function characterSkills() {
-    characterSummary.proficienciesSkills = [
 
+    characterSummary.proficienciesSkills = [
         //Strength Skills
         [
             {

@@ -25,8 +25,8 @@ function activeRace(clickedRace) {
 function currentRaceInformation(currentRace) {
     $('#race_info_container_left').append('<div class="general_info_styling" id="race_info_left"></div>');
     $('#race_info_container_right').append('<div class="general_info_styling" id="race_info_right"></div>');
-    raceName(currentRace);
-    raceAlignment(currentRace);
+    raceName(currentRace.name);
+    raceAlignment(currentRace.alignment);
     raceAge(currentRace);
     raceSize(currentRace);
     raceLanguageDesc(currentRace);
@@ -40,16 +40,16 @@ function currentRaceInformation(currentRace) {
     summarySpeed(currentRace)
 }
 
-function raceName(currentRace) {
-    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.name}_container>
-    <h4>${currentRace.name}</h4></div>`);
-    characterSummary.race = currentRace.name;
+function raceName(name) {
+    $('#race_info_left').append(`<div class="info_style" id"race_${name}_container>
+    <h4>${name}</h4></div>`);
+    characterSummary.race = name;
 }
 
-function raceAlignment(currentRace) {
-    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.alignment}_container>
+function raceAlignment(alignment) {
+    $('#race_info_left').append(`<div class="info_style" id"race_${alignment}_container>
     <h6>Alignment</h6>
-    <p>${currentRace.alignment}</p></div>`);
+    <p>${alignment}</p></div>`);
 }
 
 function raceAge(currentRace) {

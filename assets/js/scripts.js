@@ -314,7 +314,7 @@ function summarySkills() {
                 <div class="row summary_skill_list" id="character_skill_${skill.name}">
                 <div class="summary_skill_list_prof" id="prof_${skill.name}"></div>
                 <div class="col-8 summary_skill_list_name">${skill.name}</div>
-                <div class="col-2 summary_skill_list_value">${skill.value}</div>
+                <div class="col-2 summary_skill_list_value">${(skill.value<=0?'':'+') + skill.value}</div>
                 </div>`)
             })
         }

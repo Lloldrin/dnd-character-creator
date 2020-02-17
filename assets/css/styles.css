@@ -157,19 +157,35 @@ body {
 }
 
 .class_prof {
+    margin: 3px;
+    padding: 3px;
     text-align: center;
     min-width: 30%;
-    max-width: 45%;
     font-size: 0.8rem;
     background-color: rgba(255, 255, 255, 0.4);
     border: 0.5px solid black;
+    display: flex;
 }
-
 
 .class_prof_container {
     display: flex;
     flex-wrap: wrap;
-    max-height: 200px;
+}
+
+.class_multi_list {
+    margin: 10px 0px;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.class_multi_list_item {
+    min-width: 45%;
+    margin: 3px;
+    padding: 3px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: 0.5px solid black;
+    display: flex;
+    align-items: center;
 }
 
 /* ---------- Ability Styling ---------- */
@@ -356,5 +372,8 @@ body {
     #page_background {
         background-color: rgba(221, 219, 219, 0.8);
         min-height: 100vh;
+    }
+    .class_multi_list_item {
+        min-width: 30%;
     }
 }
