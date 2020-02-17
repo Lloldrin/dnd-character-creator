@@ -3,16 +3,21 @@ $(`body`).on(`click`, `.btn_race`, async function () {
     activeRace($(this));
 });
 
+$(`body`).on(`change`, `#race_list_xs`, async function () {
+    selectRace($(this).children('option:selected').val());
+});
+
 //Function to dynamically create the list of races and give each button a unique ID
 function populateRaceList(listRaces) {
     listRaces.forEach(element => {
-        $(`#race_list`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
-    })
+        $(`#race_list_md`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
+        $(`#race_list_xs`).append(`<option value="${element.url}">${element.name}</option>)</div>`)
+    })   
 }
 
 //Sets the current race to show and the previous choice to hidden
 function activeRace(clickedRace) {
-    $('.current_race').removeClass("current_race");
+    $('.current_race').removeClass('current_race');
     $(clickedRace).addClass('current_race');
 }
 
@@ -36,37 +41,37 @@ function currentRaceInformation(currentRace) {
 }
 
 function raceName(currentRace) {
-    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.name}_container>
+    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.name}_container>
     <h4>${currentRace.name}</h4></div>`);
     characterSummary.race = currentRace.name;
 }
 
 function raceAlignment(currentRace) {
-    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.alignment}_container>
+    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.alignment}_container>
     <h6>Alignment</h6>
     <p>${currentRace.alignment}</p></div>`);
 }
 
 function raceAge(currentRace) {
-    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.age}_container>
+    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.age}_container>
     <h6>Age</h6>
     <p>${currentRace.age}</p></div>`);
 }
 
 function raceSize(currentRace) {
-    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.size_description}_container>
+    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.size_description}_container>
     <h6>Size</h6>
     <p>${currentRace.size_description}</p></div>`);
 }
 
 function raceLanguageDesc(currentRace) {
-    $('#race_info_left').append(`<div class="race_info" id"race_${currentRace.language_desc}_container>
+    $('#race_info_left').append(`<div class="info_style" id"race_${currentRace.language_desc}_container>
     <h6>Languages</h6>
     <p>${currentRace.language_desc}</p></div>`);
 }
 
 function raceLanguage(currentRace) {
-    $('#race_info_right').append(`<div class="race_info" id="race_languages"><h6>Languages:</h6><div>`)
+    $('#race_info_right').append(`<div class="info_style" id="race_languages"><h6>Languages:</h6><div>`)
     currentRace.languages.forEach(element => {
         if (characterSummary.languages[`race_languages_0`] === undefined) {
             characterLanguages[`race_languages_0`] = {};
@@ -120,10 +125,9 @@ function raceLanguageOptions(currentRace) {
 
 function raceProficiencies(currentRace) {
     if (currentRace.starting_proficiencies.length > 0) {
-        $(`#race_info_right`).append(`<div class="race_info" id="race_proficiencies"><h6>Race Proficencies:</h6></div>`);
+        $(`#race_info_right`).append(`<div class="info_style" id="race_proficiencies"><h6>Race Proficencies:</h6></div>`);
         currentRace.starting_proficiencies.forEach(element => {
-            $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">
-             <p id="race_proficency_${element.name}">${element.name}</p></div>`);
+            $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">${element.name}</div>`);
             unsortedProficiencies[`race_proficiencies_0`][element.name] = element.name;
         });
     }
@@ -172,7 +176,7 @@ function raceProficienciesOptions(currentRace) {
 
 function raceTraits(currentRace) {
     if (currentRace.traits.length > 0) {
-        $(`#race_info_right`).append(`<div class="race_info" id="race_traits"><h6>Race Traits:</h6></div>`);
+        $(`#race_info_right`).append(`<div class="info_style" id="race_traits"><h6>Race Traits:</h6></div>`);
         currentRace.traits.forEach(element => {
             $(`#race_traits`).append(`<div class="race_list" id="race_${element.name}_trait">${element.name}</div>`);
             if (characterSummary.traits[`race_traits_0`] === undefined) {

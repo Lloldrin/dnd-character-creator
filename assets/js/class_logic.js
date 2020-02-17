@@ -4,10 +4,15 @@ $(`body`).on(`click`, `.btn_class`, function () {
     activeClass(this);
 });
 
+$(`body`).on(`change`, `#class_list_xs`, async function () {
+    selectClass($(this).children('option:selected').val());
+});
+
 //Function to dynamically create the list of classes and give each button a unique ID
 function populateClassList(listClasses) {
     listClasses.forEach(element => {
-        $(`#class_list`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
+        $(`#class_list_md`).append(`<div><button type="button" class="btn btn_class" id="${element.url}">${element.name}</button></div>`)
+        $(`#class_list_xs`).append(`<option value="${element.url}">${element.name}</option>)</div>`)
     });
 }
 
@@ -28,7 +33,7 @@ function currentClassInformation(currentClass, spellCasting) {
 }
 
 function className(currentClass) {
-    $('#class_info_left').append(`<div class="class_info">
+    $('#class_info_left').append(`<div class="info_style">
     <h4>${currentClass.name}</h4></div>`);
     characterSummary.characterClass = currentClass.name;
 }
@@ -37,7 +42,7 @@ function classHDSave(currentClass) {
     characterSummary.hitDice = currentClass.hit_die;
     characterSummary.hitPoints = currentClass.hit_die + modifierAbility[2];
 
-    $('#class_info_left').append(`<div class="class_info" id="class_info_hd_save"></div>`);
+    $('#class_info_left').append(`<div class="info_style" id="class_info_hd_save"></div>`);
     $('#class_info_hd_save').append(`<div class="class_info_inline">
     <h6>Hit Dice:</h6>
     <h6>d${currentClass.hit_die}</h6></div>`);
@@ -57,7 +62,7 @@ function classHDSave(currentClass) {
 function classProficiencies(currentClass) {
     $(`#class_info_left`).append(`<div><h6>Proficencies</h6></div><div class="class_info class_prof_container" id="proficiencies"></div>`);
     currentClass.proficiencies.forEach(element => {
-        $(`#proficiencies`).append(`<div class="class_list class_prof">
+        $(`#proficiencies`).append(`<div class="class_list prof_style">
              <span id="class_${element.name}">${element.name}</span></div>`);
         if (unsortedProficiencies[`class_proficiencies_0`] === undefined) {
             unsortedProficiencies[`class_proficiencies_0`] = {};
@@ -71,7 +76,7 @@ function classProficiencies(currentClass) {
 
 //Populate and create forms for proficency choices and add values to characterProficencies Object
 function classOptionalProficiencies(currentClass) {
-    $(`#class_info_left`).append(`<div class="class_info">
+    $(`#class_info_left`).append(`<div class="info_style">
     <h6>Optional Class Proficencies</h6><div id="class_proficiencies"></div></div>`);
     currentClass.proficiency_choices.forEach((element, i) => {
         if (element.choose > 1) {
@@ -117,14 +122,14 @@ function classOptionalProficiencies(currentClass) {
 function classSpellcasting(currentClass, spellCasting) {
     if (currentClass.spellcasting !== undefined) {
         $('#class_info_container_right').append('<div class="general_info_styling" id="class_info_right"></div>');
-        $('#class_info_right').append(`<div class="class_info" id="class_spellcasting">
+        $('#class_info_right').append(`<div class="info_style" id="class_spellcasting">
     <h5>${currentClass.name} Spellcasting:</h5>`);
         spellCasting.info.forEach(element => {
             if (characterSummary.traits[`class_traits_spellcasting`] === undefined) {
                 characterSummary.traits[`class_traits_spellcasting`] = {};
             }
             characterSummary.traits[`class_traits_spellcasting`][element.name] = element.name;
-            $('#class_info_right').append(`<div class="class_info"><h6> ${element.name}</h6><p>${element.desc}</p></div>`);
+            $('#class_info_right').append(`<div class="info_style"><h6> ${element.name}</h6><p>${element.desc}</p></div>`);
         });
     }
 }

@@ -27,12 +27,22 @@ function turnPage(i) {
     summarySkills()
 }
 
-$('#btn_prev').on('click', function () {
+$('#btn_prev_xs').on('click', function () {
     pageDown = -1;
     turnPage(pageDown);
 });
 
-$('#btn_next').on('click', function () {
+$('#btn_next_xs').on('click', function () {
+    pageUp = 1;
+    turnPage(pageUp);
+});
+
+$('#btn_prev_md').on('click', function () {
+    pageDown = -1;
+    turnPage(pageDown);
+});
+
+$('#btn_next_md').on('click', function () {
     pageUp = 1;
     turnPage(pageUp);
 });
@@ -271,43 +281,6 @@ function abilityDescriptor(element) {
 
 
 /* ---------- Character Summary ---------- */
-
-
-
-// let proficiencyTools
-// let proficiencyWeapons
-// let proficiencyArmor
-// let proficiencySkill
-// let proficiencyInstrument
-
-// console.log(unsortedProficiencies)
-// function sortProficiencies() {
-//     Object.keys(unsortedProficiencies).forEach(element => {
-//         Object.keys(element).forEach(unsortedProficiency => {
-//             sortedProficiencies.forEach((element1, i) => {
-//                 sortedProficiencies[i].forEach(sortedProficiency => {
-//                     console.log(sortedProficiency)
-//                     console.log(unsortedProficiency)
-//                     console.log(i)
-//                     if (sortedProficiency === unsortedProficiency) {
-//                         if (i === 0) {
-//                             proficienciesTools.push(sortedProficiency);
-//                         } else if (i === 1) {
-//                             proficienciesWeapons.push(sortedProficiency);
-//                         } else if (i === 2) {
-//                             proficienciesArmor.push(sortedProficiency);
-//                         } else if (i === 3) {
-//                             proficienciesSkills.push(sortedProficiency);
-//                         } else if (i === 4) {
-//                             proficienciesInstruments.push(sortedProficiency);
-//                         }
-//                     }
-//                 });
-//             });
-//         });
-//     });
-// }
-
 
 function summaryHitDice(currentClass) {
     characterSummary.hitDice = currentClass.hit_die;

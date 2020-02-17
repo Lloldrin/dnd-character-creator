@@ -1,6 +1,7 @@
 /* ---------- Font Imports ---------- */
 
 @import url('https://fonts.googleapis.com/css?family=Headland+One&display=swap');
+
 /* ---------- Backgrounds and Colors ---------- */
 
 body {
@@ -12,11 +13,31 @@ body {
 }
 
 #page_background {
-    background-color: rgba(255, 255, 255, 0.9);
-    min-height: 100vh;
+    height: 90vh;
+    background-color: rgba(221, 219, 219, 0.7);
+    overflow: auto;
 }
 
 /* ---------- General Styling ---------- */
+
+.info_style, .abilities_header {
+    margin: 10px auto;
+    padding-bottom: 5px;
+    max-height: 10rem;
+    border-bottom: 2px solid red;
+    overflow: auto;
+}
+
+.general_info_styling, #abilities_container {
+    margin: 10px auto;
+    padding: 10px;
+    background-color: #fdfdea;
+    font-family: 'Headland One', serif;
+    font-size: 0.7em;
+    box-shadow: 1px 1px 5px 4px #ccc;
+    -moz-box-shadow: 1px 1px 3px 4px #ccc;
+    -webkit-box-shadow: 1px 1px 3px 4px #ccc;
+}
 
 /* ---------- Header Styling ---------- */
 
@@ -27,13 +48,56 @@ body {
 
 /* ---------- Navigation Styling ---------- */
 
-.nav_btn_container {
+.nav_btn_container_xs {
+    height: 10vh;
+    background-image: linear-gradient(rgb(0, 12, 200), rgb(0, 12, 180));
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+}
+
+.nav_btn_container_md {
     display: flex;
     justify-content: center;
 }
 
 .nav_btn {
     margin: 10px;
+}
+
+.nav_btn_xs {
+    height: 100%;
+    width: 50vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.nav_btn_xs:first-of-type {
+    border-right: 1px solid white;
+}
+
+.hidden_page {
+    display: none;
+}
+
+.current_page {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.btn_navigation {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: rgb(219, 219, 219);
+}
+
+.btn_navigation:hover {
+    border: 2px solid rgba(94, 94, 94, 0.4);
+    background-color: rgba(192, 192, 192, 0.8);
+    color: rgb(41, 41, 41);
 }
 
 /* ---------- Name Styling ---------- */
@@ -58,159 +122,11 @@ body {
     align-self: center;
 }
 
-/* ---------- Race Styling ---------- */
-
-#player_race {
-    padding: 10px;
-    margin: 10px;
-}
-
-/* ---------- Class Styling ---------- */
-
-.class_spellcasting {
-    margin: 10px;
-    border-bottom: 2px solid red;
-}
-
-/* ---------- Ability Styling ---------- */
-
-.base_abilities_container {
-    display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    border-bottom: 1.5px solid black;
-}
-
-.ability_header {
-    margin: 0px;
-    cursor: pointer;
-}
-
-.ability_header:hover {
-    color: yellowgreen;
-}
-
-.base_abilities_container_footer {
-    display: flex;
-    justify-content: space-evenly;
-    margin: auto;
-    border-bottom: 1.5px solid black;
-}
-
-.abilities_styling_footer_text {
-    width: 40%;
-    min-height: 100%;
-    text-align: center;
-    font-size: 1rem;
-    margin: 10px 0px;
-    align-self: center;
-}
-
-.abilities_styling_footer_value {
-    min-height: 100%;
-    width: 10%;
-    font-size: 1rem;
-    align-self: center;
-}
-
-.ability_buy, .ability_buy_race {
-    width: 20px;
-    height: 20px;
-    padding: 0px;
-    background: transparent;
-    border: 1px solid black;
-    border-radius: 50%;
-    text-align: center;
-    justify-content: center;
-    font-size: 0.8rem;
-    display: inline-block;
-    align-self: center;
-}
-
-.ability_styling {
-    padding: 0px;
-    text-align: center;
-    font-size: 1rem;
-    margin: 10px 0px;
-    align-self: center;
-}
-
-/* ---------- Summary Styling ---------- */
-
-.general_info_styling, #abilities_container {
-    margin: 10px auto;
-    padding: 10px;
-    background-color: #fdfdea;
-    font-family: 'Headland One', serif;
-    font-size: 0.7em;
-    box-shadow: 1px 1px 5px 4px #ccc;
-    -moz-box-shadow: 1px 1px 3px 4px #ccc;
-    -webkit-box-shadow: 1px 1px 3px 4px #ccc;
-}
-
-.race_info, .class_info, .class_spellcasting, .abilities_header {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 2px solid red;
-    background-color: #fdfdea;
-    max-height: 152px;
-    overflow: auto;
-}
-
-.class_info::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    background-color: #F5F5F5;
-}
-
-.class_info::-webkit-scrollbar {
-    width: 5px;
-    background-color: #F5F5F5;
-    margin-bottom: 20px;
-}
-
-.class_info::-webkit-scrollbar-thumb {
-    background-color: #000000;
-    border: 2px solid #555555;
-}
-
-.race_list, .class_list {
-    border-radius: 5%;
-    margin: 5px;
-}
-
-p {
-    margin: 0px;
-}
-
-.btn_navigation {
-    border: 1px solid black;
-}
-
-.page_display {
-    min-height: 100vh;
-    width: 100vw;
-}
-
-#class_info_hd_save {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.class_save_list {
-    display: inline-block;
-    margin: 0px 10px;
-}
+/* ---------- Race & Class Styling ---------- */
 
 .btn_race.current_race, .btn_class.current_class {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.3)
 }
-
-/* #race_list, #class_list {
-    margin-top: 20px;
-    margin-bottom: 20px;
-} */
 
 .btn_race, .btn_class {
     width: 120px;
@@ -225,34 +141,97 @@ p {
 }
 
 .btn_race:hover, .btn_class:hover {
-    background-color: rgba(190, 190, 190, 0.3);
+    background-color: rgba(255, 0, 0, 0.3);
 }
 
 .btn_race.current_race:hover, .btn_class.current_class:hover {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.3);
 }
 
-.hidden_page {
-    display: none;
-}
-
-.current_page {
-    display: flex;
+.race_list, .class_list {
+    border-radius: 5%;
+    margin: 5px;
 }
 
 .class_prof {
     text-align: center;
     min-width: 30%;
     max-width: 45%;
-    border-bottom: 1.5px solid black;
     font-size: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: 0.5px solid black;
 }
+
 
 .class_prof_container {
     display: flex;
     flex-wrap: wrap;
     max-height: 200px;
 }
+
+/* ---------- Ability Styling ---------- */
+
+.base_abilities_container {
+    margin: auto;
+    border-bottom: 1.5px solid black;
+}
+
+.ability_header {
+    margin: 0px;
+    cursor: pointer;
+}
+
+.ability_header:hover {
+    color: yellowgreen;
+}
+
+.base_abilities_container_footer {
+    margin: auto;
+}
+
+.abilities_styling_footer_text,
+.abilities_styling_footer_value {
+    align-self: center;
+    text-align: center;
+    font-size: 1rem;
+    margin: 10px 10px;
+}
+
+.abilities_styling_footer_value {
+    margin: 10px 15px 10px 5px;
+    font-weight: bold;
+}
+
+
+.ability_buy, .ability_buy_race {
+    
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 0.4);
+    border: 1px solid black;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    display: inline-block;
+    justify-content: center;
+    align-content: center;
+}
+
+.ability_buy:hover, .ability_buy_race:hover{
+    background-color: rgba(68, 67, 67, 0.8);
+    color: rgba(255, 255, 255, 0.7);
+    transition: .2s ease-in-out;
+}
+
+.ability_styling {
+    margin: 10px 0px;
+    padding: 0px;
+    text-align: center;
+    font-size: 1rem;
+    align-self: center;
+}
+
+/* ---------- Summary Styling ---------- */
 
 #character_name {
     padding-bottom: 5px;
@@ -334,12 +313,46 @@ p {
     font-weight: bold;
 }
 
+/* ---------- Summary Styling ---------- */
+
+#info_.info_style_hd_save {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.class_save_list {
+    display: inline-block;
+    margin: 0px 10px;
+}
+
+/* ---------- Scrollbar Styling ---------- */
+
+#page_background::-webkit-scrollbar-track, 
+.info_style::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+#page_background::-webkit-scrollbar,
+.info_style::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+    margin-bottom: 20px;
+}
+
+#page_background::-webkit-scrollbar-thumb,
+.info_style::-webkit-scrollbar-thumb {
+    background-color: #000000;
+    border: 2px solid #555555;
+}
+
 @media (min-width: 576px) {
     body {
         background-size: 130%;
     }
-
     #page_background {
-
+        background-color: rgba(221, 219, 219, 0.8);
+        min-height: 100vh;
     }
 }

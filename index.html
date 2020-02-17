@@ -13,31 +13,35 @@
 
 <body>
     <div class="container" id="page_background">
-        
-            <h1 id="page_header">D&D 5e Character Creator 0.3</h1>
-            <div class="col nav_btn_container">
-                <div class="nav_btn"><button class="btn btn_navigation" id="btn_prev">Prev</button></div>
-                <div class="nav_btn"><button class=" btn btn_navigation" id="btn_next">Next</button></div>
-            </div>
 
-            <div class="row">
+        <h1 id="page_header">D&D 5e Character Creator 0.3</h1>
+
+        <div class="d-none d-md-flex justify-content-center col nav_btn_container_md">
+            <div class="nav_btn"><button class="btn btn_navigation" id="btn_prev_md">Prev</button></div>
+            <div class="nav_btn"><button class=" btn btn_navigation" id="btn_next_md">Next</button></div>
+        </div>
+
+        <div class="row">
             <div class="col-12" id="nav_page_0">
                 <div class="col-12" id="name_field_container">
                     <div class="general_info_styling" id="name_field_background">
                         <input type="text" id="name_field" name="character_name" placeholder="Character Name">
+                        <br>
                         <button id="submit_name">Submit</button>
                     </div>
                 </div>
             </div>
 
             <div class="col-12 hidden_page" id="nav_page_1">
-                <div class="col-12 col-md-2" id="race_list"></div>
+                <div class="d-none d-md-block col-md-2" id="race_list_md"></div>
+                <div class="d-md-none col-12"><select id="race_list_xs"></select></div>
                 <div class="col-12 col-md-6" id="race_info_container_left"></div>
                 <div class="col-12 col-md-4" id="race_info_container_right"></div>
             </div>
 
             <div class="col-12 hidden_page" id="nav_page_2">
-                <div class="col-12 col-md-2" id="class_list"></div>
+                <div class="d-none d-md-block col-md-2" id="class_list_md"></div>
+                <div class="d-md-none col-12"><select id="class_list_xs"></select></div>
                 <div class="col-12 col-md-6" id="class_info_container_left"></div>
                 <div class="col-12 col-md-4" id="class_info_container_right"></div>
             </div>
@@ -91,6 +95,11 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="d-flex d-md-none justify-content-center col nav_btn_container_xs">
+        <div class="nav_btn_xs" id="btn_prev_xs"><span>Prev</span></div>
+        <div class="nav_btn_xs" id="btn_next_xs"><span>Next</span></div>
     </div>
 
 
