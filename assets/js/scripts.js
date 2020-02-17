@@ -194,8 +194,8 @@ function printAbilities() {
         $(`#current_bought_race_${element}`).empty().append(raceAbility[i]);
         $('#ability_points').empty().append(availableAbility);
         $('#race_bonus_points').empty().append(bonusAbility);
-        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">(${modifierAbility[i]})</div>`);
-        $(`#ability_modifier_${element}`).empty().text(modifierAbility[i]);
+        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">${(modifierAbility[i]<=0?"":"+") + modifierAbility[i]}</div>`);
+        $(`#ability_modifier_${element}`).empty().text((modifierAbility[i]<=0?"":"+") + modifierAbility[i]);
     });
 };
 

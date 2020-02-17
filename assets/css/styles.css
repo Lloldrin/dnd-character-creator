@@ -105,6 +105,8 @@ body {
 #name_field_container, #name_field_background {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    text-align: center;
     height: 60vh;
 }
 
@@ -116,6 +118,7 @@ body {
 
 #name_field {
     align-self: center;
+    margin: 10px;
 }
 
 #submit_name {
@@ -248,23 +251,22 @@ body {
 .character_ability {
     min-width: 15%;
     height: 80px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    text-align: center;
 }
 
 .character_ability_header {
     font-size: 1rem;
-    max-width: 100%;
-    max-height: 30%;
-    text-align: center;
 }
 
 .character_ability_score {
     font-size: 1.2rem;
-    text-align: center;
 }
 
 .character_ability_bonus {
     font-size: 1rem;
-    text-align: center;
 }
 
 .character_summary {
