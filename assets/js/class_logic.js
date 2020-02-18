@@ -64,18 +64,15 @@ function classProficiencies(currentClass) {
     currentClass.proficiencies.forEach(element => {
         $(`#proficiencies`).append(`<div class="class_prof prof_style">
              <span id="class_${element.name}">${element.name}</span></div>`);
-        if (unsortedProficiencies[`class_proficiencies_0`] === undefined) {
-            unsortedProficiencies[`class_proficiencies_0`] = {};
-        }
-        else {
-            unsortedProficiencies[`class_proficiencies_0`] = {};
-        }
         unsortedProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
+        addProficiency(element.name);
+        addClassProficiency(this.value)
     });
 }
 
 //Populate and create forms for proficency choices and add values to characterProficencies Object
 function classOptionalProficiencies(currentClass) {
+    let previousProficiency 
     $(`#class_info_left`).append(`<div class="info_style">
     <h6>Optional Class Proficencies</h6><div id="class_proficiencies"></div></div>`);
     currentClass.proficiency_choices.forEach((element, i) => {
@@ -86,21 +83,19 @@ function classOptionalProficiencies(currentClass) {
                 $(`#class_multi_list${i}`).append(`<div class="class_multi_list_item">
             <input type="checkbox" class="class_proficiencies_${i} checkbox_styling" value="${element.name}"><span> ${element.name.replace('Skill: ', '')}</span></div>`);
             });
-            
+
             $(`.class_proficiencies_${i}`).on('change', function () {
                 if ($(`.class_proficiencies_${i}:checked`).length > element.choose) {
                     this.checked = false;
                 }
                 else {
                     if (this.checked === true) {
-                        if (unsortedProficiencies[`class_proficiencies_${i + 1}`] === undefined) {
-                            unsortedProficiencies[`class_proficiencies_${i + 1}`] = {};
-                        }
-                        unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value] = this.value;
+                        addProficiencySkill(this.value)
                         addProficiency(this.value)
+                        addClassProficiency(this.value)
                     }
                     else {
-                        delete unsortedProficiencies[`class_proficiencies_${i + 1}`][this.value];
+                        removeProficiencySkill(this.value)
                         removeProficiency(this.value)
                     }
                 }
@@ -114,9 +109,14 @@ function classOptionalProficiencies(currentClass) {
             element.from.forEach(element => {
                 $(`#class_prof_list${i}`).append(`<option value="${element.name}">${element.name}</option>`);
             });
-            $(`#class_prof_list${i}`).on('change', function () {
-                unsortedProficiencies[`class_proficiencies_${i + 1}`] = {};
-                unsortedProficiencies[`class_proficiencies_${i + 1}`][$(`#class_prof_list${i}`).children("option:selected").val()] = $(`#class_prof_list${i}`).children("option:selected").val();
+            $(`#class_prof_list${i}`).on('focus', function () {
+                previousProficiency = $(`#class_prof_list${i}`).children("option:selected").val()
+            }).change(function (){
+                removeProficiency(previousProficiency);
+                removeClassProficiency(proficiency)
+                addProficiency($(`#class_prof_list${i}`).children("option:selected").val())
+                addClassProficiency($(`#class_prof_list${i}`).children("option:selected").val())
+                previousProficiency = $(`#class_prof_list${i}`).children("option:selected").val()
             });
         }
     });
@@ -128,10 +128,6 @@ function classSpellcasting(currentClass, spellCasting) {
         $('#class_info_right').append(`<div class="info_style" id="class_spellcasting">
     <h5>${currentClass.name} Spellcasting:</h5>`);
         spellCasting.info.forEach(element => {
-            if (characterSummary.traits[`class_traits_spellcasting`] === undefined) {
-                characterSummary.traits[`class_traits_spellcasting`] = {};
-            }
-            characterSummary.traits[`class_traits_spellcasting`][element.name] = element.name;
             $('#class_info_right').append(`<div class="info_style"><h6> ${element.name}</h6><p>${element.desc}</p></div>`);
         });
     }

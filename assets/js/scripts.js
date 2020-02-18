@@ -60,9 +60,9 @@ let characterSummary = {
     proficency: 2,
     passivePerception: 1,
     passiveInsight: 1,
-    saves: {},
-    languages: {},
-    traits: {},
+    saves: [],
+    languages: [],
+    traits: [],
     proficienciesInstruments: [],
     proficienciesSkills: [],
     proficienciesWeapons: [],
@@ -337,6 +337,9 @@ async function printCurrentCharacter() {
     $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
     $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
     $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
+
+    $('#summary_right').empty()
+    $('#summary_right').append(`<div class="bleh">Hello</div>`)
 };
 
 populateAbilityPage();

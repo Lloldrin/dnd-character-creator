@@ -12,7 +12,7 @@ function populateRaceList(listRaces) {
     listRaces.forEach(element => {
         $(`#race_list_md`).append(`<div><button type="button" class="btn btn_race" id="${element.url}">${element.name}</button></div>`)
         $(`#race_list_xs`).append(`<option value="${element.url}">${element.name}</option>)</div>`)
-    })   
+    })
 }
 
 //Sets the current race to show and the previous choice to hidden
@@ -73,15 +73,13 @@ function raceLanguageDesc(currentRace) {
 function raceLanguage(currentRace) {
     $('#race_info_right').append(`<div class="info_style" id="race_languages"><h6>Languages:</h6><div>`)
     currentRace.languages.forEach(element => {
-        if (characterSummary.languages[`race_languages_0`] === undefined) {
-            characterLanguages[`race_languages_0`] = {};
-        }
-        characterSummary.languages[`race_languages_0`][element.name] = element.name;
+        characterSummary.languages.push(element.name);
         $('#race_languages').append(`<div class="race_list">${element.name}<div>`);
     });
 }
 
 function raceLanguageOptions(currentRace) {
+    let i = 0
     if (currentRace.language_options !== undefined) {
         if (currentRace.language_options.choose > 1) {
             $('#race_languages').append(`<div class="race_info_container_right" id="race_languages">
@@ -95,15 +93,7 @@ function raceLanguageOptions(currentRace) {
                     this.checked = false;
                 }
                 else {
-                    if (this.checked === true) {
-                        if (characterLanguages[`race_languages_1`] === undefined) {
-                            characterLanguages[`race_languages_1`] = {};
-                        }
-                        characterLanguages[`race_languages_1`][this.value] = [this.value];
-                    }
-                    else {
-                        delete characterLanguages[`race_languages_1`][this.value];
-                    }
+                    characterSummary.languages.push(this.value);
                 }
             });
         }
@@ -116,8 +106,13 @@ function raceLanguageOptions(currentRace) {
                 $('#race_languages_list').append(`<option value="${element.name}">${element.name}</option>)`);
             });
             $('#race_languages_list').on('change', function () {
-                characterSummary.languages[`race_languages_1`] = {};
-                characterSummary.languages[`race_languages_1`][$('#race_languages_list').children("option:selected").val()] = $('#race_languages_list').children("option:selected").val();
+                if (i > 0) {
+                    console.log(i)
+                    characterSummary.languages.pop()
+                } else {
+                    i++;
+                }
+                characterSummary.languages.push($('#race_languages_list').children("option:selected").val());
             });
         }
     }
@@ -128,15 +123,18 @@ function raceProficiencies(currentRace) {
         $(`#race_info_right`).append(`<div class="info_style" id="race_proficiencies"><h6>Race Proficencies:</h6></div>`);
         currentRace.starting_proficiencies.forEach(element => {
             $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">${element.name}</div>`);
-            unsortedProficiencies[`race_proficiencies_0`][element.name] = element.name;
+            addProficiencySkill(element.name)
+            addProficiency(element.name)
+            addRaceProficiency(element.name)
         });
     }
 }
 
 function raceProficienciesOptions(currentRace) {
+    let previousProficiency
     if (currentRace.starting_proficiency_options !== undefined) {
         if (currentRace.starting_proficiency_options.choose > 1) {
-            $('#race_proficiencies').append(`<div class="race_list" id="race_proficiencies_options"><p>Choose ${currentRace.language_options.choose} proficencies from this list</div>`);
+            $('#race_proficiencies').append(`<div class="race_list" id="race_proficiencies_options"><p>Choose ${currentRace.proficiencies_options.choose} proficencies from this list</div>`);
             currentRace.starting_proficiency_options.from.forEach(element => {
                 $('#race_proficiencies_options').append(`<div class="race_info race_list">
             <input type="checkbox" class="race_proficiencies_options" value="${element.name}"><span> ${element.name}</span></div>`);
@@ -147,13 +145,11 @@ function raceProficienciesOptions(currentRace) {
                 }
                 else {
                     if (this.checked === true) {
-                        if (unsortedProficiencies[`race_proficiencies_1`] === undefined) {
-                            unsortedProficiencies[`race_proficiencies_1`] = {};
-                        }
-                        unsortedProficiencies[`race_proficiencies_1`][this.value] = [this.value];
+                        addProficiency(this.value)
+                        addRaceProficiency(this.value)
                     }
                     else {
-                        delete unsortedProficiencies[`race_proficiencies_1`][this.value];
+                        removeProficiency(this.value)
                     }
                 }
             });
@@ -166,10 +162,15 @@ function raceProficienciesOptions(currentRace) {
             currentRace.starting_proficiency_options.from.forEach(element => {
                 $('#race_proficiencies_options_list').append(`<option value="${element.name}">${element.name}</option>)`);
             });
-            $('#race_proficiencies_options_list').on('change', function () {
-                unsortedProficiencies[`race_proficiencies_1`] = {};
-                unsortedProficiencies[`race_proficiencies_1`][$('#race_proficiencies_options_list').children("option:selected").val()] = $('#race_proficiencies_options_list').children("option:selected").val();
-            });
+
+            $('#race_proficiencies_options_list').on('focus', function () {
+                previousProficiency = $('#race_proficiencies_options_list').children("option:selected").val()
+            }).change(function () {
+                removeProficiency(previousProficiency);
+                addProficiency($('#race_proficiencies_options_list').children("option:selected").val())
+                addRaceProficiency($('#race_proficiencies_options_list').children("option:selected").val())
+                previousProficiency = $('#race_proficiencies_options_list').children("option:selected").val()
+            })
         }
     }
 }
@@ -179,15 +180,13 @@ function raceTraits(currentRace) {
         $(`#race_info_right`).append(`<div class="info_style" id="race_traits"><h6>Race Traits:</h6></div>`);
         currentRace.traits.forEach(element => {
             $(`#race_traits`).append(`<div class="race_list" id="race_${element.name}_trait">${element.name}</div>`);
-            if (characterSummary.traits[`race_traits_0`] === undefined) {
-                characterSummary.traits[`race_traits_0`] = {};
-            }
-            characterSummary.traits[`race_traits_0`][`${element.name}`] = [`${element.name}`];
+            characterSummary.traits.push(element.name)
         });
     }
 }
 
 function raceTraitOptions(currentRace) {
+    let previousTraitCounter = 0
     if (currentRace.trait_options !== undefined) {
         if (`${currentRace.trait_options.choose}` > 1) {
             $('#race_traits').append(`<div class="race_list" id="race_trait_options">
@@ -202,31 +201,33 @@ function raceTraitOptions(currentRace) {
             $('.race_trait_option').on('change', function () {
                 if ($(`.race_trait_option:checked`).length > currentRace.trait_options.choose) {
                     this.checked = false;
-                }
-                else {
-                    if (this.checked === true) {
-                        if (characterSummary.traits['race_traits_1'] === undefined) {
-                            characterSummary.traits[`race_traits_1`] = {};
-                        }
-                        characterSummary.traits[`race_traits_1`][this.value] = [this.value];
-                    }
-                    else {
-                        delete characterSummary.traits[`race_traits_1`][this.value];
-                    }
+                } else if (this.checked === true) {
+                    characterSummary.traits.push(element.name)
+                } else {
+                    characterSummary.traits.forEach((trait, n) => {
+                        if (element.name === trait)
+                            currentClassProficiencies.splice(n);
+                    });
                 }
             });
-        }
-        else {
+        } else {
+
             $('#race_traits').append(`<div class="list" id="race_trait_options">
-        <div class="list_header">Choose ${currentRace.trait_options.choose} trait from this list</div>
-        <div><select id="race_trait_list"></select></div>
-        </div>`);
+            <div class="list_header">Choose ${currentRace.trait_options.choose} trait from this list</div>
+            <div><select id="race_trait_list"></select></div>
+            </div>`);
+
             currentRace.trait_options.from.forEach(element => {
                 $('#race_trait_list').append(`<option value="${element.name}">${element.name}</option>`);
             });
+
             $('#race_trait_list').on('change', function () {
-                characterSummary.traits[`race_traits_1`] = {};
-                characterSummary.traits[`race_traits_1`][$('#race_trait_list').children("option:selected").val()] = [$('#race_trait_list').children("option:selected").val()];
+                if (previousTraitCounter > 0) {
+                    characterSummary.traits.pop();
+                } else {
+                    previousTraitCounter ++;
+                }
+                characterSummary.traits.push($('#race_trait_list').children("option:selected").val());
             });
         }
     }
@@ -243,25 +244,26 @@ function raceAbilityBonus(currentRace) {
 
 function resetRace() {
     resetRaceStats()
-    unsortedProficiencies['race_proficiencies_0'] = {};
-    unsortedProficiencies['race_proficiencies_1'] = {};
-    characterSummary.languages['race_languages_0'] = {};
-    characterSummary.languages['race_languages_1'] = {};
-    characterSummary.traits['race_traits_0'] = {};
-    characterSummary.traits['race_traits_1'] = {};
+    resetRaceProficiencies()
+    characterSummary.languages = [];
+    characterSummary.traits = [];
     $(`#race_info_container_left`).empty();
     $(`#race_info_container_right`).empty();
 }
 
 function resetRaceStats() {
-    $(`#race_str`).empty().append(0);
-    $(`#race_dex`).empty().append(0);
-    $(`#race_con`).empty().append(0);
-    $(`#race_int`).empty().append(0);
-    $(`#race_wis`).empty().append(0);
-    $(`#race_cha`).empty().append(0);
+    nameAbility.forEach((element, i) => {
+        $(`#race_${element[i]}`).empty().append(0);
+    })
     $('#race_bonus').empty();
     $('#race_bonus_points').empty().append(0);
     raceAbility = [0, 0, 0, 0, 0, 0,];
     bonusAbility = 0;
+}
+
+function resetRaceProficiencies() {
+    sortedProficienciesOrder.forEach((element) => {
+        characterSummary[`proficiencies${element}`].forEach(proficiency => {
+        });
+    })
 }

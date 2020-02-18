@@ -1,91 +1,4 @@
-let sortedProficiencies = [
-    [
-        "Alchemist's supplies",
-        "Brewer's supplies",
-        "Calligrapher's supplies",
-        "Carpenter's tools",
-        "Cartographer's tools",
-        "Cobbler's tools",
-        "Cook's utensils",
-        "Glassblower's tools",
-        "Jeweler's tools",
-        "Leatherworker's tools",
-        "Mason's tools",
-        "Painter's supplies",
-        "Potter's tools",
-        "Smith's tools",
-        "Tinker's tools",
-        "Weaver's tools",
-        "Woodcarver's tools",
-        "Disguise kit",
-        "Forgery kit"
-    ],
-
-    [
-        "Simple Weapons",
-        "Martial Weapons",
-        "Longswords",
-        "Shortswords",
-        "Rapiers",
-        "Crossbows, hand",
-        "Clubs",
-        "Daggers",
-        "Javelins",
-        "Maces",
-        "Quarterstaffs",
-        "Sickles",
-        "Spears",
-        "Darts",
-        "Slings",
-        "Scimitars",
-        "Battleaxes",
-        "Handaxes",
-        "Light hammers",
-        "Warhammers,"
-    ],
-
-    [
-        "Light armor",
-        "Medium armor",
-        "Heavy armor",
-        "All armor",
-        "Shields"
-    ],
-
-    [
-        "Acrobatics",
-        "Animal Handling",
-        "Arcana",
-        "Athletics",
-        "Deception",
-        "History",
-        "Insight",
-        "Intimidation",
-        "Investigation",
-        "Medicine",
-        "Nature",
-        "Perception",
-        "Performance",
-        "Persuasion",
-        "Religion",
-        "Sleight of Hand",
-        "Stealth",
-        "Survival"
-    ],
-
-    [
-        "Bagpipes",
-        "Drum",
-        "Dulcimer",
-        "Flute",
-        "Lute",
-        "Lyre",
-        "Horn",
-        "Pan flute",
-        "Shawm",
-        "Viol"
-    ],
-]
+let proficiencySkill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 let skills = [
     "Skill: Acrobatics",
@@ -107,7 +20,7 @@ let skills = [
     "Skill: Stealth",
     "Skill: Survival"]
 
-function addProficiency(skill) {
+function addProficiencySkill(skill) {
     skills.forEach((element, i) => {
         if (skill === element) {
             proficiencySkill[i] = 2;
@@ -115,18 +28,13 @@ function addProficiency(skill) {
     });
 }
 
-function removeProficiency(skill) {
+function removeProficiencySkill(skill) {
     skills.forEach((element, i) => {
         if (skill === element) {
             proficiencySkill[i] = 0;
         }
     });
 }
-
-
-
-
-let proficiencySkill = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 function characterSkills() {
 
@@ -229,3 +137,139 @@ function characterSkills() {
     ]
 }
 
+let sortedProficienciesOrder = [
+    'Weapons', 
+    'Armor', 
+    'Tools', 
+    'Instruments',
+];
+
+let sortedProficiencies = [
+
+    [
+        "Simple weapons",
+        "Martial weapons",
+        "Longswords",
+        "Shortswords",
+        "Rapiers",
+        "Crossbows, hand",
+        "Clubs",
+        "Daggers",
+        "Javelins",
+        "Maces",
+        "Quarterstaffs",
+        "Sickles",
+        "Spears",
+        "Darts",
+        "Slings",
+        "Scimitars",
+        "Battleaxes",
+        "Handaxes",
+        "Light hammers",
+        "Warhammers",
+    ],
+
+    [
+        "Light armor",
+        "Medium armor",
+        "Heavy armor",
+        "All armor",
+        "Shields",
+    ],
+
+    [
+        "Alchemist's supplies",
+        "Brewer's supplies",
+        "Calligrapher's supplies",
+        "Carpenter's tools",
+        "Cartographer's tools",
+        "Cobbler's tools",
+        "Cook's utensils",
+        "Glassblower's tools",
+        "Jeweler's tools",
+        "Leatherworker's tools",
+        "Mason's tools",
+        "Painter's supplies",
+        "Potter's tools",
+        "Smith's tools",
+        "Tinker's tools",
+        "Weaver's tools",
+        "Woodcarver's tools",
+        "Disguise kit",
+        "Forgery kit"
+    ],
+    
+    [
+        "Bagpipes",
+        "Drum",
+        "Dulcimer",
+        "Flute",
+        "Lute",
+        "Lyre",
+        "Horn",
+        "Pan flute",
+        "Shawm",
+        "Viol"
+    ],
+]
+
+function addProficiency(proficiency) {
+    sortedProficiencies.forEach((element, i) => {
+        element.forEach((skill, m) => {
+            if (proficiency === skill) {
+                characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].push(skill)
+            }
+        });
+    });
+}
+
+function removeProficiency(proficiency) {
+    sortedProficiencies.forEach((element, i) => {
+        element.forEach((skill) => {
+            if (proficiency === skill) {
+                characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].forEach((characterProficiency, n) => {
+                    if (proficiency === characterProficiency)
+                    characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].splice(n);
+                });
+            };
+        });
+    });
+}
+
+let currentRaceProficiencies = [];
+
+function addRaceProficiency(proficiency) {
+    sortedProficiencies.forEach(element => {
+        element.forEach(skill => {
+            if (proficiency === skill) {
+                currentRaceProficiencies.push(skill)
+                console.log('hello');
+            }
+        });
+    });
+}
+
+let currentClassProficiencies = [];
+
+function addClassProficiency(proficiency) {
+    sortedProficiencies.forEach(element => {
+        element.forEach(skill => {
+            if (proficiency === skill) {
+                currentClassProficiencies.push(skill)
+            }
+        });
+    });
+}
+
+function removeClassProficiency(proficiency) {
+    sortedProficiencies.forEach((element, i) => {
+        element.forEach((skill) => {
+            if (proficiency === skill) {
+                currentClassProficiencies.forEach((classProficiency, n) => {
+                    if (proficiency === classProficiency)
+                    currentClassProficiencies.splice(n);
+                });
+            };
+        });
+    });
+}

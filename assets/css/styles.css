@@ -231,7 +231,6 @@ body {
     border: 1px solid black;
     border-radius: 50%;
     font-size: 0.75rem;
-    display: inline-block;
     justify-content: center;
     align-content: center;
 }
