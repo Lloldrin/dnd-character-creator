@@ -39,6 +39,15 @@ body {
     -webkit-box-shadow: 1px 1px 3px 4px #ccc;
 }
 
+.info_sub_container {
+    border-bottom: 2px solid red;
+}
+
+.summary_skills_list:last-of-type,
+.summary_proficiencies_list:last-of-type {
+    border: none;
+}
+
 /* ---------- Header Styling ---------- */
 
 #page_header {
@@ -297,9 +306,15 @@ body {
     text-align: center;
 }
 
-.summary_skill_header {
-    margin: 10px 5px;
+.summary_top_header {
+    margin: 10px 0px;
     border-bottom: 2px solid red;
+    padding-bottom: 5px;
+}
+
+.summary_sub_header {
+    margin: 10px 5px;
+    border-bottom: 1px solid black;
     padding-bottom: 5px;
 }
 

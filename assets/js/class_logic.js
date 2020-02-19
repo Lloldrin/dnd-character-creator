@@ -63,10 +63,8 @@ function classProficiencies(currentClass) {
     $(`#class_info_left`).append(`<div class="info_style"><h6>Proficencies</h6><div class="class_info class_prof_container" id="proficiencies"></div></div>`);
     currentClass.proficiencies.forEach(element => {
         $(`#proficiencies`).append(`<div class="class_prof prof_style">
-             <span id="class_${element.name}">${element.name}</span></div>`);
-        unsortedProficiencies[`class_proficiencies_0`][`${element.name}`] = element.name;
-        addProficiency(element.name);
-        addClassProficiency(this.value)
+             <span id="class_${element.name}">${element.name}</span></div>`);   
+        addProficiencies(currentClassProficiencies, element.name)
     });
 }
 
@@ -91,12 +89,11 @@ function classOptionalProficiencies(currentClass) {
                 else {
                     if (this.checked === true) {
                         addProficiencySkill(this.value)
-                        addProficiency(this.value)
-                        addClassProficiency(this.value)
+                        addProficiencies(currentClassProficiencies, this.value)
                     }
                     else {
+                        removeProficiencies(currentClassProficiencies, this.value)
                         removeProficiencySkill(this.value)
-                        removeProficiency(this.value)
                     }
                 }
             });
@@ -112,10 +109,8 @@ function classOptionalProficiencies(currentClass) {
             $(`#class_prof_list${i}`).on('focus', function () {
                 previousProficiency = $(`#class_prof_list${i}`).children("option:selected").val()
             }).change(function (){
-                removeProficiency(previousProficiency);
-                removeClassProficiency(proficiency)
-                addProficiency($(`#class_prof_list${i}`).children("option:selected").val())
-                addClassProficiency($(`#class_prof_list${i}`).children("option:selected").val())
+                removeProficiencies(currentClassProficiencies, previousProficiency)
+                addProficiencies(currentClassProficiencies, $(`#class_prof_list${i}`).children("option:selected").val())
                 previousProficiency = $(`#class_prof_list${i}`).children("option:selected").val()
             });
         }
@@ -136,8 +131,5 @@ function classSpellcasting(currentClass, spellCasting) {
 function resetClass() {
     $(`#class_info_container_left`).empty();
     $(`#class_info_container_right`).empty();
-    unsortedProficiencies['class_proficiencies_0'] = {};
-    unsortedProficiencies['class_proficiencies_1'] = {};
-    unsortedProficiencies['class_proficiencies_2'] = {};
-    unsortedProficiencies['class_proficiencies_3'] = {};
+    currentClassProficiencies = [[], [], [], []]
 }

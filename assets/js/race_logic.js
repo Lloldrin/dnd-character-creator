@@ -124,8 +124,7 @@ function raceProficiencies(currentRace) {
         currentRace.starting_proficiencies.forEach(element => {
             $(`#race_proficiencies`).append(`<div class="race_list" id="race_${element.name}_proficency">${element.name}</div>`);
             addProficiencySkill(element.name)
-            addProficiency(element.name)
-            addRaceProficiency(element.name)
+            addProficiencies(currentRaceProficiencies, element.name)
         });
     }
 }
@@ -149,7 +148,7 @@ function raceProficienciesOptions(currentRace) {
                         addRaceProficiency(this.value)
                     }
                     else {
-                        removeProficiency(this.value)
+                        removeProficiencies(currentRaceProficiencies, this.value)
                     }
                 }
             });
@@ -166,9 +165,8 @@ function raceProficienciesOptions(currentRace) {
             $('#race_proficiencies_options_list').on('focus', function () {
                 previousProficiency = $('#race_proficiencies_options_list').children("option:selected").val()
             }).change(function () {
-                removeProficiency(previousProficiency);
-                addProficiency($('#race_proficiencies_options_list').children("option:selected").val())
-                addRaceProficiency($('#race_proficiencies_options_list').children("option:selected").val())
+                removeProficiencies(currentRaceProficiencies, previousProficiency);
+                addProficiencies(currentRaceProficiencies, $('#race_proficiencies_options_list').children("option:selected").val())
                 previousProficiency = $('#race_proficiencies_options_list').children("option:selected").val()
             })
         }
@@ -206,7 +204,7 @@ function raceTraitOptions(currentRace) {
                 } else {
                     characterSummary.traits.forEach((trait, n) => {
                         if (element.name === trait)
-                            currentClassProficiencies.splice(n);
+                            characterSummary.traits.splice(n);
                     });
                 }
             });
@@ -225,7 +223,7 @@ function raceTraitOptions(currentRace) {
                 if (previousTraitCounter > 0) {
                     characterSummary.traits.pop();
                 } else {
-                    previousTraitCounter ++;
+                    previousTraitCounter++;
                 }
                 characterSummary.traits.push($('#race_trait_list').children("option:selected").val());
             });
@@ -244,7 +242,7 @@ function raceAbilityBonus(currentRace) {
 
 function resetRace() {
     resetRaceStats()
-    resetRaceProficiencies()
+    currentRaceProficiencies = [[], [], [], []];
     characterSummary.languages = [];
     characterSummary.traits = [];
     $(`#race_info_container_left`).empty();
@@ -259,11 +257,4 @@ function resetRaceStats() {
     $('#race_bonus_points').empty().append(0);
     raceAbility = [0, 0, 0, 0, 0, 0,];
     bonusAbility = 0;
-}
-
-function resetRaceProficiencies() {
-    sortedProficienciesOrder.forEach((element) => {
-        characterSummary[`proficiencies${element}`].forEach(proficiency => {
-        });
-    })
 }

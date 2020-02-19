@@ -18,7 +18,8 @@ let skills = [
     "Skill: Religion",
     "Skill: Sleight of Hand",
     "Skill: Stealth",
-    "Skill: Survival"]
+    "Skill: Survival"
+]
 
 function addProficiencySkill(skill) {
     skills.forEach((element, i) => {
@@ -36,7 +37,7 @@ function removeProficiencySkill(skill) {
     });
 }
 
-function characterSkills() {
+function characterSkillValues() {
 
     characterSummary.proficienciesSkills = [
         //Strength Skills
@@ -137,10 +138,10 @@ function characterSkills() {
     ]
 }
 
-let sortedProficienciesOrder = [
-    'Weapons', 
-    'Armor', 
-    'Tools', 
+let proficiencyNames = [
+    'Weapons',
+    'Armor',
+    'Tools',
     'Instruments',
 ];
 
@@ -186,6 +187,7 @@ let sortedProficiencies = [
         "Cobbler's tools",
         "Cook's utensils",
         "Glassblower's tools",
+        "Herbalism Kit",
         "Jeweler's tools",
         "Leatherworker's tools",
         "Mason's tools",
@@ -198,7 +200,7 @@ let sortedProficiencies = [
         "Disguise kit",
         "Forgery kit"
     ],
-    
+
     [
         "Bagpipes",
         "Drum",
@@ -213,63 +215,33 @@ let sortedProficiencies = [
     ],
 ]
 
-function addProficiency(proficiency) {
+let currentRaceProficiencies = [[], [], [], []];
+let currentClassProficiencies = [[], [], [], []];
+let summaryProficiencies = [[], [], [], []]
+
+function addProficiencies(type, value) {
     sortedProficiencies.forEach((element, i) => {
-        element.forEach((skill, m) => {
-            if (proficiency === skill) {
-                characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].push(skill)
-            }
-        });
-    });
-}
-
-function removeProficiency(proficiency) {
-    sortedProficiencies.forEach((element, i) => {
-        element.forEach((skill) => {
-            if (proficiency === skill) {
-                characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].forEach((characterProficiency, n) => {
-                    if (proficiency === characterProficiency)
-                    characterSummary[`proficiencies${sortedProficienciesOrder[i]}`].splice(n);
-                });
-            };
-        });
-    });
-}
-
-let currentRaceProficiencies = [];
-
-function addRaceProficiency(proficiency) {
-    sortedProficiencies.forEach(element => {
         element.forEach(skill => {
-            if (proficiency === skill) {
-                currentRaceProficiencies.push(skill)
-                console.log('hello');
+            if (skill === value) {
+                type[i].push(value)
             }
-        });
-    });
+        })
+    })
 }
 
-let currentClassProficiencies = [];
-
-function addClassProficiency(proficiency) {
-    sortedProficiencies.forEach(element => {
-        element.forEach(skill => {
-            if (proficiency === skill) {
-                currentClassProficiencies.push(skill)
+function removeProficiencies(type, value) {
+    type.forEach((element, i) => {
+        element.forEach((skill, n) => {
+            if (skill === value) {
+                type[i].splice(n);
             }
-        });
-    });
+        })
+    })
 }
 
-function removeClassProficiency(proficiency) {
-    sortedProficiencies.forEach((element, i) => {
-        element.forEach((skill) => {
-            if (proficiency === skill) {
-                currentClassProficiencies.forEach((classProficiency, n) => {
-                    if (proficiency === classProficiency)
-                    currentClassProficiencies.splice(n);
-                });
-            };
-        });
-    });
+function summarizeProficiencies() {
+    for (let i = 0; i < summaryProficiencies.length; i++) {
+        summaryProficiencies[i] = currentRaceProficiencies[i].concat(currentClassProficiencies[i])
+        summaryProficiencies[i].sort();
+    }
 }

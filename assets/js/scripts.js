@@ -21,10 +21,10 @@ function turnPage(i) {
     $(`#nav_page_${currentPage}`).removeClass('current_page').addClass('hidden_page');
     currentPage = currentPage + i
     $(`#nav_page_${currentPage}`).removeClass('hidden_page').addClass('current_page');
-    characterSkills();
+    summarizeSkills();
+    summarizeProficiencies();
     printCurrentCharacter();
     printAbilities();
-    summarySkills()
 }
 
 $('#btn_prev_xs').on('click', function () {
@@ -70,7 +70,6 @@ let characterSummary = {
     proficienciesTools: [],
     saves: {},
 }
-
 
 $('#submit_name').on('click', function () {
     characterSummary.name = $('#name_field').val();
@@ -194,8 +193,8 @@ function printAbilities() {
         $(`#current_bought_race_${element}`).empty().append(raceAbility[i]);
         $('#ability_points').empty().append(availableAbility);
         $('#race_bonus_points').empty().append(bonusAbility);
-        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">${(modifierAbility[i]<=0?"":"+") + modifierAbility[i]}</div>`);
-        $(`#ability_modifier_${element}`).empty().text((modifierAbility[i]<=0?"":"+") + modifierAbility[i]);
+        $(`#character_${element}`).empty().append(`<div class="character_ability_header">${element}</div><div class="character_ability_score">${characterAbility[i]}</div><div class="character_ability_bonus">${(modifierAbility[i] <= 0 ? "" : "+") + modifierAbility[i]}</div>`);
+        $(`#ability_modifier_${element}`).empty().text((modifierAbility[i] <= 0 ? "" : "+") + modifierAbility[i]);
     });
 };
 
@@ -302,11 +301,13 @@ function summarySpeed(currentRace) {
     characterSummary.speed = currentRace.speed;
 }
 
-function summarySkills() {
-    $('#character_proficiencies').empty().append(`<div class="summary_skill_header"><h5>Skills</h5></div>`)
+function summarizeSkills() {
+    characterSkillValues();
+    $('#summary_container_middle').append('<div class="general_info_styling" id="summary_middle"></div>');
+    $('#summary_middle').empty().append(`<div class="summary_top_header"><h5>Skills</h5></div><div class="info_sub_container" id="summary_skills"></div>`)
     fullNameAbility.forEach((element, i) => {
         if (characterSummary.proficienciesSkills[i].length > 0) {
-            $('#character_proficiencies').append(`<div class="summary_skill_header" id="character_skill_summary_${nameAbility[i]}">
+            $('#summary_skills').append(`<div class="summary_sub_header summary_skills_list" id="character_skill_summary_${nameAbility[i]}">
             <h6>${element} Skills</h6>
             </div>`)
             characterSummary.proficienciesSkills[i].forEach(skill => {
@@ -314,7 +315,7 @@ function summarySkills() {
                 <div class="row summary_skill_list" id="character_skill_${skill.name}">
                 <div class="summary_skill_list_prof" id="prof_${skill.name}"></div>
                 <div class="col-8 summary_skill_list_name">${skill.name}</div>
-                <div class="col-2 summary_skill_list_value">${(skill.value<=0?'':'+') + skill.value}</div>
+                <div class="col-2 summary_skill_list_value">${(skill.value <= 0 ? '' : '+') + skill.value}</div>
                 </div>`)
             })
         }
@@ -338,8 +339,22 @@ async function printCurrentCharacter() {
     $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
     $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
 
-    $('#summary_right').empty()
-    $('#summary_right').append(`<div class="bleh">Hello</div>`)
+    $('#summary_container_right').empty()
+    $('#summary_container_right').append('<div class="general_info_styling" id="summary_right"></div>');
+    $('#summary_right').append(`<div class="summary_top_header"><h5>Proficiencies</h5></div><div class="info_sub_container" id="summary_proficiencies"></div>`)
+    summaryProficiencies.forEach((element, i) => {
+        if (summaryProficiencies[i].length > 0) {
+            $('#summary_proficiencies').append(`<div class="summary_sub_header summary_proficiencies_list" id="summary_list_${proficiencyNames[i]}"><h6>${proficiencyNames[i]}</h6></div>`)
+        }
+        element.forEach(skill => {
+            $(`#summary_list_${proficiencyNames[i]}`).append(`<div>${skill}</div>`)
+        });
+    });
+
+    $('#summary_right').append(`<div class="summary_sub_header"><h5>Languages</h5></div><div class="info_sub_container" id="summary_languages"></div>`)
+    characterSummary.languages.forEach((element) => {
+        $(`#summary_languages`).append(`<div>${element}</div>`)
+    });
 };
 
 populateAbilityPage();
