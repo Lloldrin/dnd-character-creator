@@ -33,9 +33,9 @@ body {
     background-color: #fdfdea;
     font-family: 'Headland One', serif;
     font-size: 0.7em;
-    box-shadow: 1px 1px 5px 4px #ccc;
-    -moz-box-shadow: 1px 1px 3px 4px #ccc;
-    -webkit-box-shadow: 1px 1px 3px 4px #ccc;
+    box-shadow: 1px 1px 5px 4px rgb(83, 83, 83);
+    -moz-box-shadow: 1px 1px 3px 4px rgb(83, 83, 83);
+    -webkit-box-shadow: 2px 2px 5px 2px rgb(83, 83, 83);
 }
 
 .info_sub_container {
@@ -266,6 +266,7 @@ body {
 /* ---------- Summary Styling ---------- */
 
 #character_name {
+    text-align: center;
     padding-bottom: 5px;
 }
 
@@ -305,10 +306,20 @@ body {
     justify-content: space-evenly;
 }
 
-.summary_styling {
-    margin: 10px;
+.summary_info_container_justify_left {
+    justify-content: start;
+}
+
+.summary_info_sub_container {
+    margin-bottom: 10px;
+    width: 33%;
+    flex-direction: column;
     font-size: 1rem;
     text-align: center;
+}
+
+.summary_styling {
+    width: 33%;
 }
 
 .summary_header, .summary_top_header {
@@ -319,6 +330,10 @@ body {
 .summary_header {
     margin-top: 10px;
     padding-bottom: 10px;
+}
+
+.summary_small_header {
+    font-size: 0.7rem;
 }
 
 .summary_sub_header {

@@ -14,7 +14,7 @@
 <body>
     <div class="container" id="page_background">
 
-        <h1 id="page_header">D&D 5e Character Creator 0.3</h1>
+        <h1 id="page_header">D&D 5e Character Creator</h1>
 
         <div class="d-none d-md-flex justify-content-center col nav_btn_container_md">
             <div class="nav_btn"><button class="btn btn_navigation" id="btn_prev_md">Prev</button></div>
@@ -61,10 +61,9 @@
                 <div class="col-12 col-md-6" id="summary_info_container_left">
                     <div class="general_info_styling">
 
-                        <div class="row character_summary" id="character_name">
-                        </div>
+                        <div class="summary_top_header" id="character_name"></div>
 
-                        <div class="row character_ability_container">
+                        <div class="character_ability_container">
                             <div class="character_ability" id="character_str"></div>
                             <div class="character_ability" id="character_dex"></div>
                             <div class="character_ability" id="character_con"></div>
@@ -74,15 +73,21 @@
                         </div>
 
                         
-                        <div class="row character_summary" id="character_stats">
-                            <div id="hit_points"></div>
-                            <div id="hit_dice"></div>
+                        <div class="character_summary summary_info_container_justify_left" id="character_stats">
+                            <div class="summary_info_sub_container" id="hit_points"></div>
+                            <div class="summary_info_sub_container" id="hit_dice"></div>
                         </div>
 
-                        <div class="row character_summary">
-                            <div id="armor_class"></div>
-                            <div id="initiative"></div>
-                            <div id="speed"></div>
+                        <div class="character_summary summary_info_container">
+                            <div class="summary_info_sub_container" id="armor_class"></div>
+                            <div class="summary_info_sub_container" id="initiative"></div>
+                            <div class="summary_info_sub_container" id="speed"></div>
+                        </div>
+
+                        <div class="character_summary summary_info_container">
+                            <div class="summary_info_sub_container" id="proficiency"></div>
+                            <div class="summary_info_sub_container" id="passive_perception"></div>
+                            <div class="summary_info_sub_container" id="passive_insight"></div>
                         </div>
                     </div>
                 </div>

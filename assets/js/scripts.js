@@ -57,7 +57,7 @@ let characterSummary = {
     hitDice: 12,
     armorClass: 10,
     initative: -1,
-    proficency: 2,
+    proficiency: 2,
     passivePerception: 1,
     passiveInsight: 1,
     saves: [],
@@ -94,7 +94,7 @@ let bonusAbility = 0;
 
 function populateAbilityPage() {
     $('#abilities_container').append(`
-        <div class="abilities_header">
+        <div class="summary_top_header">
             <h4>Abilities</h4>
         </div>
 
@@ -274,7 +274,7 @@ $('body').on('click', '.ability_header', function () {
 });
 
 function abilityDescriptor(element) {
-    $('#abilities_desc_container').empty().append(`<div class="abilities_header"><h4>${element.full_name}</h4></div><div id="ability_description">${element.desc}</div>`)
+    $('#abilities_desc_container').empty().append(`<div class="summary_top_header"><h4>${element.full_name}</h4></div><div class="summary_sub_header">${element.desc}</div>`)
 };
 
 
@@ -305,7 +305,7 @@ async function summarizeSkills() {
     characterSkillValues();
     $('#summary_container_middle').empty().append('<div class="general_info_styling" id="summary_middle"></div>');
     $('#summary_middle').empty().append(`<div class="summary_top_header"><h5>Skills</h5></div><div class="info_sub_container" id="summary_skills"></div>`)
-    
+
     fullNameAbility.forEach((element, i) => {
         if (characterSummary.proficienciesSkills[i].length > 0) {
             $('#summary_skills').append(`<div class="summary_sub_header summary_skills_list" id="character_skill_summary_${nameAbility[i]}">
@@ -333,12 +333,16 @@ async function printCurrentCharacter() {
     summarizeCharacter()
     $('#character_name').empty().append(`<div><h5>${characterSummary.name} the ${characterSummary.race} ${characterSummary.characterClass}</h5></div>`);
 
-    $('#hit_points').empty().append(`<div class="summary_styling"><span class="summary_header">Hit Points:</span><br><span class="summary_value">${characterSummary.hitPoints}</span></div`);
-    $('#hit_dice').empty().append(`<div class="summary_styling">Hit Dice:<br><span class="summary_value">d${characterSummary.hitDice}</span></div>`);
+    $('#hit_points').empty().append(`<span class="summary_normal_header">Hit Points:</span><br><span class="summary_value">${characterSummary.hitPoints}</span></div`);
+    $('#hit_dice').empty().append(`<span class="summary_normal_header">Hit Dice:</span><br><span class="summary_value">d${characterSummary.hitDice}</span></div>`);
 
-    $('#armor_class').empty().append(`<div class="summary_styling">AC:<br><span class="summary_value">${characterSummary.armorClass}</span></div`);
-    $('#initiative').empty().append(`<div class="summary_styling">Initiative:<br><span class="summary_value">${characterSummary.initative}</span></div>`);
-    $('#speed').empty().append(`<div class="summary_styling">Speed:<br><span class="summary_value">${characterSummary.speed}</span></div>`);
+    $('#armor_class').empty().append(`<span class="summary_normal_header">AC:</span><br><span class="summary_value">${characterSummary.armorClass}</span></div`);
+    $('#initiative').empty().append(`<span class="summary_normal_header">Initiative:</span><br><span class="summary_value">${characterSummary.initative}</span></div>`);
+    $('#speed').empty().append(`<span class="summary_normal_header">Speed:</span><br><span class="summary_value">${characterSummary.speed}</span>`);
+
+    $('#proficiency').empty().append(`<span class="summary_normal_header">Proficiency:</span><br><span class="summary_value">${characterSummary.proficiency}</span></div`);
+    $('#passive_perception').empty().append(`<span class="summary_small_header">Passive Perception</span><br><span class="summary_value">${characterSummary.passivePerception}</span>`);
+    $('#passive_insight').empty().append(`<span class="summary_small_header">Passive Insight</span><br><span class="summary_value">${characterSummary.passiveInsight}</span>`);
 
     $('#summary_container_right').empty()
     $('#summary_container_right').append('<div class="general_info_styling" id="summary_right"></div>');
@@ -360,6 +364,15 @@ async function printCurrentCharacter() {
     $('#summary_right').append(`<div class="summary_header info_sub_container"><h5>Traits</h5><div class="summary_list_container" id="summary_traits"></div></div>`)
     characterSummary.traits.forEach((element) => {
         $(`#summary_traits`).append(`<div>${element}</div>`)
+    });
+
+    $('#summary_right').append(`<div class="summary_header info_sub_container"><h5>Saving Throws</h5><div class="summary_list_container" id="summary_saves"></div></div>`)
+    nameAbility.forEach((element, i) => {
+        characterSummary.saves.forEach(save => {
+        if (element === save.toLowerCase()) {
+            $(`#summary_saves`).append(`<div>${fullNameAbility[i]}</div>`)
+        };
+    });
     });
 };
 
