@@ -4,7 +4,7 @@ This is a web application to assist users in creating basic characters for the R
 
 ## UX
 
-![UX Example](https://github.com/Lloldrin/Milestone2/blob/master/assets/readme/responsiveness.png)
+![UX Example](https://github.com/Lloldrin/Milestone2/blob/master/assets/readme/responsiveness.PNG)
 
 ### User Stories
  
