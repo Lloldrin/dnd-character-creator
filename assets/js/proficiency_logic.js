@@ -37,6 +37,21 @@ function removeProficiencySkill(skill) {
     });
 }
 
+let skillDescriptions = [];
+
+async function fetchSkillDescription() {
+    for (const skill of skills) {
+            await fetchSkillInformation(skill.replace('Skill: ', '').toLowerCase().split(' ').join('-'))
+    }
+}
+
+function populateSkillDescriptions(skills) {
+        skillDescriptions.push(skills);
+}
+
+fetchSkillDescription()
+
+
 function characterSkillValues() {
 
     characterSummary.proficienciesSkills = [
@@ -44,7 +59,8 @@ function characterSkillValues() {
         [
             {
                 name: 'Athletics',
-                value: modifierAbility[0] + proficiencySkill[3]
+                value: modifierAbility[0] + proficiencySkill[3],
+                desc: skillDescriptions[3],
             },
         ],
 
@@ -52,15 +68,18 @@ function characterSkillValues() {
         [
             {
                 name: 'Acrobatics',
-                value: modifierAbility[1] + proficiencySkill[0]
+                value: modifierAbility[1] + proficiencySkill[0],
+                desc: skillDescriptions[0]
             },
             {
                 name: 'Sleight Of Hand',
-                value: modifierAbility[1] + proficiencySkill[15]
+                value: modifierAbility[1] + proficiencySkill[15],
+                desc: skillDescriptions[15]
             },
             {
                 name: 'Stealth',
-                value: modifierAbility[1] + proficiencySkill[16]
+                value: modifierAbility[1] + proficiencySkill[16],
+                desc: skillDescriptions[16]
             },
         ],
 
@@ -73,22 +92,27 @@ function characterSkillValues() {
             {
                 name: 'Arcana',
                 value: modifierAbility[3] + proficiencySkill[2],
+                desc: skillDescriptions[2]
             },
             {
                 name: 'History',
                 value: modifierAbility[3] + proficiencySkill[5],
+                desc: skillDescriptions[5]
             },
             {
                 name: 'Investigation',
                 value: modifierAbility[3] + proficiencySkill[8],
+                desc: skillDescriptions[8]
             },
             {
                 name: 'Nature',
                 value: modifierAbility[3] + proficiencySkill[10],
+                desc: skillDescriptions[10]
             },
             {
                 name: 'Religion',
                 value: modifierAbility[3] + proficiencySkill[14],
+                desc: skillDescriptions[14]
             },
         ],
 
@@ -97,22 +121,27 @@ function characterSkillValues() {
             {
                 name: 'Animal Handling',
                 value: modifierAbility[4] + proficiencySkill[1],
+                desc: skillDescriptions[1]
             },
             {
                 name: 'Insight',
                 value: modifierAbility[4] + proficiencySkill[6],
+                desc: skillDescriptions[6]
             },
             {
                 name: 'Medicine',
                 value: modifierAbility[4] + proficiencySkill[9],
+                desc: skillDescriptions[9]
             },
             {
                 name: 'Perception',
                 value: modifierAbility[4] + proficiencySkill[11],
+                desc: skillDescriptions[11]
             },
             {
                 name: 'Survival',
                 value: modifierAbility[4] + proficiencySkill[17],
+                desc: skillDescriptions[17]
             }
         ],
 
@@ -121,18 +150,22 @@ function characterSkillValues() {
             {
                 name: 'Deception',
                 value: modifierAbility[5] + proficiencySkill[4],
+                desc: skillDescriptions[4]
             },
             {
                 name: 'Intimidation',
                 value: modifierAbility[5] + proficiencySkill[7],
+                desc: skillDescriptions[7]
             },
             {
                 name: 'Performance',
                 value: modifierAbility[5] + proficiencySkill[12],
+                desc: skillDescriptions[12]
             },
             {
                 name: 'Persuasion',
                 value: modifierAbility[5] + proficiencySkill[13],
+                desc: skillDescriptions[13]
             },
         ],
     ]

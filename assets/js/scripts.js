@@ -305,26 +305,22 @@ async function summarizeSkills() {
     characterSkillValues();
     $('#summary_container_middle').empty().append('<div class="general_info_styling" id="summary_middle"></div>');
     $('#summary_middle').empty().append(`<div class="summary_top_header"><h5>Skills</h5></div><div class="info_sub_container" id="summary_skills"></div>`)
-    let i = 0;
-    for (const element of fullNameAbility) {
-        console.log(i)
+    
+    fullNameAbility.forEach((element, i) => {
         if (characterSummary.proficienciesSkills[i].length > 0) {
             $('#summary_skills').append(`<div class="summary_sub_header summary_skills_list" id="character_skill_summary_${nameAbility[i]}">
             <h6>${element} Skills</h6>
             </div>`)
-            console.log(i)
-            for (const skill of characterSummary.proficienciesSkills[i]) {
-                let skillDescription = await fetchSkillDescription(skill.name.toLowerCase().split(' ').join('-'))
+            characterSummary.proficienciesSkills[i].forEach(skill => {
                 $(`#character_skill_summary_${nameAbility[i]}`).append(`
                 <div class="row summary_skill_list" id="character_skill_${skill.name}">
                 <div class="summary_skill_list_prof" id="prof_${skill.name}"></div>
-                <div class="col-8 summary_skill_list_name hover_info_container">${skill.name}<div class="hover_info">${skillDescription.desc[0]}</div></div>
+                <div class="col-8 summary_skill_list_name hover_info_container">${skill.name}<div class="hover_info">${skill.desc}</div></div>
                 <div class="col-2 summary_skill_list_value">${(skill.value <= 0 ? '' : '+') + skill.value}</div>
                 </div>`)
-            }
-        }
-        i++;
-    };
+            });
+        };
+    });
 };
 
 function summarizeCharacter() {

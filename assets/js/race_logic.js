@@ -107,7 +107,6 @@ function raceLanguageOptions(currentRace) {
             });
             $('#race_languages_list').on('change', function () {
                 if (i > 0) {
-                    console.log(i)
                     characterSummary.languages.pop()
                 } else {
                     i++;
