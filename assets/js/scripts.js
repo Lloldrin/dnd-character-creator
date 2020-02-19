@@ -1,19 +1,15 @@
 /* ---------- Dynamically Created Content on Page Load ---------*/
 
-fetchRaceList()
-fetchClassList()
-
 //Loads a default race, class & ability description
 selectRace('/api/races/dragonborn');
 selectClass('/api/classes/barbarian');
 fetchAbilityDescription('str');
 
-let unsortedProficiencies = {};
-
 /* ---------- Navigation Logic ---------- */
 
 let currentPage = 0;
 
+//This is run by the navigation buttons to either increase or decrease the nav_page. It does decrease on the first or increase on the last.
 function turnPage(i) {
     if (currentPage + i === -1 || currentPage + i === 5) {
         return;
@@ -27,6 +23,7 @@ function turnPage(i) {
     printAbilities();
 }
 
+//These are the event listeners for navigation button presses.
 $('#btn_prev_xs').on('click', function () {
     pageDown = -1;
     turnPage(pageDown);
@@ -71,17 +68,16 @@ let characterSummary = {
     saves: {},
 }
 
+//Updates characterSummary with the chosen name and brings the user to the next page.
 $('#submit_name').on('click', function () {
     characterSummary.name = $('#name_field').val();
     pageUp = 1;
     turnPage(pageUp);
 });
 
-
-
-
 /* ---------- Ability Page ---------- */
 
+//This sets the base abilities as well as name the abbreviated and full names of the abilities
 let nameAbility = ['str', 'dex', 'con', 'int', 'wis', 'cha'];
 let fullNameAbility = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma'];
 let baseAbility = [8, 8, 8, 8, 8, 8,];
@@ -92,6 +88,7 @@ let characterAbility = [8, 8, 8, 8, 8, 8];
 let availableAbility = 27;
 let bonusAbility = 0;
 
+//Populates the DOM with everything regarding the abilities page. This was a part of the HTML, but with namAbility.forEach it was easier to move here to make changes to it. 
 function populateAbilityPage() {
     $('#abilities_container').append(`
         <div class="summary_top_header">
@@ -139,6 +136,7 @@ function populateAbilityPage() {
     `)
 };
 
+//Clears previous race ability bonuses and adds the new ones. Run when the a new race is fetched. 
 function currentAbilities(currentRace) {
     currentRace.ability_bonuses.forEach(element => {
         if (element.name === `STR`) {
@@ -169,6 +167,7 @@ function currentAbilities(currentRace) {
     }
 }
 
+//If the race has bonus ability points to spend this is run to add buttons to the ability page
 function bonusAbilities(bonus) {
     if (bonus !== undefined) {
         bonusAbility = bonus.choose;
@@ -186,6 +185,7 @@ function bonusAbilities(bonus) {
     }
 }
 
+//Updates the DOM with the correct, current values of all the ability points, including currently bought points, points remaining and current modifier.
 function printAbilities() {
     nameAbility.forEach((element, i) => {
         $(`#char_${element}`).empty().append(characterAbility[i]);
@@ -198,11 +198,14 @@ function printAbilities() {
     });
 };
 
+//Sets current characterAbility and the current modifier
 function setAbility(i) {
     characterAbility[i] = boughtAbility[i] + baseAbility[i] + raceAbility[i];
     modifierAbility[i] = Math.floor((characterAbility[i] - 10) / 2)
 };
 
+
+//The logic to increase and decrease abilities and bonus abilities on the ability page. Also has logic to charge more for higher values.
 function upBoughtAbility(i) {
     if (boughtAbility[i] <= 4 && availableAbility > 0) {
         boughtAbility[i] += 1;
@@ -249,6 +252,7 @@ function downBonusAbility(i) {
     }
 }
 
+//Event handlers for when the user increases/decreases abilities
 $('body').on('click', '.ability_buy', function () {
     nameAbility.forEach((element, i) => {
         if (this.id === `bought_${element}_up`) {
@@ -269,6 +273,7 @@ $('body').on('click', '.ability_buy_race', function () {
     });
 });
 
+//Lets the user click on the header of the ability to get an explanation of the ability
 $('body').on('click', '.ability_header', function () {
     fetchAbilityDescription(this.textContent.toLowerCase());
 });
@@ -281,26 +286,38 @@ function abilityDescriptor(element) {
 
 /* ---------- Character Summary ---------- */
 
+//Gets data from currentClass and updates the characterSummary.HitDice
 function summaryHitDice(currentClass) {
     characterSummary.hitDice = currentClass.hit_die;
 };
 
+//Sets characterSummary.hitpointes based on the current HitDice and Constitution Modifier
 function summaryHitPoints() {
     characterSummary.hitPoints = characterSummary.hitDice + modifierAbility[2];
 };
 
+//Sets the characterSummary.ArmorClass based on 10 + Dexterity Modifier
 function summaryArmorClass() {
     characterSummary.armorClass = 10 + modifierAbility[1];
 };
 
+//Sets the characterSummary.Initiative based on the Dexterity modifier
 function summaryInitiative() {
     characterSummary.initative = modifierAbility[1];
 }
 
+//Sets the characterSummary.Speed based on the currentRace 
 function summarySpeed(currentRace) {
     characterSummary.speed = currentRace.speed;
 }
 
+function summarizeCharacter() {
+    summaryHitPoints()
+    summaryArmorClass()
+    summaryInitiative()
+}
+
+//Runs through the current skill values and updates the DOM with the correct numbers
 async function summarizeSkills() {
     characterSkillValues();
     $('#summary_container_middle').empty().append('<div class="general_info_styling" id="summary_middle"></div>');
@@ -323,12 +340,7 @@ async function summarizeSkills() {
     });
 };
 
-function summarizeCharacter() {
-    summaryHitPoints()
-    summaryArmorClass()
-    summaryInitiative()
-}
-
+//Populates the summary page
 async function printCurrentCharacter() {
     summarizeCharacter()
     $('#character_name').empty().append(`<div><h5>${characterSummary.name} the ${characterSummary.race} ${characterSummary.characterClass}</h5></div>`);
@@ -369,14 +381,15 @@ async function printCurrentCharacter() {
     $('#summary_right').append(`<div class="summary_header info_sub_container"><h5>Saving Throws</h5><div class="summary_list_container" id="summary_saves"></div></div>`)
     nameAbility.forEach((element, i) => {
         characterSummary.saves.forEach(save => {
-        if (element === save.toLowerCase()) {
-            $(`#summary_saves`).append(`<div>${fullNameAbility[i]}</div>`)
-        };
-    });
+            if (element === save.toLowerCase()) {
+                $(`#summary_saves`).append(`<div>${fullNameAbility[i]}</div>`)
+            };
+        });
     });
 };
 
 populateAbilityPage();
 
-$('body').on('mouseover', '.hover_info_container', function () { $(this).children('.hover_info').show(); })
+//This displays a hover window when hovering over skills etc on the page.
+$('body').on('mouseover', '.hover_info_container', function () { $(this).children('.hover_info').show(); });
 $('body').on('mouseout', '.hover_info_container', function () { $(this).children('.hover_info').hide(); });

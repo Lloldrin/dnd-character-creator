@@ -11,6 +11,8 @@ async function fetchRaceList() {
     console.log(playerRace.results);
 }
 
+fetchRaceList()
+
 //Listens for the user to make a race selection and displays the correct data
 let currentRace
 async function selectRace(url) {
@@ -30,6 +32,8 @@ async function fetchClassList() {
     populateClassList(playerClass.results)
     console.log(playerClass.results)
 }
+
+fetchClassList()
 
 //Listens for the user to make a (game)class  selection and displays the correct data
 let currentClass
