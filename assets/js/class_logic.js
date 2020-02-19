@@ -50,10 +50,7 @@ function classHDSave(currentClass) {
     $('#class_info_hd_save').append(`<div class="class_info_inline" id="class_saving_throws">
     <h6>Saving Throws:</h6>`);
     currentClass.saving_throws.forEach(element => {
-        if (characterSummary.saves[`class_saves_0`] === undefined) {
-            characterSummary.saves[`class_saves_0`] = {};
-        }
-        characterSummary.saves[`class_saves_0`][element.name] = element.name;
+        characterSummary.saves.push(element.name);
         $('#class_saving_throws').append(`<div class="class_save_list"><h6>${element.name}</h6><div>`);
     });
 }
@@ -132,4 +129,5 @@ function resetClass() {
     $(`#class_info_container_left`).empty();
     $(`#class_info_container_right`).empty();
     currentClassProficiencies = [[], [], [], []]
+    characterSummary.saves = [];
 }

@@ -1,7 +1,6 @@
 /* ---------- Font Imports ---------- */
 
 @import url('https://fonts.googleapis.com/css?family=Headland+One&display=swap');
-
 /* ---------- Backgrounds and Colors ---------- */
 
 body {
@@ -43,8 +42,7 @@ body {
     border-bottom: 2px solid red;
 }
 
-.summary_skills_list:last-of-type,
-.summary_proficiencies_list:last-of-type {
+.summary_skills_list:last-of-type, .summary_proficiencies_list:last-of-type {
     border: none;
 }
 
@@ -165,6 +163,16 @@ body {
     margin: 5px;
 }
 
+#class_info_hd_save {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.class_save_list {
+    display: inline-block;
+    margin: 0px 10px;
+}
+
 .class_prof {
     margin: 3px;
     padding: 3px;
@@ -183,7 +191,7 @@ body {
 
 .class_multi_list {
     margin: 10px 0px;
-    display:flex;
+    display: flex;
     flex-wrap: wrap;
 }
 
@@ -217,8 +225,7 @@ body {
     margin: auto;
 }
 
-.abilities_styling_footer_text,
-.abilities_styling_footer_value {
+.abilities_styling_footer_text, .abilities_styling_footer_value {
     align-self: center;
     text-align: center;
     font-size: 1rem;
@@ -230,9 +237,7 @@ body {
     font-weight: bold;
 }
 
-
 .ability_buy, .ability_buy_race {
-    
     width: 20px;
     height: 20px;
     padding: 0px;
@@ -244,7 +249,7 @@ body {
     align-content: center;
 }
 
-.ability_buy:hover, .ability_buy_race:hover{
+.ability_buy:hover, .ability_buy_race:hover {
     background-color: rgba(68, 67, 67, 0.8);
     color: rgba(255, 255, 255, 0.7);
     transition: .2s ease-in-out;
@@ -306,21 +311,29 @@ body {
     text-align: center;
 }
 
-.summary_top_header {
-    margin: 10px 0px;
+.summary_header, .summary_top_header {
     border-bottom: 2px solid red;
     padding-bottom: 5px;
 }
 
+.summary_header {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
 .summary_sub_header {
-    margin: 10px 5px;
+    margin: 5px;
+    padding: 5px;
     border-bottom: 1px solid black;
-    padding-bottom: 5px;
+}
+
+.summary_list_container {
+    margin: 0px 10px;
 }
 
 .summary_skill_list {
-    margin: 2px;
-    font-size: 0.8rem;
+    margin: 0px 2px;
+    font-size: 0.7rem;
     display: flex;
     justify-content: space-evenly;
 }
@@ -345,36 +358,34 @@ body {
     font-weight: bold;
 }
 
-/* ---------- Summary Styling ---------- */
+/* ---------- Hover Description Styling ---------- */
 
-#info_.info_style_hd_save {
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.class_save_list {
-    display: inline-block;
-    margin: 0px 10px;
+.hover_info {
+    display: none;
+    position: absolute;
+    width: 50vw;
+    border: 1px solid red;
+    color: white;
+    background-color: rgba(114, 114, 114, 0.9);
+    z-index: 9999;
+    padding: 5px;
 }
 
 /* ---------- Scrollbar Styling ---------- */
 
-#page_background::-webkit-scrollbar-track, 
-.info_style::-webkit-scrollbar-track {
+#page_background::-webkit-scrollbar-track, .info_style::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     background-color: #F5F5F5;
 }
 
-#page_background::-webkit-scrollbar,
-.info_style::-webkit-scrollbar {
+#page_background::-webkit-scrollbar, .info_style::-webkit-scrollbar {
     width: 5px;
     background-color: #F5F5F5;
     margin-bottom: 20px;
 }
 
-#page_background::-webkit-scrollbar-thumb,
-.info_style::-webkit-scrollbar-thumb {
+#page_background::-webkit-scrollbar-thumb, .info_style::-webkit-scrollbar-thumb {
     background-color: #000000;
     border: 2px solid #555555;
 }
@@ -389,5 +400,8 @@ body {
     }
     .class_multi_list_item {
         min-width: 30%;
+    }
+    .hover_info {
+        width: 30vw;
     }
 }

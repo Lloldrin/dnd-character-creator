@@ -301,25 +301,30 @@ function summarySpeed(currentRace) {
     characterSummary.speed = currentRace.speed;
 }
 
-function summarizeSkills() {
+async function summarizeSkills() {
     characterSkillValues();
-    $('#summary_container_middle').append('<div class="general_info_styling" id="summary_middle"></div>');
+    $('#summary_container_middle').empty().append('<div class="general_info_styling" id="summary_middle"></div>');
     $('#summary_middle').empty().append(`<div class="summary_top_header"><h5>Skills</h5></div><div class="info_sub_container" id="summary_skills"></div>`)
-    fullNameAbility.forEach((element, i) => {
+    let i = 0;
+    for (const element of fullNameAbility) {
+        console.log(i)
         if (characterSummary.proficienciesSkills[i].length > 0) {
             $('#summary_skills').append(`<div class="summary_sub_header summary_skills_list" id="character_skill_summary_${nameAbility[i]}">
             <h6>${element} Skills</h6>
             </div>`)
-            characterSummary.proficienciesSkills[i].forEach(skill => {
+            console.log(i)
+            for (const skill of characterSummary.proficienciesSkills[i]) {
+                let skillDescription = await fetchSkillDescription(skill.name.toLowerCase().split(' ').join('-'))
                 $(`#character_skill_summary_${nameAbility[i]}`).append(`
                 <div class="row summary_skill_list" id="character_skill_${skill.name}">
                 <div class="summary_skill_list_prof" id="prof_${skill.name}"></div>
-                <div class="col-8 summary_skill_list_name">${skill.name}</div>
+                <div class="col-8 summary_skill_list_name hover_info_container">${skill.name}<div class="hover_info">${skillDescription.desc[0]}</div></div>
                 <div class="col-2 summary_skill_list_value">${(skill.value <= 0 ? '' : '+') + skill.value}</div>
                 </div>`)
-            })
+            }
         }
-    });
+        i++;
+    };
 };
 
 function summarizeCharacter() {
@@ -351,10 +356,18 @@ async function printCurrentCharacter() {
         });
     });
 
-    $('#summary_right').append(`<div class="summary_sub_header"><h5>Languages</h5></div><div class="info_sub_container" id="summary_languages"></div>`)
+    $('#summary_right').append(`<div class="summary_header info_sub_container"><h5>Languages</h5><div class="summary_list_container" id="summary_languages"></div></div>`)
     characterSummary.languages.forEach((element) => {
         $(`#summary_languages`).append(`<div>${element}</div>`)
+    });
+
+    $('#summary_right').append(`<div class="summary_header info_sub_container"><h5>Traits</h5><div class="summary_list_container" id="summary_traits"></div></div>`)
+    characterSummary.traits.forEach((element) => {
+        $(`#summary_traits`).append(`<div>${element}</div>`)
     });
 };
 
 populateAbilityPage();
+
+$('body').on('mouseover', '.hover_info_container', function () { $(this).children('.hover_info').show(); })
+$('body').on('mouseout', '.hover_info_container', function () { $(this).children('.hover_info').hide(); });

@@ -54,10 +54,10 @@ async function spellCasterClass(url) {
 /* ------------ Ingame Skills ---------- */
 
 //Fetches data to populate the skill list  and runs the function to populate the list
-async function fetchSkillList() {
-    let apiSkills = await fetch(dnd_api + `/api/skills/`)
-    let skills = await apiSkills.json()
-    populateSkillList(skills.results)
+async function fetchSkillDescription(url) {
+    let apiSkills = await fetch(dnd_api + `/api/skills/` + url)
+    let skillDescription = await apiSkills.json()
+    return skillDescription;
 }
 
 /* --------- Ingame Abilities --------- */
